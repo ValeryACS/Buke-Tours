@@ -1,0 +1,42 @@
+[
+  {
+    "id": "cr-arenal-zipline",
+    "title": "Canopy & Zipline en Arenal",
+    "location": "La Fortuna, Alajuela",
+    "priceUSD": 89,
+    "rating": 4.7,
+    "durationHours": 3.5,
+    "img": "./img/tour1.jpg",
+    "description": "Aventura de canopy entre selva tropical con vistas al Volcán Arenal y plataformas seguras."
+  },
+  {
+    "id": "cr-monteverde-hanging-bridges",
+    "title": "Puentes Colgantes Monteverde",
+    "location": "Monteverde, Puntarenas",
+    "priceUSD": 75,
+    "rating": 4.8,
+    "durationHours": 2.5,
+    "img": "./img/tour2.jpg",
+    "description": "Caminata guiada por bosque nuboso, observación de aves y biodiversidad única."
+  },
+  {
+    "id": "cr-manuel-antonio-park",
+    "title": "Parque Nacional Manuel Antonio",
+    "location": "Quepos, Puntarenas",
+    "priceUSD": 65,
+    "rating": 4.6,
+    "durationHours": 6,
+    "img": "./img/tour3.jpg",
+    "description": "Tour por senderos y playas con posibilidad de ver monos, perezosos y diversidad marina."
+  },
+  {
+    "id": "cr-tortuguero-boat",
+    "title": "Tour en Bote por Canales de Tortuguero",
+    "location": "Limón",
+    "priceUSD": 99,
+    "rating": 4.9,
+    "durationHours": 4,
+    "img": "./img/tour4.jpg",
+    "description": "Recorrido en bote por canales, avistamiento de fauna y aprendizaje sobre conservación."
+  }
+]

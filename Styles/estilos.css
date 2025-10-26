@@ -1,0 +1,508 @@
+html {
+    font-family: sans-serif;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background: url(../img/fondo.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-attachment: fixed;
+}
+
+/* Barra de navegación */
+.navbar, .barra-navegadora {
+    background-color: #5c6670;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+}
+
+.nav-item a {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    text-align: center;
+}
+.barra-navegadora-li:hover ,.barra-navegadora-li:hover >a ,
+.nav-item:hover, .nav-link:focus, .nav-link:hover {
+    color: #000;
+    background: #ffd89c;
+    
+}
+
+/* Estilos de la barra de navegación con logo */
+.barra-navegadora {
+    text-align: center;
+    width: 100%;
+}
+
+.barra-navegadora-li {
+    display: inline;
+    padding: 0 15px;
+}
+
+.logo {
+    width: 74px;
+    border-radius: 7px;
+    vertical-align: middle;
+}
+
+/* Sección de título y barra de búsqueda */
+.titulo {
+    color: #333;
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.barra-busqueda {
+    width: 60%;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    background: white url('../static/img/lupa.png') no-repeat right 10px center;
+    background-size: 20px;
+    font-size: 16px;
+}
+
+/* Sección de reseñas */
+.reseñas-container {
+    margin: 20px auto;
+    width: 80%;
+    background: url('../static/img/reseñas-fondo.jpg') no-repeat center center;
+    background-size: cover;
+    padding: 50px 0;
+    border-radius: 10px;
+}
+
+.reseña {
+    display: flex;
+    align-items: center;
+    background-color: #c4c4c4;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.icono {
+    width: 80px;
+    height: 80px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin-right: 15px;
+}
+
+.contenido {
+    text-align: left;
+}
+
+.nombre {
+    font-weight: bold;
+}
+
+.estrellas {
+    color: gold;
+}
+
+/* Sección de Tours */
+.vista-tours {
+    position:absolute;
+    bottom: 0px;
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px 0;
+}
+
+.tours-linea {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.tour-imagen-li {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tour-imagen {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+
+
+/* Footer */
+.footer-redes {
+    background-color: #2a7e7e;
+    color: white;
+    text-align: center;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    bottom: 0;
+    padding: 0px 0;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.footer-redes-li {
+    display: inline;
+    margin: 0 15px;
+}
+
+.footer-redes a {
+    text-decoration: none;
+    color: white;
+}
+
+.footer-redes a:hover {
+    color: lightblue;
+}
+
+/* Página de Tours */
+.search-bar {
+    text-align: center;
+    margin: 20px;
+}
+
+.search-bar input {
+    padding: 10px;
+    width: 60%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-bar button {
+    padding: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.search-bar button img {
+    width: 20px;
+    height: 20px;
+}
+
+.tour-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.mapa {
+    width: 100%;
+    max-width: 600px; /* Limita el tamaño para que no sea demasiado grande */
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* Centra el mapa horizontalmente */
+}
+
+.tour-list {
+    width: 40%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-left: 20px;
+}
+
+.tour-card {
+    width: 52%;
+    background: white;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* Contenedor general */
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* login */
+.login-textinput {
+    width: 400px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+    background-size: 20px;
+    font-size: 16px;
+}
+
+.login-boton {
+    width: 150px;
+    height: 35px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    border-color: white;
+    background-color: darkslateblue;
+}
+
+.login-no-tienes-una-cuenta{
+    text-align: center;
+}
+
+/*
+Estilos para reseñas
+*/
+.formulario-reseña {
+    background-color: #f7f7f7;
+    padding: 20px;
+    margin: 30px auto;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.formulario-reseña h3 {
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+}
+
+.formulario-reseña label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.formulario-reseña input,
+.formulario-reseña select,
+.formulario-reseña textarea {
+    width: 100%;
+    padding: 10px 0px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.formulario-reseña button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.formulario-reseña button:hover {
+    background-color: #0056b3;
+}
+/*Estilos Perfil*/
+.perfil-contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+.perfil-p{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    width: 45%;
+}
+.perfil-header {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    margin-bottom: 20px;
+}
+.perfil-formulario {
+    display: flex;
+    justify-content: space-between;
+    background: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+}
+.columna {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+.label-perfil {
+    font-weight: bold;
+    margin-top: 10px;
+}
+.input-perfil {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.boton-perfil{
+    margin-top: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    color: white;
+    background-color: #0056b3;
+}
+
+.resenas-boton-eliminar {
+    font-size: 17px;
+    text-decoration: none;
+    display: inline;
+    position: absolute;
+    right: 13%;
+    background-color: red;
+    color: white;
+    padding: 6px 12px;
+    border-width: 0;
+    border-radius: 5px;
+    font-weight: bolder;
+}
+
+.cerrar-sesion-form-boton{
+    font-size: medium;
+    margin: 0px 0px;
+    padding: 0px 0px;
+    text-decoration: underline;
+    display: inline;
+    background-color: transparent;
+    border: transparent;
+}
+
+.cerrar-sesion-form-boton:hover{
+    color: rgb(255, 100, 100);
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+.footer-idioma {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    height: 20px;
+    margin: 0px;
+}
+
+.footer-idioma-boton {
+    padding: 10px 10px 20px;
+    margin: 0px 0px;
+    background-color: #5c6670;
+    color: white;
+    font-weight: bolder;
+    border-radius: 6px;
+    border: 3px white solid;
+    text-decoration: none;
+}
+
+.footer-idioma-boton-es{
+    position: relative;
+    right: 5px;
+}
+
+.footer-idioma-boton-en{
+    position: relative;
+    left: 5px;
+}
+
+
+.footer-idioma-boton:hover{
+    background-color: #7e93a8;
+}
+
+.footer-idioma-boton-activo {
+    background-color: #7e93a8;
+    position: relative;
+    bottom: 18%;
+    z-index: 1;
+}
+
+.tour-info{
+    background: whitesmoke;
+    align-self: center;
+    border-radius: 60px;
+    width: 75%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 25px;
+}
+
+.tour-info-columna{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    text-align: center;
+}
+
+.tour-info-imagen{
+    display: inline;
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 60px 0 0 60px;
+    margin: 0px;
+}
+
+.tour-info-horarios{
+    display: inline;
+    text-align: center;
+    width: 100%;
+    height: 250px;
+    background: #d6e2f2;
+    padding-top: 0px;
+    margin-top: 0px;
+    border-radius: 10px;
+    border: steelblue solid 4px;
+}
+
+
+.tour-info-horarios-titulo{
+    padding: 6px;
+    margin-top: 0px;
+    display: block;
+    text-align: center;
+    background-color: steelblue;
+    color: white;
+    border-radius: 5px;
+
+}
+
+.tour-info-fecha{
+    display: block;
+    width: 100%;
+    padding: 0px;
+    margin: 2px;
+    background-color: #ffffff55;
+}
+
