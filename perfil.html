@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./Styles/estilos.css" />
+    <link rel="stylesheet" href="./Styles/estilos.css" type="text/css" />
+  </head>
+  <body>
+    <header>
+      <nav class="barra-navegadora navbar navbar-expand-lg bg-black">
+        <div class="container-fluid">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav m-auto">
+              <li class="nav-item barra-navegadora-li">
+                <a href="perfil.html" class="nav-link">Perfil</a>
+              </li>
+              <li class="nav-item barra-navegadora-li">
+                <a href="tours.html" class="nav-link">Tours</a>
+              </li>
+              <!--
+                    TODO Incluir esta pagina
+                    <li class="nav-item barra-navegadora-li"><a href="fechas.html">Fechas/Horarios</a></li> -->
+              <li class="nav-item barra-navegadora-li">
+                <a href="index.html"
+                  ><img class="logo" src="img/logo.png" alt="logo"
+                /></a>
+              </li>
+              <li class="nav-item barra-navegadora-li">
+                <a href="resenas.html" class="nav-link">Reseñas</a>
+              </li>
+              <li class="nav-item barra-navegadora-li">
+                <a href="nosotros.html" class="nav-link">Sobre Nosotros</a>
+              </li>
+              <li class="nav-item barra-navegadora-li">
+                <a href="login.html" class="nav-link">Iniciar Sesión</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="perfil-contenedor">
+      <div class="perfil-p"></div>
+      <div class="perfil-formulario">
+        <div class="columna">
+          <!-- <p>Foto de Perfil</p> -->
+
+          <label class="label-perfil">Nombre Completo</label>
+          <input
+            class="input-perfil"
+            type="text"
+            placeholder="Nombre Completo"
+          />
+          <label class="label-perfil">Número de Teléfono</label>
+          <input
+            class="input-perfil"
+            type="text"
+            placeholder="Número de Teléfono"
+          />
+          <label class="label-perfil">Contraseña</label>
+          <input
+            class="input-perfil"
+            type="password"
+            placeholder="Contraseña"
+          />
+          <label class="label-perfil">Correo Electrónico</label>
+          <input
+            class="input-perfil"
+            type="email"
+            placeholder="Correo Electrónico"
+          />
+        </div>
+        <div class="columna">
+          <!-- <p>Calendario Reservas</p> -->
+          <label class="label-perfil">Dirección Completa</label>
+          <input
+            class="input-perfil"
+            type="text"
+            placeholder="Dirección Completa"
+          />
+          <label class="label-perfil">País</label>
+          <input class="input-perfil" type="text" placeholder="País" />
+          <label class="label-perfil">Idioma</label>
+          <input class="input-perfil" type="text" placeholder="Idioma" />
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <nav>
+        <div>
+          <ul class="footer-redes">
+            <li class="footer-redes-li"><a href="#">Facebook</a></li>
+            <li class="footer-redes-li">
+              <a
+                href="https://www.instagram.com/unguiaencostarica"
+                target="_blank"
+                >Instagram</a
+              >
+            </li>
+            <li class="footer-redes-li">
+              <a
+                href="https://www.tiktok.com/@unguiaencostarica"
+                target="_blank"
+                >TikTok</a
+              >
+            </li>
+            <li class="footer-redes-li">&copy; 2025 Bukë Tours</li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+  </body>
+</html>
