@@ -10,62 +10,68 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="./Styles/estilos.css" />
-    <link rel="stylesheet" href="./Styles/estilos.css" type="text/css" />
-    <link rel="stylesheet" href="./Styles/estilos.css" type="text/css" />
-
-    <!-- Ruta corregida -->
+    <link rel="stylesheet" href="./assets/css/main.css" type="text/css" />
   </head>
-  <body style="background-image: url('img/fondo.png'); background-size: 100%">
-    <header>
-      <nav class="barra-navegadora navbar navbar-expand-lg bg-black">
-        <div class="container-fluid">
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav m-auto">
-              <li class="nav-item barra-navegadora-li">
-                <a href="perfil.html" class="nav-link">Perfil</a>
-              </li>
-              <li class="nav-item barra-navegadora-li">
-                <a href="tours.html" class="nav-link">Tours</a>
-              </li>
-              <!--
+  <body>
+  <nav class="barra-navegadora navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <button
+          class="menu-hamburger navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <div id="nav-icon3">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav m-auto">
+            <li class="nav-item barra-navegadora-li">
+              <a href="perfil.html" class="nav-link"
+                ><i class="bi bi-person-bounding-box display-6"></i
+              ></a>
+            </li>
+            <li class="nav-item barra-navegadora-li">
+              <a href="index.html" class="nav-link">Inicio</a>
+            </li>
+
+            <li class="nav-item barra-navegadora-li">
+              <a href="tours.html" class="nav-link">Tours</a>
+            </li>
+            <!--
                     TODO Incluir esta pagina
                     <li class="nav-item barra-navegadora-li"><a href="fechas.html">Fechas/Horarios</a></li> -->
-              <li class="nav-item barra-navegadora-li">
-                <a href="index.html"
-                  ><img class="logo" src="img/logo.png" alt="logo"
-                /></a>
-              </li>
-              <li class="nav-item barra-navegadora-li">
-                <a href="resenas.html" class="nav-link">Reseñas</a>
-              </li>
-              <li class="nav-item barra-navegadora-li">
-                <a href="nosotros.html" class="nav-link">Sobre Nosotros</a>
-              </li>
-              <li class="nav-item barra-navegadora-li">
-                <a href="login.html" class="nav-link">Iniciar Sesión</a>
-              </li>
-            </ul>
-          </div>
+            <li class="nav-item barra-navegadora-li">
+              <a href="index.html"
+                ><img class="logo" src="./assets/img/logo.png" alt="logo"
+              /></a>
+            </li>
+            <li class="nav-item barra-navegadora-li">
+              <a href="resenas.html" class="nav-link">Reseñas</a>
+            </li>
+            <li class="nav-item barra-navegadora-li">
+              <a href="nosotros.html" class="nav-link">Sobre Nosotros</a>
+            </li>
+            <li class="nav-item barra-navegadora-li">
+              <a href="login.html" class="nav-link"
+                ><i class="bi bi-person-circle display-6"></i
+              ></a>
+            </li>
+          </ul>
         </div>
-      </nav>
-    </header>
-    <br />
+      </div>
+    </nav>
 
     <section
-      class="container bg-warning-subtle mx-auto p-4 mt-5"
-      style="max-width: 500px; background-color: #ffd89c !important"
+      class="container bg-warning-subtle mx-auto p-4 mt-5 bg-buke-tours"
+      style="max-width: 500px;"
     >
       <h1>Iniciar Sesión</h1>
       <form>
@@ -120,5 +126,11 @@
         </div>
       </nav>
     </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./assets/js/menu.js"></script>
   </body>
 </html>
