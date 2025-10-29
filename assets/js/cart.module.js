@@ -3,11 +3,14 @@
  */
 export const updateCartTotal = async () => {
   const cartTotalEl = document.getElementById("cartTotal");
-  if (!cartTotalEl) return;
+  const basketTotal = document.getElementById("subtotal-cart");
+  if (!cartTotalEl && !basketTotal) return;
 
   const existCartData = localStorage.getItem("cart");
   if (!existCartData) {
-    cartTotalEl.textContent = "$0.00";
+    const noProductsTotal = "$0.00";
+    cartTotalEl.textContent = noProductsTotal;
+    basketTotal.textContent = noProductsTotal;
     return;
   }
 
@@ -27,9 +30,10 @@ export const updateCartTotal = async () => {
         total += Number(qty) * Number(tour.priceUSD);
       }
     }
-
+    const finalTotal = `$${total.toFixed(2)}`;
     // Imprimir total formateado
-    cartTotalEl.textContent = `$${total.toFixed(2)}`;
+    cartTotalEl.textContent = finalTotal;
+    basketTotal.textContent = finalTotal;
   } catch (error) {
     console.error("Error al calcular el total:", error);
   }

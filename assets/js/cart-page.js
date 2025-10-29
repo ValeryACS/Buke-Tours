@@ -5,5 +5,6 @@ import {
 (()=> {
     document.addEventListener("DOMContentLoaded", ()=> {
         updateBasket();
+        updateCartTotal();
     })
 })()
