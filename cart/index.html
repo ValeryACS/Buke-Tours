@@ -86,9 +86,9 @@
         >
           <i class="bi bi-cart3 display-5"></i>
           <span
+            id="quantity"
             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger quantity"
           >
-            3
             <span class="visually-hidden">artículos en el carrito</span>
           </span>
         </button>
@@ -107,219 +107,9 @@
           <div class="row g-4">
             <!-- Lista de productos -->
             <div class="col-12 col-lg-8">
-              <div class="list-group">
+              <div class="list-group" id="cart-list-tours">
                 <!-- Item 1 -->
-                <div class="list-group-item p-3">
-                  <div class="row g-3 align-items-center">
-                    <div class="col-4 col-sm-3">
-                      <img
-                        src="../assets/img/tour1.jpg"
-                        class="img-fluid rounded"
-                        alt="Producto 1"
-                      />
-                    </div>
-                    <div class="col-8 col-sm-9">
-                      <div class="d-flex justify-content-between">
-                        <div>
-                          <h2 class="h6 mb-1">Zapatillas Running Pro</h2>
-                          <p class="text-muted small mb-2">
-                            Talla: 42 · Color: Negro
-                          </p>
-                          <div class="d-flex gap-2">
-                            <button class="btn btn-link p-0 text-danger">
-                              <i class="bi bi-trash3-fill display-6"></i>
-                            </button>
-                            <button class="btn btn-link p-0">
-                              <i class="bi bi-bookmark-star-fill display-6"></i>
-                            </button>
-                          </div>
-                        </div>
-                        <div class="text-end d-none d-sm-block">
-                          <div class="fw-semibold">$89.99</div>
-                          <div class="text-muted small">SKU: RUN-001</div>
-                        </div>
-                      </div>
-
-                      <div class="row mt-3 g-2">
-                        <div class="col-8 col-sm-6 col-md-5">
-                          <label class="form-label small mb-1" for="qty-1"
-                            >Cantidad</label
-                          >
-                          <div class="input-group">
-                            <button
-                              class="btn btn-danger btn-qty btn-substract-quantity"
-                              type="button"
-                              aria-label="Disminuir"
-                            >
-                              −
-                            </button>
-                            <input
-                              id="qty-1"
-                              type="number"
-                              class="form-control text-center"
-                              value="1"
-                              min="1"
-                              inputmode="numeric"
-                            />
-                            <button
-                              class="btn btn-primary btn-qty btn-add-quantity"
-                              type="button"
-                              aria-label="Aumentar"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </div>
-                        <div class="col-4 col-sm-6 col-md-7 text-end">
-                          <div class="small text-muted">Subtotal</div>
-                          <div class="fw-semibold">$89.99</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Item 2 -->
-                <div class="list-group-item p-3">
-                  <div class="row g-3 align-items-center">
-                    <div class="col-4 col-sm-3">
-                      <img
-                        src="../assets/img/tour2.jpg"
-                        class="img-fluid rounded"
-                        alt="Producto 2"
-                      />
-                    </div>
-                    <div class="col-8 col-sm-9">
-                      <div class="d-flex justify-content-between">
-                        <div>
-                          <h2 class="h6 mb-1">Camiseta DryFit</h2>
-                          <p class="text-muted small mb-2">
-                            Talla: M · Color: Azul
-                          </p>
-                          <div class="d-flex gap-2">
-                            <button class="btn btn-link p-0 text-danger">
-                              <i class="bi bi-trash3-fill display-6"></i>
-                            </button>
-                            <button class="btn btn-link p-0">
-                              <i class="bi bi-bookmark-star-fill display-6"></i>
-                            </button>
-                          </div>
-                        </div>
-                        <div class="text-end d-none d-sm-block">
-                          <div class="fw-semibold">$24.90</div>
-                          <div class="text-muted small">SKU: TEE-204</div>
-                        </div>
-                      </div>
-
-                      <div class="row mt-3 g-2">
-                        <div class="col-8 col-sm-6 col-md-5">
-                          <label class="form-label small mb-1" for="qty-2"
-                            >Cantidad</label
-                          >
-                          <div class="input-group">
-                            <button
-                              class="btn btn-danger btn-qty btn-substract-quantity"
-                              type="button"
-                              aria-label="Disminuir"
-                            >
-                              −
-                            </button>
-                            <input
-                              id="qty-2"
-                              type="number"
-                              class="form-control text-center"
-                              value="2"
-                              min="1"
-                              inputmode="numeric"
-                            />
-                            <button
-                              class="btn btn-primary btn-qty btn-add-quantity"
-                              type="button"
-                              aria-label="Aumentar"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </div>
-                        <div class="col-4 col-sm-6 col-md-7 text-end">
-                          <div class="small text-muted">Subtotal</div>
-                          <div class="fw-semibold">$49.80</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Item 3 -->
-                <div class="list-group-item p-3">
-                  <div class="row g-3 align-items-center">
-                    <div class="col-4 col-sm-3">
-                      <img
-                        src="../assets/img/tour3.jpg"
-                        class="img-fluid rounded"
-                        alt="Producto 3"
-                      />
-                    </div>
-                    <div class="col-8 col-sm-9">
-                      <div class="d-flex justify-content-between">
-                        <div>
-                          <h2 class="h6 mb-1">Medias deportivas (Pack x3)</h2>
-                          <p class="text-muted small mb-2">
-                            Talla: Única · Color: Blanco
-                          </p>
-                          <div class="d-flex gap-2">
-                            <button class="btn btn-link p-0 text-danger">
-                              <i class="bi bi-trash3-fill display-6"></i>
-                            </button>
-                            <button class="btn btn-link p-0">
-                              <i class="bi bi-bookmark-star-fill display-6"></i>
-                            </button>
-                          </div>
-                        </div>
-                        <div class="text-end d-none d-sm-block">
-                          <div class="fw-semibold">$12.50</div>
-                          <div class="text-muted small">SKU: SOC-310</div>
-                        </div>
-                      </div>
-
-                      <div class="row mt-3 g-2">
-                        <div class="col-8 col-sm-6 col-md-5">
-                          <label class="form-label small mb-1" for="qty-3"
-                            >Cantidad</label
-                          >
-                          <div class="input-group">
-                            <button
-                              class="btn btn-danger btn-qty btn-substract-quantity"
-                              type="button"
-                              aria-label="Disminuir"
-                            >
-                              −
-                            </button>
-                            <input
-                              id="qty-3"
-                              type="number"
-                              class="form-control text-center"
-                              value="1"
-                              min="1"
-                              inputmode="numeric"
-                            />
-                            <button
-                              class="btn btn-primary btn-qty btn-add-quantity"
-                              type="button"
-                              aria-label="Aumentar"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </div>
-                        <div class="col-4 col-sm-6 col-md-7 text-end">
-                          <div class="small text-muted">Subtotal</div>
-                          <div class="fw-semibold">$12.50</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
 
               <!-- CTA inferior en móvil -->
@@ -353,39 +143,22 @@
                     </div>
                   </div>
 
-                  <!-- Envío -->
-                  <div class="mb-3">
-                    <label for="shipping" class="form-label small"
-                      >Método de envío</label
-                    >
-                    <select id="shipping" class="form-select">
-                      <option value="standard" selected>
-                        Estándar (3-5 días) — $4.99
-                      </option>
-                      <option value="express">Exprés (24-48h) — $12.99</option>
-                      <option value="pickup">Retiro en tienda — Gratis</option>
-                    </select>
-                  </div>
-
                   <!-- Totales -->
                   <ul class="list-unstyled mb-4">
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Subtotal</span> <span>$152.29</span>
+                      <span>Subtotal</span> <span id="subtotal-cart">$152.29</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Envío</span> <span>$4.99</span>
-                    </li>
-                    <li class="d-flex justify-content-between mb-1">
-                      <span>Descuento</span> <span>−$10.00</span>
+                      <span>Descuento</span> <span id="descuento-cart">−$10.00</span>
                     </li>
                     <li
                       class="d-flex justify-content-between border-top pt-2 fw-semibold"
                     >
-                      <span>Total</span> <span>$147.28</span>
+                      <span>Total</span> <span id="total-cart">$147.28</span>
                     </li>
                   </ul>
 
-                  <div class="form-check mb-3">
+                  <div class="form-check mb-3 text-start">
                     <input
                       class="form-check-input"
                       type="checkbox"
@@ -508,6 +281,7 @@
     <script src="../assets/js/menu.js"></script>
     <script type="module" src="../assets/js/cart.module.js"></script>
     <script type="module" src="../assets/js/cart-modal.js" defer></script>
+    <script type="module" src="../assets/js/cart-page.js" defer></script>
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 

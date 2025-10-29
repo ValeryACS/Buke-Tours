@@ -14,7 +14,7 @@ export const updateCartTotal = async () => {
   const cartObj = JSON.parse(existCartData);
 
   try {
-    const res = await fetch("./assets/data/tours.json");
+    const res = await fetch("/assets/data/tours.json");
     if (!res.ok) throw new Error("Error al cargar tours.json");
 
     const data = await res.json();
@@ -243,6 +243,7 @@ export const changeQty = (id, delta) => {
   updateCartModal(cart);
   updateCartQuantity();
   updateCartTotal();
+  updateBasket();
 };
 
 /**
@@ -259,6 +260,7 @@ export const setQty = (id, qty) => {
   updateCartModal(cart);
   updateCartQuantity();
   updateCartTotal();
+   updateBasket();
 };
 
 /**
@@ -271,6 +273,7 @@ export const removeFromCart = (id) => {
   updateCartModal(cart);
   updateCartQuantity();
   updateCartTotal();
+   updateBasket();
 };
 
 /**
@@ -291,6 +294,116 @@ export const onAddTourToCart = (id) => {
  * Actualiza todos los tours incluidos en el carrito de compras para la pagina del carrito (no es el modal)
  */
 export const updateBasket = () => {
-    const cart = readCart();
-    console.log('cart', cart)
-}
+  const cart = readCart();
+  const cartList = document.getElementById("cart-list-tours");
+  if (!cartList) return;
+
+  const ids = Object.keys(cart || {});
+  if (ids.length === 0) {
+    cartList.innerHTML = `
+          <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
+          <a href="/tours.html" class="btn btn-danger m-auto">Comprar Tours</a>
+        `;
+    return;
+  }
+
+  fetch("/assets/data/tours.json")
+    .then((res) => {
+      if (!res.ok) throw new Error("Error al cargar el JSON");
+      return res.json();
+    })
+    .then((data) => {
+      // Para cada id del carrito busca el tour en el JSON
+      const output = ids
+        .map((id) => {
+          const tour = data.find((t) => String(t.id) === String(id));
+          if (!tour) return ""; // si no existe en el JSON, sáltalo
+
+          const qty = Number(cart[id]) || 0;
+          const price = Number(tour.priceUSD) || 0;
+          const subtotal = (qty * price).toFixed(2);
+
+          return `
+
+            <article class="list-group-item p-3" data-tour-id="${tour.id}">
+                  <div class="row g-3 align-items-center">
+                    <div class="col-4 col-sm-3">
+                      <img
+                        src="${tour.img}" alt="${tour.title}"
+                        class="img-fluid rounded" 
+                      />
+                    </div>
+                    <div class="col-8 col-sm-9">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <h2 class="h6 mb-1">${tour.location}</h2>
+                          <p class="text-muted small mb-2">
+                            ${tour.description}
+                          </p>
+                          <div class="d-flex gap-2">
+                            <button class="btn btn-link p-0 text-danger">
+                              <i class="bi bi-trash3-fill display-6 btn-remove" data-tour-id="${tour.id}"></i>
+                            </button>
+                            <button class="btn btn-link p-0">
+                              <i class="bi bi-bookmark-star-fill display-6"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="text-end d-none d-sm-block">
+                          <div class="fw-semibold">$${String(tour.priceUSD).toLocaleString("es-CR")}</div>
+                          <div class="text-muted small">SKU: ${tour.id}</div>
+                        </div>
+                      </div>
+
+                      <div class="row mt-3 g-2">
+                        <div class="col-8 col-sm-6 col-md-5">
+                          <label class="form-label small mb-1" for="qty-1"
+                            >Cantidad</label
+                          >
+                          <div class="input-group">
+                            <button
+                              class="btn btn-danger btn-qty btn-substract-quantity"
+                              type="button"
+                              data-action="minus"
+                              data-tour-id="${tour.id}"
+                              aria-label="Disminuir cantidad"
+                            >
+                              −
+                            </button>
+                            <input
+                              id="qty-1"
+                              type="number"
+                              class="form-control text-center"
+                              value="${qty}"
+                              min="1"
+                              inputmode="numeric"
+                            />
+                            <button
+                              class="btn btn-primary btn-qty btn-add-quantity"
+                              type="button"
+                              aria-label="Aumentar"
+                              data-action="plus"
+                              data-tour-id="${tour.id}"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                        <div class="col-4 col-sm-6 col-md-7 text-end">
+                          <div class="small text-muted">Subtotal</div>
+                          <div class="fw-semibold">$${String(subtotal).toLocaleString("es-CR")}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </article>`;
+        })
+        .join("");
+
+      cartList.innerHTML = output;
+
+      // Re-vincular eventos de + / − / input / eliminar
+      attachCartItemEvents();
+    })
+    .catch((err) => console.error("Error:", err));
+};
