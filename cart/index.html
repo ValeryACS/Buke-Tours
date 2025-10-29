@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="../assets/css/cart.css" type="text/css" />
   </head>
   <body>
-   <nav class="barra-navegadora navbar navbar-expand-lg">
+    <nav class="barra-navegadora navbar navbar-expand-lg">
       <div class="container-fluid">
         <button
           class="menu-hamburger navbar-toggler"
@@ -44,33 +44,33 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav m-auto">
             <li class="nav-item barra-navegadora-li">
-              <a href="perfil.html" class="nav-link"
+              <a href="../profile/index.html" class="nav-link"
                 ><i class="bi bi-person-bounding-box display-6"></i
               ></a>
             </li>
             <li class="nav-item barra-navegadora-li">
-              <a href="index.html" class="nav-link">Inicio</a>
+              <a href="../index.html" class="nav-link">Inicio</a>
             </li>
 
             <li class="nav-item barra-navegadora-li">
-              <a href="tours.html" class="nav-link">Tours</a>
+              <a href="../tours.html" class="nav-link">Tours</a>
             </li>
             <!--
                     TODO Incluir esta pagina
                     <li class="nav-item barra-navegadora-li"><a href="fechas.html">Fechas/Horarios</a></li> -->
             <li class="nav-item barra-navegadora-li">
-              <a href="index.html"
+              <a href="../index.html"
                 ><img class="logo" src="../assets/img/logo.png" alt="logo"
               /></a>
             </li>
             <li class="nav-item barra-navegadora-li">
-              <a href="resenas.html" class="nav-link">Reseñas</a>
+              <a href="../resenas.html" class="nav-link">Reseñas</a>
             </li>
             <li class="nav-item barra-navegadora-li">
-              <a href="nosotros.html" class="nav-link">Sobre Nosotros</a>
+              <a href="../nosotros.html" class="nav-link">Sobre Nosotros</a>
             </li>
             <li class="nav-item barra-navegadora-li">
-              <a href="login.html" class="nav-link"
+              <a href="../login.html" class="nav-link"
                 ><i class="bi bi-person-circle display-6"></i
               ></a>
             </li>
@@ -96,8 +96,7 @@
     </nav>
 
     <main>
-      
-      <section id="cart" class="py-5 ">
+      <section id="cart" class="py-5">
         <div class="container bg-light">
           <!-- Encabezado -->
           <div class="d-flex align-items-center justify-content-between mb-4">
@@ -128,10 +127,10 @@
                           </p>
                           <div class="d-flex gap-2">
                             <button class="btn btn-link p-0 text-danger">
-                              Eliminar
+                              <i class="bi bi-trash3-fill display-6"></i>
                             </button>
                             <button class="btn btn-link p-0">
-                              Mover a favoritos
+                              <i class="bi bi-bookmark-star-fill display-6"></i>
                             </button>
                           </div>
                         </div>
@@ -148,7 +147,7 @@
                           >
                           <div class="input-group">
                             <button
-                              class="btn btn-outline-secondary"
+                              class="btn btn-danger btn-qty btn-substract-quantity"
                               type="button"
                               aria-label="Disminuir"
                             >
@@ -163,7 +162,7 @@
                               inputmode="numeric"
                             />
                             <button
-                              class="btn btn-outline-secondary"
+                              class="btn btn-primary btn-qty btn-add-quantity"
                               type="button"
                               aria-label="Aumentar"
                             >
@@ -185,7 +184,7 @@
                   <div class="row g-3 align-items-center">
                     <div class="col-4 col-sm-3">
                       <img
-                       src="../assets/img/tour2.jpg"
+                        src="../assets/img/tour2.jpg"
                         class="img-fluid rounded"
                         alt="Producto 2"
                       />
@@ -199,10 +198,10 @@
                           </p>
                           <div class="d-flex gap-2">
                             <button class="btn btn-link p-0 text-danger">
-                              Eliminar
+                              <i class="bi bi-trash3-fill display-6"></i>
                             </button>
                             <button class="btn btn-link p-0">
-                              Mover a favoritos
+                              <i class="bi bi-bookmark-star-fill display-6"></i>
                             </button>
                           </div>
                         </div>
@@ -219,7 +218,7 @@
                           >
                           <div class="input-group">
                             <button
-                              class="btn btn-outline-secondary"
+                              class="btn btn-danger btn-qty btn-substract-quantity"
                               type="button"
                               aria-label="Disminuir"
                             >
@@ -234,7 +233,7 @@
                               inputmode="numeric"
                             />
                             <button
-                              class="btn btn-outline-secondary"
+                              class="btn btn-primary btn-qty btn-add-quantity"
                               type="button"
                               aria-label="Aumentar"
                             >
@@ -270,10 +269,10 @@
                           </p>
                           <div class="d-flex gap-2">
                             <button class="btn btn-link p-0 text-danger">
-                              Eliminar
+                              <i class="bi bi-trash3-fill display-6"></i>
                             </button>
                             <button class="btn btn-link p-0">
-                              Mover a favoritos
+                              <i class="bi bi-bookmark-star-fill display-6"></i>
                             </button>
                           </div>
                         </div>
@@ -290,7 +289,7 @@
                           >
                           <div class="input-group">
                             <button
-                              class="btn btn-outline-secondary"
+                              class="btn btn-danger btn-qty btn-substract-quantity"
                               type="button"
                               aria-label="Disminuir"
                             >
@@ -305,7 +304,7 @@
                               inputmode="numeric"
                             />
                             <button
-                              class="btn btn-outline-secondary"
+                              class="btn btn-primary btn-qty btn-add-quantity"
                               type="button"
                               aria-label="Aumentar"
                             >
@@ -446,7 +445,7 @@
       </nav>
     </footer>
 
-     <!-- Cart Modal -->
+    <!-- Cart Modal -->
     <div
       class="modal fade"
       id="cartModal"
@@ -470,9 +469,7 @@
 
           <div class="modal-body">
             <!-- Lista de items -->
-            <div class="list-group" id="cartList">
-              
-            </div>
+            <div class="list-group" id="cartList"></div>
 
             <!-- Estado vacío -->
             <div class="text-center py-4 d-none" id="emptyState">
@@ -514,7 +511,7 @@
     ></script>
     <script src="../assets/js/menu.js"></script>
     <script type="module" src="../assets/js/cart.module.js"></script>
-     <script type="module" src="../assets/js/cart.js" defer></script>
+    <script type="module" src="../assets/js/cart.js" defer></script>
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
