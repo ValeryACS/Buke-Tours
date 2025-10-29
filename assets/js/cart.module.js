@@ -155,7 +155,7 @@ export const updateCartModal = (cartObj) => {
                             type="button"
                             data-tour-id="${tour.id}"
                           >
-                            Eliminar
+                            <i class="bi bi-trash3-fill display-6"></i>
                           </button>
                         </div>
                       </div>
