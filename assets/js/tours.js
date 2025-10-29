@@ -22,7 +22,7 @@ import {
     }
 
     const skeleton = document.getElementById("skeleton-tours")
-    fetch("./assets/data/tours.json")
+    fetch("/assets/data/tours.json")
       .then((res) => {
         if (!res.ok) throw new Error("Error al cargar el JSON");
         return res.json();

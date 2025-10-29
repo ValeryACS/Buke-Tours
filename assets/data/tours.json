@@ -7,7 +7,7 @@
     "priceUSD": 75,
     "rating": 4.8,
     "durationHours": 2.5,
-    "img": "./assets/img/tour2.jpg",
+    "img": "/assets/img/tour2.jpg",
     "description": "Caminata guiada por bosque nuboso, observación de aves y biodiversidad única."
   },
   {
@@ -27,7 +27,7 @@
     "priceUSD": 99,
     "rating": 4.9,
     "durationHours": 4,
-    "img": "./assets/img/tour3.jpg",
+    "img": "/assets/img/tour3.jpg",
     "description": "Recorrido en bote por canales, avistamiento de fauna y aprendizaje sobre conservación."
   },
   {
