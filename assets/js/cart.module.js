@@ -260,7 +260,7 @@ export const setQty = (id, qty) => {
   updateCartModal(cart);
   updateCartQuantity();
   updateCartTotal();
-   updateBasket();
+  updateBasket();
 };
 
 /**
@@ -273,7 +273,7 @@ export const removeFromCart = (id) => {
   updateCartModal(cart);
   updateCartQuantity();
   updateCartTotal();
-   updateBasket();
+  updateBasket();
 };
 
 /**
@@ -342,7 +342,9 @@ export const updateBasket = () => {
                           </p>
                           <div class="d-flex gap-2">
                             <button class="btn btn-link p-0 text-danger">
-                              <i class="bi bi-trash3-fill display-6 btn-remove" data-tour-id="${tour.id}"></i>
+                              <i class="bi bi-trash3-fill display-6 btn-remove" data-tour-id="${
+                                tour.id
+                              }"></i>
                             </button>
                             <button class="btn btn-link p-0">
                               <i class="bi bi-bookmark-star-fill display-6"></i>
@@ -350,7 +352,9 @@ export const updateBasket = () => {
                           </div>
                         </div>
                         <div class="text-end d-none d-sm-block">
-                          <div class="fw-semibold">$${String(tour.priceUSD).toLocaleString("es-CR")}</div>
+                          <div class="fw-semibold">$${String(
+                            tour.priceUSD
+                          ).toLocaleString("es-CR")}</div>
                           <div class="text-muted small">SKU: ${tour.id}</div>
                         </div>
                       </div>
@@ -373,10 +377,11 @@ export const updateBasket = () => {
                             <input
                               id="qty-1"
                               type="number"
-                              class="form-control text-center"
+                              class="form-control text-center input-qty"
                               value="${qty}"
                               min="1"
                               inputmode="numeric"
+                               data-tour-id="${tour.id}"
                             />
                             <button
                               class="btn btn-primary btn-qty btn-add-quantity"
@@ -391,7 +396,9 @@ export const updateBasket = () => {
                         </div>
                         <div class="col-4 col-sm-6 col-md-7 text-end">
                           <div class="small text-muted">Subtotal</div>
-                          <div class="fw-semibold">$${String(subtotal).toLocaleString("es-CR")}</div>
+                          <div class="fw-semibold">$${String(
+                            subtotal
+                          ).toLocaleString("es-CR")}</div>
                         </div>
                       </div>
                     </div>
