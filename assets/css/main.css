@@ -442,6 +442,10 @@ Estilos para reseñas
   margin-top: 10px;
 }
 
+.subtitulo{
+    background: antiquewhite;
+}
+
 /** Modal */
 .modal-dialog img {
   max-width: 150px;
