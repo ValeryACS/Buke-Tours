@@ -77,10 +77,10 @@
           data-bs-target="#cartModal"
         >
           <i class="bi bi-cart3 display-5"></i>
-          <span id="quantity"
+          <span
+            id="quantity"
             class="d-none position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger quantity"
           >
-           
           </span>
         </button>
       </div>
@@ -88,28 +88,102 @@
 
     <!-- Sección principal -->
     <main class="content bg-light-subtle bg-opacity-75 mt-5">
-      <section class="hero">
-        <h1>Bukë Tours</h1>
-        <p>
-          En Bukë Tours nos especializamos en ofrecer experiencias únicas y
-          auténticas en Costa Rica. Nuestro objetivo es brindarte los mejores
-          tours para descubrir la naturaleza, la cultura y la aventura en los
-          lugares más impresionantes del país.
-        </p>
+      <section>
+        <article class="hero">
+          <h1 class="titulo">Bukë Tours</h1>
+          <p class="m-4">
+            En Bukë Tours nos especializamos en ofrecer experiencias únicas y
+            auténticas en Costa Rica. Nuestro objetivo es brindarte los mejores
+            tours para descubrir la naturaleza, la cultura y la aventura en los
+            lugares más impresionantes del país.
+          </p>
+        </article>
+
+        <article class="rectangle-bbf6cb004687">
+          <h2 class="titulo">Nuestra Misión</h2>
+          <p class="m-4">
+            Queremos que cada viaje sea una experiencia inolvidable, llena de
+            emoción y conexión con la naturaleza.
+          </p>
+
+          <h2 class="titulo">Nuestro Equipo</h2>
+          <p class="m-4">
+            Contamos con un equipo de guías profesionales y apasionados por
+            compartir la belleza de Costa Rica contigo.
+          </p>
+        </article>
       </section>
+      <section class="m-4">
+        <div class="p-4">
+          <h2 class="titulo">Contacto</h2>
 
-      <section class="rectangle-bbf6cb004687">
-        <h2>Nuestra Misión</h2>
-        <p>
-          Queremos que cada viaje sea una experiencia inolvidable, llena de
-          emoción y conexión con la naturaleza.
-        </p>
+          <form id="contactForm" novalidate class=" mt-5">
+            <!-- Nombre -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Nombre completo</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                placeholder="Tu nombre"
+                required
+              />
+              <div class="invalid-feedback">Por favor, ingresa tu nombre.</div>
+            </div>
 
-        <h2>Nuestro Equipo</h2>
-        <p>
-          Contamos con un equipo de guías profesionales y apasionados por
-          compartir la belleza de Costa Rica contigo.
-        </p>
+            <!-- Correo -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo electrónico</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="nombre@ejemplo.com"
+                required
+              />
+              <div class="invalid-feedback">
+                Por favor, ingresa un correo válido.
+              </div>
+            </div>
+
+            <!-- Asunto -->
+            <div class="mb-3">
+              <label for="subject" class="form-label">Asunto</label>
+              <input
+                type="text"
+                class="form-control"
+                id="subject"
+                name="subject"
+                placeholder="Motivo del mensaje"
+                required
+              />
+              <div class="invalid-feedback">Por favor, indica el asunto.</div>
+            </div>
+
+            <!-- Mensaje -->
+            <div class="mb-3">
+              <label for="message" class="form-label">Mensaje</label>
+              <textarea
+                class="form-control"
+                id="message"
+                name="message"
+                rows="4"
+                placeholder="Escribe tu mensaje aquí..."
+                required
+              ></textarea>
+              <div class="invalid-feedback">Por favor, escribe tu mensaje.</div>
+            </div>
+
+            <!-- Botón -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">
+                Enviar mensaje
+              </button>
+            </div>
+          </form>
+        </div>
       </section>
     </main>
 
@@ -139,7 +213,7 @@
       </nav>
     </footer>
 
-     <!-- Cart Modal -->
+    <!-- Cart Modal -->
     <div
       class="modal fade"
       id="cartModal"
@@ -163,9 +237,7 @@
 
           <div class="modal-body">
             <!-- Lista de items -->
-            <div class="list-group" id="cartList">
-              
-            </div>
+            <div class="list-group" id="cartList"></div>
 
             <!-- Estado vacío -->
             <div class="text-center py-4 d-none" id="emptyState">
