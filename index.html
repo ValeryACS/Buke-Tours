@@ -19,6 +19,8 @@
       href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
     />
     <link rel="stylesheet" href="./assets/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="./assets/css/cart.css" type="text/css" />
+    <link rel="stylesheet" href="./assets/css/slider.css" type="text/css" />
   </head>
   <body>
     <nav class="barra-navegadora navbar navbar-expand-lg">
@@ -33,45 +35,63 @@
           aria-label="Toggle navigation"
         >
           <div id="nav-icon3">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav m-auto">
             <li class="nav-item barra-navegadora-li">
-              <a href="perfil.html" class="nav-link"
+              <a href="./profile/index.html" class="nav-link"
                 ><i class="bi bi-person-bounding-box display-6"></i
               ></a>
             </li>
             <li class="nav-item barra-navegadora-li">
-              <a href="index.html" class="nav-link">Inicio</a>
+              <a href="./index.html" class="nav-link">Inicio</a>
             </li>
 
             <li class="nav-item barra-navegadora-li">
-              <a href="tours.html" class="nav-link">Tours</a>
+              <a href="./tours.html" class="nav-link">Tours</a>
             </li>
             <!--
                     TODO Incluir esta pagina
                     <li class="nav-item barra-navegadora-li"><a href="fechas.html">Fechas/Horarios</a></li> -->
             <li class="nav-item barra-navegadora-li">
-              <a href="index.html"><img class="logo" src="./assets/img/logo.png" alt="logo" /></a>
+              <a href="./index.html"
+                ><img class="logo" src="./assets/img/logo.png" alt="logo"
+              /></a>
             </li>
             <li class="nav-item barra-navegadora-li">
-              <a href="resenas.html" class="nav-link">Reseñas</a>
+              <a href="./resenas.html" class="nav-link">Reseñas</a>
             </li>
             <li class="nav-item barra-navegadora-li">
-              <a href="nosotros.html" class="nav-link">Sobre Nosotros</a>
+              <a href="./nosotros.html" class="nav-link">Sobre Nosotros</a>
             </li>
             <li class="nav-item barra-navegadora-li">
-              <a href="login.html" class="nav-link"
+              <a href="./auth/login.html" class="nav-link"
                 ><i class="bi bi-person-circle display-6"></i
               ></a>
             </li>
           </ul>
         </div>
+
+        <button
+          id="shopping-cart"
+          class="btn btn-light position-relative"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#cartModal"
+        >
+          <i class="bi bi-cart3 display-5"></i>
+          <span id="quantity"
+            class="d-none position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger quantity"
+          >
+           
+          </span>
+        </button>
       </div>
     </nav>
 
@@ -89,65 +109,137 @@
             --swiper-navigation-color: #fff;
             --swiper-pagination-color: #fff;
           "
-          class="swiper mySwiper"
+          class="swiper slider-tours"
         >
           <article class="swiper-wrapper">
             <div class="swiper-slide">
               <img
-                src="./assets/img/tour1.jpg"
+                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/93/b4/50/monteverde-cloud-forest.jpg?w=600&h=-1&s=1"
                 loading="lazy"
                 class="tour-imagen"
               />
+              <div class="overlay-effect position-absolute">
+                <h1>
+                  Monteverde
+                  <i
+                    class="bi bi-cart-plus-fill display-4 add-to-cart"
+                    data-bs-toggle="modal"
+                    data-bs-target="#cartModal"
+                    data-tour-id="cr-monteverde-hanging-bridges"
+                  ></i>
+                  <i class="bi bi-cursor-fill view-tour-page" data-tour-id="cr-monteverde-hanging-bridges"></i>
+                </h1>
+              </div>
               <div
                 class="swiper-lazy-preloader swiper-lazy-preloader-white"
               ></div>
             </div>
             <div class="swiper-slide">
               <img
-                src="./assets/img/tour2.jpg"
+                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/5a/2f/50/photo0jpg.jpg?w=1000&h=-1&s=1"
                 loading="lazy"
                 class="tour-imagen"
               />
+              <div class="overlay-effect position-absolute">
+                <h1>
+                  Manuel Antonio
+                  <i
+                    class="bi bi-cart-plus-fill display-4 add-to-cart"
+                    data-bs-toggle="modal"
+                    data-bs-target="#cartModal"
+                    data-tour-id="cr-manuel-antonio-park"
+                  ></i>
+                  <i class="bi bi-cursor-fill view-tour-page" data-tour-id="cr-manuel-antonio-park"></i>
+                </h1>
+              </div>
               <div
                 class="swiper-lazy-preloader swiper-lazy-preloader-white"
               ></div>
             </div>
             <div class="swiper-slide">
               <img
-                src="./assets/img/tour3.jpg"
+                src="https://cdn.pixabay.com/photo/2017/06/13/19/22/tyrolean-2399759_1280.jpg"
                 loading="lazy"
                 class="tour-imagen"
               />
+              <div class="overlay-effect position-absolute">
+                <h1>
+                  La Fortuna
+                  <i
+                    class="bi bi-cart-plus-fill display-4 add-to-cart"
+                    data-bs-toggle="modal"
+                    data-bs-target="#cartModal"
+                    data-tour-id="cr-arenal-zipline"
+                  ></i>
+                  <i class="bi bi-cursor-fill view-tour-page" data-tour-id="cr-arenal-zipline"></i>
+                </h1>
+              </div>
               <div
                 class="swiper-lazy-preloader swiper-lazy-preloader-white"
               ></div>
             </div>
             <div class="swiper-slide">
               <img
-                src="./assets/img/tour1.jpg"
+                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/02/67/45/0f/waterfall.jpg?w=900&h=-1&s=1"
                 loading="lazy"
                 class="tour-imagen"
               />
+              <div class="overlay-effect position-absolute">
+                <h1>
+                  R&iacute;o Celeste
+                  <i
+                    class="bi bi-cart-plus-fill display-4 add-to-cart"
+                    data-bs-toggle="modal"
+                    data-bs-target="#cartModal"
+                    data-tour-id="cr-rio-celeste"
+                  ></i>
+                  <i class="bi bi-cursor-fill view-tour-page" data-tour-id="cr-rio-celeste"></i>
+                </h1>
+              </div>
               <div
                 class="swiper-lazy-preloader swiper-lazy-preloader-white"
               ></div>
             </div>
             <div class="swiper-slide">
               <img
-                src="./assets/img/tour2.jpg"
+                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/15/d7/9d/img-20180217-133510-largejpg.jpg?w=1000&h=-1&s=1"
                 loading="lazy"
                 class="tour-imagen"
               />
+              <div class="overlay-effect position-absolute">
+                <h1>
+                   Nauyaca
+                  <i
+                    class="bi bi-cart-plus-fill display-4 add-to-cart"
+                    data-bs-toggle="modal"
+                    data-bs-target="#cartModal"
+                    data-tour-id="cr-nauyaca-falls"
+                  ></i>
+                  <i class="bi bi-cursor-fill view-tour-page" data-tour-id="cr-nauyaca-falls"></i>
+                </h1>
+              </div>
               <div
                 class="swiper-lazy-preloader swiper-lazy-preloader-white"
               ></div>
             </div>
             <div class="swiper-slide">
               <img
-                src="./assets/img/tour3.jpg"
+                src="https://mytanfeet.com/wp-content/uploads/2018/01/Things-to-do-in-Puerto-Viejo-beach-hop.jpg"
                 loading="lazy"
                 class="tour-imagen"
               />
+              <div class="overlay-effect position-absolute">
+                <h1>
+                  Puerto Viejo
+                  <i
+                    class="bi bi-cart-plus-fill display-4 add-to-cart"
+                    data-bs-toggle="modal"
+                    data-bs-target="#cartModal"
+                    data-tour-id="cr-puerto-viejo"
+                  ></i>
+                  <i class="bi bi-cursor-fill view-tour-page" data-tour-id="cr-puerto-viejo"></i>
+                </h1>
+              </div>
               <div
                 class="swiper-lazy-preloader swiper-lazy-preloader-white"
               ></div>
@@ -161,7 +253,7 @@
       <section class="content bg-light-subtle bg-opacity-75 mt-5">
         <section class="hero">
           <h1 class="titulo">Bukë Tours</h1>
-          <p>
+          <p class="m-4">
             En Bukë Tours nos especializamos en ofrecer experiencias únicas y
             auténticas en Costa Rica. Nuestro objetivo es brindarte los mejores
             tours para descubrir la naturaleza, la cultura y la aventura en los
@@ -170,14 +262,14 @@
         </section>
 
         <section class="rectangle-bbf6cb004687">
-          <h2>Nuestra Misión</h2>
-          <p>
+          <h2 class="titulo">Nuestra Misión</h2>
+          <p class="m-4">
             Queremos que cada viaje sea una experiencia inolvidable, llena de
             emoción y conexión con la naturaleza.
           </p>
 
-          <h2>Nuestro Equipo</h2>
-          <p>
+          <h2 class="titulo">Nuestro Equipo</h2>
+          <p class="m-4">
             Contamos con un equipo de guías profesionales y apasionados por
             compartir la belleza de Costa Rica contigo.
           </p>
@@ -251,7 +343,66 @@
       </section>
     </main>
     <!-- Sección principal -->
+    <!-- Cart Modal -->
+    <div
+      class="modal fade"
+      id="cartModal"
+      tabindex="-1"
+      aria-labelledby="cartModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="cartModalLabel">
+              Carrito de compras
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
 
+          <div class="modal-body">
+            <!-- Lista de items -->
+            <div class="list-group" id="cartList">
+              
+            </div>
+
+            <!-- Estado vacío -->
+            <div class="text-center py-4 d-none" id="emptyState">
+              <p class="lead mb-2">Tu carrito está vacío</p>
+              <a href="#" class="btn btn-outline-secondary">Explorar tours</a>
+            </div>
+          </div>
+
+          <div
+            class="modal-footer flex-column flex-sm-row gap-2 justify-content-between"
+          >
+            <div class="ms-auto me-sm-3">
+              <div class="text-muted small">Total</div>
+              <div class="fs-5 fw-semibold" aria-live="polite">
+                <span id="cartTotal"></span>
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <a
+                href="./checkout/index.html"
+                type="button"
+                class="btn btn-danger"
+              >
+                Pagar
+              </a>
+              <a href="./cart/index.html" class="btn btn-primary"
+                >Ir al carrito</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <footer>
       <nav>
         <div>
@@ -284,23 +435,46 @@
     <script src="./assets/js/menu.js"></script>
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script type="module" src="./assets/js/cart.module.js"></script>
+    <script type="module" src="./assets/js/cart.js" defer></script>
 
     <!-- Initialize Swiper -->
     <script>
-      var swiper = new Swiper(".mySwiper", {
-        lazy: true,
-        slidesPerView: 4,
-        spaceBetween: 30,
-        loop: true,
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true,
-        },
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      });
+      (() => {
+        let slidesPerView = window.innerWidth > 768 ? 3 : 1;
+        var swiper = new Swiper(".slider-tours", {
+          lazy: true,
+          slidesPerView,
+          spaceBetween: 30,
+          loop: true,
+          breakpoints: {
+            "@0.00": {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
+            "@0.75": {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            "@1.00": {
+              slidesPerView: 3,
+              spaceBetween: 30,
+            },
+            "@1.50": {
+              slidesPerView: 4,
+              spaceBetween: 40,
+            },
+          },
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+          },
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+        });
+      })();
     </script>
   </body>
 </html>

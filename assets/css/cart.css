@@ -1,0 +1,13 @@
+.modal-body .input-group {
+  max-width: 150px;
+}
+
+#shopping-cart {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+#shopping-cart span.quantity {
+  top: 14px !important;
+  margin-left: -10px;
+}
