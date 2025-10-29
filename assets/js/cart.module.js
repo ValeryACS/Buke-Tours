@@ -3,14 +3,16 @@
  */
 export const updateCartTotal = async () => {
   const cartTotalEl = document.getElementById("cartTotal");
-  const basketTotal = document.getElementById("subtotal-cart");
-  if (!cartTotalEl && !basketTotal) return;
+  const basketSubTotal = document.getElementById("subtotal-cart");
+  const discount = document.getElementById("discount-cart");
+  const totalEl = document.getElementById("total-cart");
+  if (!cartTotalEl && !basketSubTotal && !discount) return;
 
   const existCartData = localStorage.getItem("cart");
   if (!existCartData) {
     const noProductsTotal = "$0.00";
     cartTotalEl.textContent = noProductsTotal;
-    basketTotal.textContent = noProductsTotal;
+    basketSubTotal.textContent = noProductsTotal;
     return;
   }
 
@@ -22,18 +24,26 @@ export const updateCartTotal = async () => {
 
     const data = await res.json();
     let total = 0;
+    let descuento = 0;
 
     // Suma cantidad × precio
     for (const [id, qty] of Object.entries(cartObj)) {
       const tour = data.find((t) => String(t.id) === String(id));
       if (tour && tour.priceUSD) {
         total += Number(qty) * Number(tour.priceUSD);
+        descuento += Number(tour.discount);
       }
     }
     const finalTotal = `$${total.toFixed(2)}`;
     // Imprimir total formateado
     cartTotalEl.textContent = finalTotal;
-    basketTotal.textContent = finalTotal;
+    basketSubTotal.textContent = finalTotal;
+    discount.textContent = `${descuento}%`;
+
+    const valorPorcentaje = total * (descuento / 100);
+
+    const totalFinal = total - valorPorcentaje;
+    totalEl.textContent = `$${totalFinal.toFixed(2)}`;
   } catch (error) {
     console.error("Error al calcular el total:", error);
   }
