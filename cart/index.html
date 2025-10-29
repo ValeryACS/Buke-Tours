@@ -137,7 +137,7 @@
                         class="form-control"
                         placeholder="Ingresa tu cupón"
                       />
-                      <button class="btn btn-success" type="button">
+                      <button class="btn btn-success" type="button" id="btn-coupon">
                         Aplicar
                       </button>
                     </div>
@@ -150,6 +150,12 @@
                     </li>
                     <li class="d-flex justify-content-between mb-1">
                       <span>Descuento</span> <span id="discount-cart">−$10.00</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Coupon Codes</span> <span id="cupon-cart"></span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Coupon Discounts</span> <span id="cupon-discounts-cart"></span>
                     </li>
                     <li
                       class="d-flex justify-content-between border-top pt-2 fw-semibold"
@@ -282,6 +288,7 @@
     <script type="module" src="../assets/js/cart.module.js"></script>
     <script type="module" src="../assets/js/cart-modal.js" defer></script>
     <script type="module" src="../assets/js/cart-page.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 

@@ -1,53 +1,138 @@
 /**
  * Calcula y actualiza el total del carrito en el elemento con id="cartTotal"
+ * - Subtotal: suma de (qty * price)
+ * - Descuento por tour: suma por ítem (más preciso que sumar %)
+ * - Cupones: solo aplica los cupones cuyo tour está en el carrito
  */
 export const updateCartTotal = async () => {
   const cartTotalEl = document.getElementById("cartTotal");
   const basketSubTotal = document.getElementById("subtotal-cart");
-  const discount = document.getElementById("discount-cart");
+  const discountEl = document.getElementById("discount-cart");
   const totalEl = document.getElementById("total-cart");
-  if (!cartTotalEl && !basketSubTotal && !discount) return;
+  const cuponEl = document.getElementById("cupon-cart");
+  const cuponDiscountEl = document.getElementById("cupon-discounts-cart");
 
   const existCartData = localStorage.getItem("cart");
   if (!existCartData) {
-    const noProductsTotal = "$0.00";
-    cartTotalEl.textContent = noProductsTotal;
-    basketSubTotal.textContent = noProductsTotal;
+    const zero = "$0.00";
+    if (cartTotalEl) cartTotalEl.textContent = zero;
+    if (basketSubTotal) basketSubTotal.textContent = zero;
+    if (totalEl) totalEl.textContent = zero;
+    if (discountEl) discountEl.textContent = "-0%";
+    if (cuponEl)
+      cuponEl.innerHTML = `<span class="badge text-bg-danger">No</span>`;
+    if (cuponDiscountEl) cuponDiscountEl.textContent = "-0%";
     return;
   }
 
-  const cartObj = JSON.parse(existCartData);
+  const cartObj = JSON.parse(existCartData || "{}");
 
   try {
     const res = await fetch("/assets/data/tours.json");
     if (!res.ok) throw new Error("Error al cargar tours.json");
-
     const data = await res.json();
-    let total = 0;
-    let descuento = 0;
 
-    // Suma cantidad × precio
-    for (const [id, qty] of Object.entries(cartObj)) {
+    // 1) Subtotal y descuento por tour (en dólares, por ítem)
+    let subtotal = 0;
+    let itemDiscountDollars = 0;
+
+    for (const [id, qtyRaw] of Object.entries(cartObj)) {
       const tour = data.find((t) => String(t.id) === String(id));
-      if (tour && tour.priceUSD) {
-        total += Number(qty) * Number(tour.priceUSD);
-        descuento += Number(tour.discount);
+      if (!tour) continue;
+
+      const qty = Math.max(0, Number(qtyRaw) || 0);
+      const price = Number(tour.priceUSD) || 0;
+      const pct = Number(tour.discount) || 0;
+
+      const line = qty * price;
+      subtotal += line;
+      itemDiscountDollars += line * (pct / 100);
+    }
+
+    const subtotalFmt = `$${subtotal.toFixed(2)}`;
+    if (basketSubTotal) basketSubTotal.textContent = subtotalFmt;
+
+    // % efectivo de descuento por tour (para mostrar en el UI)
+    const itemDiscountPctEffective =
+      subtotal > 0 ? (itemDiscountDollars / subtotal) * 100 : 0;
+    if (discountEl)
+      discountEl.textContent = `-${itemDiscountPctEffective.toFixed(0)}%`;
+
+    // 2) Total parcial tras descuentos por tour
+    let totalAfterItemDiscount = subtotal - itemDiscountDollars;
+
+    // 3) Aplicar cupones válidos (solo si su tour está en el carrito)
+    const savedCupons = readCupons(); // { [code]: pct }
+    const cartIds = new Set(Object.keys(cartObj || {}));
+
+    const codesApplied = [];
+    let totalCouponsPct = 0;
+
+    if (savedCupons && Object.keys(savedCupons).length) {
+      for (const [code, pct] of Object.entries(savedCupons)) {
+        // Buscar el tour dueño del cupón
+        const tourForCode = data.find(
+          (t) =>
+            String(t.cuponCode || "")
+              .trim()
+              .toUpperCase() === String(code).trim().toUpperCase()
+        );
+
+        // Aplica si y solo si el tour del cupón está en el carrito
+        if (tourForCode && cartIds.has(String(tourForCode.id))) {
+          totalCouponsPct += Number(pct) || 0;
+          codesApplied.push(code);
+        }
       }
     }
-    const finalTotal = `$${total.toFixed(2)}`;
-    // Imprimir total formateado
-    cartTotalEl.textContent = finalTotal;
-    basketSubTotal.textContent = finalTotal;
-    discount.textContent = `${descuento}%`;
 
-    const valorPorcentaje = total * (descuento / 100);
+    // Descuento por cupones sobre el total parcial
+    let couponsDiscountDollars = 0;
+    if (totalCouponsPct > 0 && totalAfterItemDiscount > 0) {
+      couponsDiscountDollars = totalAfterItemDiscount * (totalCouponsPct / 100);
+    }
 
-    const totalFinal = total - valorPorcentaje;
-    totalEl.textContent = `$${totalFinal.toFixed(2)}`;
+    // 4) Total final
+    const finalTotal = Math.max(
+      0,
+      totalAfterItemDiscount - couponsDiscountDollars
+    );
+
+    // 5) Pintar UI
+    const finalFmt = `$${finalTotal.toFixed(2)}`;
+    if (totalEl) totalEl.textContent = finalFmt;
+    if (cartTotalEl) cartTotalEl.textContent = finalFmt;
+
+    if (cuponEl) {
+      cuponEl.innerHTML = codesApplied.length
+        ? codesApplied.join(", ")
+        : `<span class="badge text-bg-danger">No</span>`;
+    }
+    if (cuponDiscountEl)
+      cuponDiscountEl.textContent = `-${totalCouponsPct || 0}%`;
   } catch (error) {
     console.error("Error al calcular el total:", error);
   }
 };
+
+/**
+ * Lee los cupones del localStorage como objeto { [cuponCode]: cuponDiscount }
+ */
+export const readCupons = () => {
+  try {
+    return JSON.parse(localStorage.getItem("cupons") || "{}");
+  } catch {
+    return {};
+  }
+};
+
+/**
+ * Guarda los Cupones
+ */
+export const saveCupon = (cuponObj) => {
+  localStorage.setItem("cupons", JSON.stringify(cuponObj));
+};
+
 /**
  * Lee el carrito del localStorage como objeto { [id]: qty }
  */
@@ -427,4 +512,135 @@ export const updateBasket = () => {
       attachCartItemEvents();
     })
     .catch((err) => console.error("Error:", err));
+};
+/**
+ * Valida si el Coupon corresponde a uno de los Tours existentes
+ * @param {string} coupon - El Coupon a validar
+ */
+export const validateCoupon = async (cuponCode) => {
+  const code = String(cuponCode || "")
+    .trim()
+    .toUpperCase();
+  if (!code) {
+    Swal.fire({
+      icon: "error",
+      title: "Cupón vacío",
+      text: "Por favor ingresa un código de cupón.",
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 4000,
+      timerProgressBar: true,
+    });
+    return;
+  }
+
+  const cart = readCart();
+  const cartIds = new Set(Object.keys(cart || {}));
+
+  try {
+    const res = await fetch("/assets/data/tours.json");
+    if (!res.ok) throw new Error("Error al cargar el JSON");
+    const data = await res.json();
+
+    // Busca el tour por código de cupón (case-insensitive)
+    const tourByCoupon = data.find(
+      (t) =>
+        String(t.cuponCode || "")
+          .trim()
+          .toUpperCase() === code
+    );
+
+    // 1) No existe un tour con ese cupón
+    if (!tourByCoupon) {
+      Swal.fire({
+        icon: "error",
+        title: "Cupón Incorrecto",
+        text: "El código ingresado no corresponde a ningún tour.",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 6000,
+        timerProgressBar: true,
+      });
+      return;
+    }
+
+    // 2) El tour del cupón NO está en el carrito
+    if (!cartIds.has(String(tourByCoupon.id))) {
+      Swal.fire({
+        icon: "error",
+        title: "Cupón no aplicable",
+        text: `Este cupón no pertenece a ningun tour de tu carrito.`,
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 6000,
+        timerProgressBar: true,
+      });
+      return;
+    }
+
+    // 3) Evitar canjear dos veces el mismo cupón
+    const existCupons = readCupons(); // objeto { [code]: discountPct }
+    if (existCupons[code]) {
+      Swal.fire({
+        icon: "info",
+        title: "Cupón ya canjeado",
+        text: "Este cupón ya fue aplicado.",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 4000,
+        timerProgressBar: true,
+      });
+      return;
+    }
+
+    const discountPct = Number(tourByCoupon.cuponDiscount) || 0;
+    if (discountPct <= 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Cupón inválido",
+        text: "El cupón no tiene un descuento válido.",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 6000,
+        timerProgressBar: true,
+      });
+      return;
+    }
+
+    // Guardar cupón (solo porcentaje; validaremos contra carrito en el total)
+    saveCupon({
+      ...existCupons,
+      [code]: discountPct,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "Cupón canjeado",
+      text: `Cupón aplicado: -${discountPct}%`,
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+    });
+
+    updateCartTotal();
+  } catch (err) {
+    console.error("Error validando cupón:", err);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudo validar el cupón en este momento.",
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+    });
+  }
 };
