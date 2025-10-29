@@ -20,6 +20,7 @@
     />
     <link rel="stylesheet" href="../assets/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../assets/css/cart.css" type="text/css" />
+    <link rel="stylesheet" href="../assets/css/checkout.css" type="text/css" />
   </head>
   <body>
     <nav class="barra-navegadora navbar navbar-expand-lg">
@@ -101,477 +102,651 @@
           <div class="row g-4">
             <!-- Formulario -->
             <div class="col-12 col-lg-8">
-              <form class="card shadow-sm border-0">
+              <form id="checkout-form" class="card shadow-sm border-0">
                 <div class="card-body p-4">
-                  <h1 class="h4 mb-4">Datos de contacto</h1>
-                  <div class="row g-3 mb-4 text-start">
-                    <div class="col-12 col-md-6">
-                      <label for="nombre" class="form-label"
-                        >Nombre completo</label
-                      >
-                      <input
-                        id="nombre"
-                        name="nombre"
-                        type="text"
-                        class="form-control"
-                        placeholder="Ej: Ana Rodríguez"
-                        autocomplete="name"
-                        required
-                      />
-                    </div>
-                    <div class="col-12 col-md-6 text-start">
-                      <label for="email" class="form-label"
-                        >Correo electrónico</label
-                      >
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        class="form-control"
-                        placeholder="ejemplo@correo.com"
-                        autocomplete="email"
-                        required
-                      />
-                    </div>
-                    <div class="col-12 col-md-6">
-                      <label for="telefono" class="form-label">Teléfono</label>
-                      <input
-                        id="telefono"
-                        name="telefono"
-                        type="tel"
-                        class="form-control"
-                        placeholder="+506 8888-8888"
-                        autocomplete="tel"
-                      />
-                    </div>
-                    <div class="col-12 col-md-6">
-                      <label for="pais" class="form-label"
-                        >País de residencia</label
-                      >
-                      <select
-                        id="pais"
-                        name="pais"
-                        class="form-select"
-                        autocomplete="country-name"
-                        required
-                      >
-                        <option value="" selected disabled>
-                          Selecciona un país
-                        </option>
-                        <option value="CR">Costa Rica</option>
-                        <option value="US">Estados Unidos</option>
-                        <option value="MX">México</option>
-                        <option value="ES">España</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <!-- Viajeros -->
-                  <h2 class="h6 text-uppercase text-muted mb-3">Viajeros</h2>
-                  <div class="row g-3 mb-4">
-                    <div class="col-6 col-md-4">
-                      <label for="adultos" class="form-label">Adultos</label>
-                      <input
-                        id="adultos"
-                        name="adultos"
-                        type="number"
-                        min="1"
-                        value="2"
-                        class="form-control text-center"
-                        required
-                      />
-                    </div>
-                    <div class="col-6 col-md-4">
-                      <label for="ninos" class="form-label">Niños</label>
-                      <input
-                        id="ninos"
-                        name="ninos"
-                        type="number"
-                        min="0"
-                        value="0"
-                        class="form-control text-center"
-                      />
-                    </div>
-                    <div class="col-12 col-md-4">
-                      <label for="idioma" class="form-label"
-                        >Idioma del tour</label
-                      >
-                      <select
-                        id="idioma"
-                        name="idioma"
-                        class="form-select"
-                        required
-                      >
-                        <option value="es" selected>Español</option>
-                        <option value="en">Inglés</option>
-                      </select>
-                    </div>
-                    <div class="col-12 text-start">
-                      <label for="viajeroPrincipal" class="form-label"
-                        >Viajero principal (para el voucher)</label
-                      >
-                      <input
-                        id="viajeroPrincipal"
-                        name="viajeroPrincipal"
-                        type="text"
-                        class="form-control"
-                        placeholder="Tal como aparece en el documento"
-                        required
-                      />
-                    </div>
-                    <div class="col-12 col-md-6 text-start">
-                      <label for="documento" class="form-label"
-                        >Documento / Pasaporte</label
-                      >
-                      <input
-                        id="documento"
-                        name="documento"
-                        type="text"
-                        class="form-control"
-                        placeholder="Número de documento"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <!-- Detalles del tour -->
-                  <h2 class="h6 text-uppercase text-muted mb-3">
-                    Detalles del tour
-                  </h2>
-                  <div class="row g-3 mb-4">
-                    <div class="col-12">
-                      <label for="paquete" class="form-label">Paquete</label>
-                      <select
-                        id="paquete"
-                        name="paquete"
-                        class="form-select"
-                        required
-                      >
-                        <option value="" disabled selected>
-                          Selecciona un paquete
-                        </option>
-                        <option value="ARENAL">Arenal + Termales</option>
-                        <option value="MANUEL">Manuel Antonio Full Day</option>
-                        <option value="MONTE">Monteverde Canopy</option>
-                      </select>
-                    </div>
-                    <div class="col-12 col-md-6">
-                      <label for="fecha" class="form-label">Fecha</label>
-                      <input
-                        id="fecha"
-                        name="fecha"
-                        type="date"
-                        class="form-control"
-                        required
-                      />
-                    </div>
-                    <div class="col-12 col-md-6">
-                      <label for="hora" class="form-label"
-                        >Hora de salida</label
-                      >
-                      <select
-                        id="hora"
-                        name="hora"
-                        class="form-select"
-                        required
-                      >
-                        <option value="07:00">07:00</option>
-                        <option value="08:00" selected>08:00</option>
-                        <option value="09:00">09:00</option>
-                      </select>
-                    </div>
-                    <div class="col-12">
-                      <label for="pickup" class="form-label"
-                        >Punto de encuentro / Recogida</label
-                      >
-                      <input
-                        id="pickup"
-                        name="pickup"
-                        type="text"
-                        class="form-control"
-                        placeholder="Hotel / Dirección exacta"
-                      />
-                    </div>
-                    <div class="col-12">
-                      <label for="notas" class="form-label"
-                        >Notas (restricciones alimentarias / comentarios)</label
-                      >
-                      <textarea
-                        id="notas"
-                        name="notas"
-                        rows="3"
-                        class="form-control"
-                        placeholder="Cuéntanos cualquier detalle importante"
-                      ></textarea>
-                    </div>
-                  </div>
-
-                  <!-- Extras -->
-                  <h2 class="h6 text-uppercase text-muted mb-3">
-                    Extras opcionales
-                  </h2>
-                  <div class="row g-3 mb-4">
-                    <div class="col-12 col-md-6">
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="seguro"
-                          name="seguro"
-                        />
-                        <label class="form-check-label" for="seguro"
-                          >Seguro de viaje (+$9.00 por persona)</label
-                        >
-                      </div>
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="almuerzo"
-                          name="almuerzo"
-                        />
-                        <label class="form-check-label" for="almuerzo"
-                          >Almuerzo incluido (+$12.00 por persona)</label
-                        >
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="fotos"
-                          name="fotos"
-                        />
-                        <label class="form-check-label" for="fotos"
-                          >Paquete de fotografías (+$15.00)</label
-                        >
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Facturación -->
-                  <h2 class="h6 text-uppercase text-muted mb-3">
-                    Datos de facturación
-                  </h2>
-                  <div class="row g-3 mb-4">
-                    <div class="col-12">
-                      <label for="direccion" class="form-label"
-                        >Dirección</label
-                      >
-                      <input
-                        id="direccion"
-                        name="direccion"
-                        type="text"
-                        class="form-control"
-                        placeholder="Calle, número, apartamento"
-                        autocomplete="street-address"
-                        required
-                      />
-                    </div>
-                    <div class="col-12 col-md-6">
-                      <label for="ciudad" class="form-label">Ciudad</label>
-                      <input
-                        id="ciudad"
-                        name="ciudad"
-                        type="text"
-                        class="form-control"
-                        required
-                      />
-                    </div>
-                    <div class="col-6 col-md-3">
-                      <label for="provincia" class="form-label"
-                        >Provincia</label
-                      >
-                      <input
-                        id="provincia"
-                        name="provincia"
-                        type="text"
-                        class="form-control"
-                        required
-                      />
-                    </div>
-                    <div class="col-6 col-md-3">
-                      <label for="zip" class="form-label">Código Postal</label>
-                      <input
-                        id="zip"
-                        name="zip"
-                        type="text"
-                        class="form-control"
-                        autocomplete="postal-code"
-                      />
-                    </div>
-                  </div>
-
-                  <!-- Pago -->
-                  <h2 class="h6 text-uppercase text-muted mb-3">Pago</h2>
-                  <div class="accordion mb-4" id="accordionPago">
+                  <div class="accordion" id="accordionCheckout">
+                    <!-- 1) Datos de contacto (abierto) -->
                     <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingCard">
+                      <h2 class="accordion-header" id="headingContacto">
                         <button
                           class="accordion-button"
                           type="button"
                           data-bs-toggle="collapse"
-                          data-bs-target="#pagoTarjeta"
+                          data-bs-target="#collapseContacto"
                           aria-expanded="true"
-                          aria-controls="pagoTarjeta"
+                          aria-controls="collapseContacto"
                         >
-                          Tarjeta de crédito / débito
+                          Datos de contacto
                         </button>
                       </h2>
                       <div
-                        id="pagoTarjeta"
+                        id="collapseContacto"
                         class="accordion-collapse collapse show"
-                        aria-labelledby="headingCard"
-                        data-bs-parent="#accordionPago"
+                        aria-labelledby="headingContacto"
+                        data-bs-parent="#accordionCheckout"
                       >
                         <div class="accordion-body">
-                          <div class="row g-3">
-                            <div class="col-12">
-                              <label for="cardName" class="form-label"
-                                >Nombre en la tarjeta</label
+                          <div class="row g-3 text-start">
+                            <div class="col-12 col-md-6">
+                              <label for="nombre" class="form-label"
+                                >Nombre completo</label
                               >
                               <input
-                                id="cardName"
-                                name="cardName"
+                                id="nombre"
+                                name="nombre"
                                 type="text"
                                 class="form-control"
-                                autocomplete="cc-name"
+                                placeholder="Ej: Ana Rodríguez"
+                                autocomplete="name"
                                 required
                               />
                             </div>
-                            <div class="col-12">
-                              <label for="cardNumber" class="form-label"
-                                >Número de tarjeta</label
+                            <div class="col-12 col-md-6">
+                              <label for="email" class="form-label"
+                                >Correo electrónico</label
                               >
                               <input
-                                id="cardNumber"
-                                name="cardNumber"
-                                type="text"
-                                inputmode="numeric"
+                                id="email"
+                                name="email"
+                                type="email"
                                 class="form-control"
-                                placeholder="1234 5678 9012 3456"
-                                autocomplete="cc-number"
+                                placeholder="ejemplo@correo.com"
+                                autocomplete="email"
                                 required
                               />
                             </div>
-                            <div class="col-6 col-md-4">
-                              <label for="cardMonth" class="form-label"
-                                >Mes</label
+                            <div class="col-12 col-md-6">
+                              <label for="telefono" class="form-label"
+                                >Teléfono</label
                               >
                               <input
-                                id="cardMonth"
-                                name="cardMonth"
-                                type="text"
+                                id="telefono"
+                                name="telefono"
+                                type="tel"
                                 class="form-control"
-                                placeholder="MM"
-                                inputmode="numeric"
-                                autocomplete="cc-exp-month"
-                                required
+                                placeholder="+506 8888-8888"
+                                autocomplete="tel"
                               />
                             </div>
-                            <div class="col-6 col-md-4">
-                              <label for="cardYear" class="form-label"
-                                >Año</label
+                            <div class="col-12 col-md-6">
+                              <label for="pais" class="form-label"
+                                >País de residencia</label
                               >
-                              <input
-                                id="cardYear"
-                                name="cardYear"
-                                type="text"
-                                class="form-control"
-                                placeholder="AA"
-                                inputmode="numeric"
-                                autocomplete="cc-exp-year"
+                              <select
+                                id="pais"
+                                name="pais"
+                                class="form-select"
+                                autocomplete="country-name"
                                 required
-                              />
-                            </div>
-                            <div class="col-12 col-md-4">
-                              <label for="cardCvv" class="form-label"
-                                >CVV</label
                               >
-                              <input
-                                id="cardCvv"
-                                name="cardCvv"
-                                type="password"
-                                class="form-control"
-                                placeholder="***"
-                                inputmode="numeric"
-                                autocomplete="cc-csc"
-                                required
-                              />
+                                <option value="" selected disabled>
+                                  Selecciona un país
+                                </option>
+                                <option value="CR">Costa Rica</option>
+                                <option value="US">Estados Unidos</option>
+                                <option value="MX">México</option>
+                                <option value="ES">España</option>
+                              </select>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
 
+                    <!-- 2) Viajeros -->
                     <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingAlt">
+                      <h2 class="accordion-header" id="headingViajeros">
                         <button
                           class="accordion-button collapsed"
                           type="button"
                           data-bs-toggle="collapse"
-                          data-bs-target="#pagoAlterno"
+                          data-bs-target="#collapseViajeros"
                           aria-expanded="false"
-                          aria-controls="pagoAlterno"
+                          aria-controls="collapseViajeros"
                         >
-                          Transferencia / PayPal
+                          Viajeros
                         </button>
                       </h2>
                       <div
-                        id="pagoAlterno"
+                        id="collapseViajeros"
                         class="accordion-collapse collapse"
-                        aria-labelledby="headingAlt"
-                        data-bs-parent="#accordionPago"
+                        aria-labelledby="headingViajeros"
+                        data-bs-parent="#accordionCheckout"
                       >
                         <div class="accordion-body">
-                          <p class="text-muted small mb-2">
-                            Serás redirigido al proveedor para completar el
-                            pago.
-                          </p>
-                          <div class="d-grid d-md-flex gap-2">
-                            <button
-                              type="button"
-                              class="btn btn-outline-secondary"
-                            >
-                              Transferencia
+                          <div class="row g-3">
+                            <div class="col-6 col-md-4">
+                              <label for="adultos" class="form-label"
+                                >Adultos</label
+                              >
+                              <input
+                                id="adultos"
+                                name="adultos"
+                                type="number"
+                                min="1"
+                                value="2"
+                                class="form-control text-center"
+                                required
+                              />
+                            </div>
+                            <div class="col-6 col-md-4">
+                              <label for="ninos" class="form-label"
+                                >Niños</label
+                              >
+                              <input
+                                id="ninos"
+                                name="ninos"
+                                type="number"
+                                min="0"
+                                value="0"
+                                class="form-control text-center"
+                              />
+                            </div>
+                            <div class="col-12 col-md-4">
+                              <label for="idioma" class="form-label"
+                                >Idioma del tour</label
+                              >
+                              <select
+                                id="idioma"
+                                name="idioma"
+                                class="form-select"
+                                required
+                              >
+                                <option value="es" selected>Español</option>
+                                <option value="en">Inglés</option>
+                              </select>
+                            </div>
+                            <div class="col-12">
+                              <label for="viajeroPrincipal" class="form-label"
+                                >Viajero principal (para el voucher)</label
+                              >
+                              <input
+                                id="viajeroPrincipal"
+                                name="viajeroPrincipal"
+                                type="text"
+                                class="form-control"
+                                placeholder="Tal como aparece en el documento"
+                                required
+                              />
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <label for="documento" class="form-label"
+                                >Documento / Pasaporte</label
+                              >
+                              <input
+                                id="documento"
+                                name="documento"
+                                type="text"
+                                class="form-control"
+                                placeholder="Número de documento"
+                                required
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 3) Detalles del tour -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingTour">
+                        <button
+                          class="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseTour"
+                          aria-expanded="false"
+                          aria-controls="collapseTour"
+                        >
+                          Detalles del tour
+                        </button>
+                      </h2>
+                      <div
+                        id="collapseTour"
+                        class="accordion-collapse collapse"
+                        aria-labelledby="headingTour"
+                        data-bs-parent="#accordionCheckout"
+                      >
+                        <div class="accordion-body">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <label for="paquete" class="form-label"
+                                >Paquete</label
+                              >
+                              <select
+                                id="paquete"
+                                name="paquete"
+                                class="form-select"
+                                required
+                              >
+                                <option value="" disabled selected>
+                                  Selecciona un paquete
+                                </option>
+                                <option value="ARENAL">
+                                  Arenal + Termales
+                                </option>
+                                <option value="MANUEL">
+                                  Manuel Antonio Full Day
+                                </option>
+                                <option value="MONTE">Monteverde Canopy</option>
+                              </select>
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <label for="fecha" class="form-label"
+                                >Fecha</label
+                              >
+                              <input
+                                id="fecha"
+                                name="fecha"
+                                type="date"
+                                class="form-control"
+                                required
+                              />
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <label for="hora" class="form-label"
+                                >Hora de salida</label
+                              >
+                              <select
+                                id="hora"
+                                name="hora"
+                                class="form-select"
+                                required
+                              >
+                                <option value="07:00">07:00</option>
+                                <option value="08:00" selected>08:00</option>
+                                <option value="09:00">09:00</option>
+                              </select>
+                            </div>
+                            <div class="col-12">
+                              <label for="pickup" class="form-label"
+                                >Punto de encuentro / Recogida</label
+                              >
+                              <input
+                                id="pickup"
+                                name="pickup"
+                                type="text"
+                                class="form-control"
+                                placeholder="Hotel / Dirección exacta"
+                              />
+                            </div>
+                            <div class="col-12">
+                              <label for="notas" class="form-label"
+                                >Notas (restricciones alimentarias /
+                                comentarios)</label
+                              >
+                              <textarea
+                                id="notas"
+                                name="notas"
+                                rows="3"
+                                class="form-control"
+                                placeholder="Cuéntanos cualquier detalle importante"
+                              ></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 4) Extras opcionales -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingExtras">
+                        <button
+                          class="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseExtras"
+                          aria-expanded="false"
+                          aria-controls="collapseExtras"
+                        >
+                          Extras opcionales
+                        </button>
+                      </h2>
+                      <div
+                        id="collapseExtras"
+                        class="accordion-collapse collapse"
+                        aria-labelledby="headingExtras"
+                        data-bs-parent="#accordionCheckout"
+                      >
+                        <div class="accordion-body">
+                          <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="seguro"
+                                  name="seguro"
+                                />
+                                <label class="form-check-label" for="seguro"
+                                  >Seguro de viaje (+$9.00 por persona)</label
+                                >
+                              </div>
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="almuerzo"
+                                  name="almuerzo"
+                                />
+                                <label class="form-check-label" for="almuerzo"
+                                  >Almuerzo incluido (+$12.00 por
+                                  persona)</label
+                                >
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="fotos"
+                                  name="fotos"
+                                />
+                                <label class="form-check-label" for="fotos"
+                                  >Paquete de fotografías (+$15.00)</label
+                                >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 5) Datos de facturación -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingFactura">
+                        <button
+                          class="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseFactura"
+                          aria-expanded="false"
+                          aria-controls="collapseFactura"
+                        >
+                          Datos de facturación
+                        </button>
+                      </h2>
+                      <div
+                        id="collapseFactura"
+                        class="accordion-collapse collapse"
+                        aria-labelledby="headingFactura"
+                        data-bs-parent="#accordionCheckout"
+                      >
+                        <div class="accordion-body">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <label for="direccion" class="form-label"
+                                >Dirección</label
+                              >
+                              <input
+                                id="direccion"
+                                name="direccion"
+                                type="text"
+                                class="form-control"
+                                placeholder="Calle, número, apartamento"
+                                autocomplete="street-address"
+                                required
+                              />
+                            </div>
+                            <div class="col-12 col-md-6">
+                              <label for="ciudad" class="form-label"
+                                >Ciudad</label
+                              >
+                              <input
+                                id="ciudad"
+                                name="ciudad"
+                                type="text"
+                                class="form-control"
+                                required
+                              />
+                            </div>
+                            <div class="col-6 col-md-3">
+                              <label for="provincia" class="form-label"
+                                >Provincia</label
+                              >
+                              <input
+                                id="provincia"
+                                name="provincia"
+                                type="text"
+                                class="form-control"
+                                required
+                              />
+                            </div>
+                            <div class="col-6 col-md-3">
+                              <label for="zip" class="form-label"
+                                >Código Postal</label
+                              >
+                              <input
+                                id="zip"
+                                name="zip"
+                                type="text"
+                                class="form-control"
+                                autocomplete="postal-code"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 6) Pago (con su propio acordeón interno de métodos) -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingPago">
+                        <button
+                          class="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapsePago"
+                          aria-expanded="false"
+                          aria-controls="collapsePago"
+                        >
+                          Pago
+                        </button>
+                      </h2>
+                      <div
+                        id="collapsePago"
+                        class="accordion-collapse collapse"
+                        aria-labelledby="headingPago"
+                        data-bs-parent="#accordionCheckout"
+                      >
+                        <div class="accordion-body">
+                          <div class="accordion mb-3" id="accordionPago">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingCard">
+                                <button
+                                  class="accordion-button"
+                                  type="button"
+                                  data-bs-toggle="collapse"
+                                  data-bs-target="#pagoTarjeta"
+                                  aria-expanded="true"
+                                  aria-controls="pagoTarjeta"
+                                >
+                                  Tarjeta de crédito / débito
+                                </button>
+                              </h2>
+                              <div
+                                id="pagoTarjeta"
+                                class="accordion-collapse collapse show"
+                                aria-labelledby="headingCard"
+                                data-bs-parent="#accordionPago"
+                              >
+                                <div class="accordion-body">
+                                  <div class="row g-3">
+                                    <div class="col-12">
+                                      <label for="cardName" class="form-label"
+                                        >Nombre en la tarjeta</label
+                                      >
+                                      <input
+                                        id="cardName"
+                                        name="cardName"
+                                        type="text"
+                                        class="form-control"
+                                        autocomplete="cc-name"
+                                        required
+                                      />
+                                    </div>
+                                    <div class="col-12">
+                                      <label for="cardNumber" class="form-label"
+                                        >Número de tarjeta</label
+                                      >
+                                      <input
+                                        id="cardNumber"
+                                        name="cardNumber"
+                                        type="text"
+                                        inputmode="numeric"
+                                        class="form-control"
+                                        placeholder="1234 5678 9012 3456"
+                                        autocomplete="cc-number"
+                                        required
+                                      />
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                      <label for="cardMonth" class="form-label"
+                                        >Mes</label
+                                      >
+                                      <input
+                                        id="cardMonth"
+                                        name="cardMonth"
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="MM"
+                                        inputmode="numeric"
+                                        autocomplete="cc-exp-month"
+                                        required
+                                      />
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                      <label for="cardYear" class="form-label"
+                                        >Año</label
+                                      >
+                                      <input
+                                        id="cardYear"
+                                        name="cardYear"
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="AA"
+                                        inputmode="numeric"
+                                        autocomplete="cc-exp-year"
+                                        required
+                                      />
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                      <label for="cardCvv" class="form-label"
+                                        >CVV</label
+                                      >
+                                      <input
+                                        id="cardCvv"
+                                        name="cardCvv"
+                                        type="password"
+                                        class="form-control"
+                                        placeholder="***"
+                                        inputmode="numeric"
+                                        autocomplete="cc-csc"
+                                        required
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingAlt">
+                                <button
+                                  class="accordion-button collapsed"
+                                  type="button"
+                                  data-bs-toggle="collapse"
+                                  data-bs-target="#pagoAlterno"
+                                  aria-expanded="false"
+                                  aria-controls="pagoAlterno"
+                                >
+                                  Transferencia / PayPal
+                                </button>
+                              </h2>
+                              <div
+                                id="pagoAlterno"
+                                class="accordion-collapse collapse"
+                                aria-labelledby="headingAlt"
+                                data-bs-parent="#accordionPago"
+                              >
+                                <div class="accordion-body">
+                                  <p class="text-muted small mb-2">
+                                    Serás redirigido al proveedor para completar
+                                    el pago.
+                                  </p>
+                                  <div class="d-grid d-md-flex gap-2">
+                                    <button
+                                      type="button"
+                                      class="btn btn-outline-secondary"
+                                    >
+                                      Transferencia
+                                    </button>
+                                    <button
+                                      type="button"
+                                      class="btn btn-outline-primary"
+                                    >
+                                      PayPal
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- /accordionPago -->
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 7) Términos -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingTerminos">
+                        <button
+                          class="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseTerminos"
+                          aria-expanded="false"
+                          aria-controls="collapseTerminos"
+                        >
+                          Términos y condiciones
+                        </button>
+                      </h2>
+                      <div
+                        id="collapseTerminos"
+                        class="accordion-collapse collapse"
+                        aria-labelledby="headingTerminos"
+                        data-bs-parent="#accordionCheckout"
+                      >
+                        <div class="accordion-body">
+                          <div class="form-check mb-3">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="terms"
+                              required
+                            />
+                            <label class="form-check-label" for="terms">
+                              Acepto los términos y condiciones, y la política
+                              de cancelación.
+                            </label>
+                          </div>
+
+                          <!-- CTA móvil opcional dentro del último paso -->
+                          <div class="d-grid d-lg-none gap-2">
+                            <button type="submit" class="btn btn-dark btn-lg">
+                              Pagar ahora
                             </button>
-                            <button
-                              type="button"
-                              class="btn btn-outline-primary"
+                            <a href="#" class="btn btn-outline-secondary"
+                              >Seguir explorando</a
                             >
-                              PayPal
-                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  <!-- Términos -->
-                  <div class="form-check mb-4">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="terms"
-                      required
-                    />
-                    <label class="form-check-label" for="terms">
-                      Acepto los términos y condiciones, y la política de
-                      cancelación.
-                    </label>
-                  </div>
-
-                  <!-- CTA móvil -->
-                  <div class="d-grid d-lg-none gap-2">
-                    <button type="submit" class="btn btn-dark btn-lg">
-                      Pagar ahora
-                    </button>
-                    <a href="#" class="btn btn-outline-secondary"
-                      >Seguir explorando</a
-                    >
-                  </div>
+                  <!-- /accordionCheckout -->
                 </div>
               </form>
             </div>
@@ -607,7 +782,11 @@
                         class="form-control"
                         placeholder="Código de cupón"
                       />
-                      <button class="btn btn-outline-secondary" type="button">
+                      <button
+                        class="btn btn-success"
+                        type="button"
+                        id="btn-coupon"
+                      >
                         Aplicar
                       </button>
                     </div>
@@ -616,18 +795,24 @@
                   <!-- Totales -->
                   <ul class="list-unstyled mb-4">
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Subtotal</span> <span>$220.00</span>
+                      <span>Subtotal</span>
+                      <span id="subtotal-cart">$152.29</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Impuestos</span> <span>$28.60</span>
+                      <span>Descuento</span>
+                      <span id="discount-cart">−$10.00</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Descuento</span> <span>−$10.00</span>
+                      <span>Coupon Codes</span> <span id="cupon-cart"></span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Coupon Discounts</span>
+                      <span id="cupon-discounts-cart"></span>
                     </li>
                     <li
                       class="d-flex justify-content-between border-top pt-2 fw-semibold"
                     >
-                      <span>Total</span> <span>$238.60</span>
+                      <span>Total</span> <span id="total-cart">$147.28</span>
                     </li>
                   </ul>
 
@@ -736,7 +921,7 @@
         </div>
       </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -745,25 +930,8 @@
     <script src="../assets/js/menu.js"></script>
     <script type="module" src="../assets/js/cart.module.js"></script>
     <script type="module" src="../assets/js/cart-modal.js" defer></script>
+    <script type="module" src="../assets/js/checkout-page.js" defer></script>
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-    <!-- Initialize Swiper -->
-    <script>
-      var swiper = new Swiper(".mySwiper", {
-        lazy: true,
-        slidesPerView: 4,
-        spaceBetween: 30,
-        loop: true,
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true,
-        },
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      });
-    </script>
   </body>
 </html>

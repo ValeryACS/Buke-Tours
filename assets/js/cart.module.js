@@ -199,6 +199,7 @@ export const updateCartModal = (cartObj) => {
                     <div class="col-8 col-sm-9">
                       <div class="d-flex justify-content-between">
                         <div>
+                        <h1 class="h4 mb-1">${tour.title}</h1>
                           <h3 class="h6 mb-1">${tour.location}</h3>
                           <p class="text-muted small mb-2">${
                             tour.description
@@ -435,6 +436,7 @@ export const updateBasket = () => {
                     <div class="col-8 col-sm-9">
                       <div class="d-flex justify-content-between">
                         <div>
+                        <h1 class="h4 mb-1">${tour.title}</h1>
                           <h2 class="h6 mb-1">${tour.location}</h2>
                           <p class="text-muted small mb-2">
                             ${tour.description}
