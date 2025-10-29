@@ -23,11 +23,16 @@ nav,
 footer {
   width: 100%;
 }
-h1,h2,h3,h4,h5,h6{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Gabarito", serif;
 }
 
-p{
+p {
   font-family: "Lato", serif;
 }
 
@@ -54,10 +59,14 @@ body {
   border: #e0b678 !important;
   color: #000 !important;
 }
-.btn-primary{
+.btn-primary {
   background-color: #3a2957 !important;
   border: #43355c !important;
-  color: #fff !important; 
+  color: #fff !important;
+}
+
+.btn-success {
+  background-color: #2a7e7e !important;
 }
 
 /* Hamburger */
@@ -434,8 +443,8 @@ Estilos para reseñas
 }
 
 /** Modal */
-.modal-dialog img{
-    max-width: 150px;
+.modal-dialog img {
+  max-width: 150px;
 }
 
 @media screen and (max-width: 768px) {

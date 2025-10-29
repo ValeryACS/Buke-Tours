@@ -286,3 +286,11 @@ export const onAddTourToCart = (id) => {
   updateCartQuantity();
   updateCartTotal();
 };
+
+/**
+ * Actualiza todos los tours incluidos en el carrito de compras para la pagina del carrito (no es el modal)
+ */
+export const updateBasket = () => {
+    const cart = readCart();
+    console.log('cart', cart)
+}
