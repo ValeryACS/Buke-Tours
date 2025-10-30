@@ -1,14 +1,25 @@
-.accordion-button:not(.collapsed){
-    color: #FFF !important;
-    background: #2a7e7e !important;
+.accordion-button:not(.collapsed) {
+  color: #fff !important;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#168769+0,216868+100 */
+  background: linear-gradient(
+    to bottom,
+    #168769 0%,
+    #216868 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
-.accordion-button:not(.collapsed)::after{
+.accordion-button:not(.collapsed)::after {
   --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
   --bs-accordion-btn-active-icon: var(--bs-accordion-btn-icon);
 }
 
-.accordion-button{
-    --bs-accordion-btn-bg: #ffd89c;
-    border: 1px solid grey;
+.accordion-button {
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffd89c+0,fea03c+100 */
+  background: linear-gradient(
+    to bottom,
+    #ffd89c 0%,
+    #fea03c 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  color: #000;
+  border: 1px solid grey;
 }
