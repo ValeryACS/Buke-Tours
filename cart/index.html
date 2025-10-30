@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+    <title>Carrito de Compras</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../assets/css/cart.css" type="text/css" />
+  </head>
+  <body>
+    <nav class="barra-navegadora navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <button
+          class="menu-hamburger navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <div id="nav-icon3">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav m-auto">
+            <li class="nav-item barra-navegadora-li">
+              <a href="../profile/index.html" class="nav-link"
+                ><i class="bi bi-person-bounding-box display-6"></i
+              ></a>
+            </li>
+            <li class="nav-item barra-navegadora-li">
+              <a href="../index.html" class="nav-link">Inicio</a>
+            </li>
+
+            <li class="nav-item barra-navegadora-li">
+              <a href="../tours.html" class="nav-link">Tours</a>
+            </li>
+            <!--
+                    TODO Incluir esta pagina
+                    <li class="nav-item barra-navegadora-li"><a href="fechas.html">Fechas/Horarios</a></li> -->
+            <li class="nav-item barra-navegadora-li">
+              <a href="../index.html"
+                ><img class="logo" src="../assets/img/logo.png" alt="logo"
+              /></a>
+            </li>
+            <li class="nav-item barra-navegadora-li">
+              <a href="../resenas.html" class="nav-link">Reseñas</a>
+            </li>
+            <li class="nav-item barra-navegadora-li">
+              <a href="../nosotros.html" class="nav-link">Sobre Nosotros</a>
+            </li>
+            <li class="nav-item barra-navegadora-li">
+              <a href="../login.html" class="nav-link"
+                ><i class="bi bi-person-circle display-6"></i
+              ></a>
+            </li>
+          </ul>
+        </div>
+
+        <button
+          id="shopping-cart"
+          class="btn btn-light position-relative"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#cartModal"
+        >
+          <i class="bi bi-cart3 display-5"></i>
+          <span
+            id="quantity"
+            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger quantity"
+          >
+            <span class="visually-hidden">artículos en el carrito</span>
+          </span>
+        </button>
+      </div>
+    </nav>
+
+    <main>
+      <section id="cart" class="py-5">
+        <div class="container bg-light">
+          <!-- Encabezado -->
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h1 class="titulo h3 mb-0">Bukë Tours</h1>
+            <span class="badge text-bg-danger">3 artículos</span>
+          </div>
+
+          <div class="row g-4">
+            <!-- Lista de productos -->
+            <div class="col-12 col-lg-8">
+              <div class="list-group" id="cart-list-tours">
+                <!-- Item 1 -->
+              </div>
+
+              <!-- CTA inferior en móvil -->
+              <div class="d-grid d-lg-none mt-4 gap-2">
+                <a href="/checkout/index.html" class="btn btn-dark btn-lg"
+                  >Finalizar compra</a
+                >
+                <a href="/tours.html" class="btn btn-danger"
+                  >Seguir comprando</a
+                >
+              </div>
+            </div>
+
+            <!-- Resumen -->
+            <aside class="col-12 col-lg-4">
+              <div class="card shadow-sm sticky-lg-top" style="top: 1rem">
+                <div class="card-body">
+                  <h2 class="h6 mb-3">Resumen del pedido</h2>
+
+                  <!-- Cupón -->
+                  <div class="mb-3">
+                    <label for="coupon" class="form-label small"
+                      >Cupón de descuento</label
+                    >
+                    <div class="input-group">
+                      <input
+                        id="coupon"
+                        type="text"
+                        class="form-control"
+                        placeholder="Ingresa tu cupón"
+                      />
+                      <button
+                        class="btn btn-success"
+                        type="button"
+                        id="btn-coupon"
+                      >
+                        Aplicar
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Totales -->
+                  <ul class="list-unstyled mb-4">
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Subtotal</span>
+                      <span id="subtotal-cart">$152.29</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Descuento</span>
+                      <span id="discount-cart">−$10.00</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Coupon Codes</span> <span id="cupon-cart"></span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Coupon Discounts</span>
+                      <span id="cupon-discounts-cart"></span>
+                    </li>
+                    <li
+                      class="d-flex justify-content-between border-top pt-2 fw-semibold"
+                    >
+                      <span>Total</span> <span id="total-cart">$147.28</span>
+                    </li>
+                  </ul>
+
+                  <div class="d-grid gap-2">
+                    <a href="/checkout/" class="btn btn-dark btn-lg"
+                      >Finalizar compra</a
+                    >
+                    <a href="/tours.html" class="btn btn-danger"
+                      >Seguir comprando</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+
+          <!-- Estado vacío (ocúltalo si hay items) -->
+          <div class="card border-0 text-center py-5 mt-4 d-none">
+            <p class="lead mb-3">Tu carrito está vacío</p>
+            <a href="#" class="btn btn-primary">Explorar productos</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Sección principal -->
+
+    <footer>
+      <nav>
+        <div>
+          <ul class="footer-redes">
+            <li class="footer-redes-li"><a href="#">Facebook</a></li>
+            <li class="footer-redes-li">
+              <a
+                href="https://www.instagram.com/unguiaencostarica"
+                target="_blank"
+                >Instagram</a
+              >
+            </li>
+            <li class="footer-redes-li">
+              <a
+                href="https://www.tiktok.com/@unguiaencostarica"
+                target="_blank"
+                >TikTok</a
+              >
+            </li>
+            <li class="footer-redes-li"><a href="#">Bukë Tours</a></li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div
+      class="modal fade"
+      id="cartModal"
+      tabindex="-1"
+      aria-labelledby="cartModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="cartModalLabel">
+              Carrito de compras
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <!-- Lista de items -->
+            <div class="list-group" id="cartList"></div>
+
+            <!-- Estado vacío -->
+            <div class="text-center py-4 d-none" id="emptyState">
+              <p class="lead mb-2">Tu carrito está vacío</p>
+              <a href="#" class="btn btn-outline-secondary">Explorar tours</a>
+            </div>
+          </div>
+
+          <div
+            class="modal-footer flex-column flex-sm-row gap-2 justify-content-between"
+          >
+            <div class="ms-auto me-sm-3">
+              <div class="text-muted small">Total</div>
+              <div class="fs-5 fw-semibold" aria-live="polite">
+                <span id="cartTotal"></span>
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <a
+                href="/checkout/index.html"
+                type="button"
+                class="btn btn-danger"
+              >
+                Pagar
+              </a>
+              <a href="/cart/index.html" class="btn btn-primary"
+                >Ir al carrito</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../assets/js/menu.js"></script>
+    <script type="module" src="../assets/js/cart.module.js"></script>
+    <script type="module" src="../assets/js/cart-modal.js" defer></script>
+    <script type="module" src="../assets/js/cart-page.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+      var swiper = new Swiper(".mySwiper", {
+        lazy: true,
+        slidesPerView: 4,
+        spaceBetween: 30,
+        loop: true,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      });
+    </script>
+  </body>
+</html>

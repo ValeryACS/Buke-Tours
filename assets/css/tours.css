@@ -73,3 +73,66 @@ iframe {
   outline: none;
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12) inset;
 }
+:root {
+  --card-radius: 0.5rem;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+    sans-serif;
+}
+
+.cards-wrapper {
+  max-width: 980px;
+  background: #ffd89c;
+}
+
+.card.card-travel {
+  border: 0;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card.card-travel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  font-family: "Gabarito", serif;
+  color: #333;
+}
+
+.tag {
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  color: #555;
+  letter-spacing: 0.03em;
+}
+
+.card-text {
+  font-family: "Lora", serif;
+  color: #666;
+}
+
+/* Imagen superior con alto consistente */
+.card-img-top {
+  height: 200px; /* ajústalo si quieres */
+  object-fit: cover; /* Bootstrap 5 tiene .object-fit-cover, pero lo dejamos directo */
+}
+
+/* “Read more” como barra oscura inferior a ancho completo */
+.read-more {
+  border-radius: 0 0 var(--card-radius) var(--card-radius);
+  font-family: "Inter", sans-serif;
+}
+
+.image-skeleton{
+  font-size: 9rem;
+}
+@media screen and (max-width: 768px) {
+  .tour-section {
+    flex-direction: column;
+  }
+}
