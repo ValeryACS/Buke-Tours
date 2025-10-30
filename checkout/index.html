@@ -87,9 +87,9 @@
         >
           <i class="bi bi-cart3 display-5"></i>
           <span
+            id="quantity"
             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger quantity"
           >
-            3
             <span class="visually-hidden">artículos en el carrito</span>
           </span>
         </button>
@@ -298,7 +298,7 @@
                           aria-expanded="false"
                           aria-controls="collapseTour"
                         >
-                          Detalles del tour
+                          Fechas de Ingreso y Salida
                         </button>
                       </h2>
                       <div
@@ -308,82 +308,10 @@
                         data-bs-parent="#accordionCheckout"
                       >
                         <div class="accordion-body">
-                          <div class="row g-3">
-                            <div class="col-12">
-                              <label for="paquete" class="form-label"
-                                >Paquete</label
-                              >
-                              <select
-                                id="paquete"
-                                name="paquete"
-                                class="form-select"
-                                required
-                              >
-                                <option value="" disabled selected>
-                                  Selecciona un paquete
-                                </option>
-                                <option value="ARENAL">
-                                  Arenal + Termales
-                                </option>
-                                <option value="MANUEL">
-                                  Manuel Antonio Full Day
-                                </option>
-                                <option value="MONTE">Monteverde Canopy</option>
-                              </select>
-                            </div>
-                            <div class="col-12 col-md-6">
-                              <label for="fecha" class="form-label"
-                                >Fecha</label
-                              >
-                              <input
-                                id="fecha"
-                                name="fecha"
-                                type="date"
-                                class="form-control"
-                                required
-                              />
-                            </div>
-                            <div class="col-12 col-md-6">
-                              <label for="hora" class="form-label"
-                                >Hora de salida</label
-                              >
-                              <select
-                                id="hora"
-                                name="hora"
-                                class="form-select"
-                                required
-                              >
-                                <option value="07:00">07:00</option>
-                                <option value="08:00" selected>08:00</option>
-                                <option value="09:00">09:00</option>
-                              </select>
-                            </div>
-                            <div class="col-12">
-                              <label for="pickup" class="form-label"
-                                >Punto de encuentro / Recogida</label
-                              >
-                              <input
-                                id="pickup"
-                                name="pickup"
-                                type="text"
-                                class="form-control"
-                                placeholder="Hotel / Dirección exacta"
-                              />
-                            </div>
-                            <div class="col-12">
-                              <label for="notas" class="form-label"
-                                >Notas (restricciones alimentarias /
-                                comentarios)</label
-                              >
-                              <textarea
-                                id="notas"
-                                name="notas"
-                                rows="3"
-                                class="form-control"
-                                placeholder="Cuéntanos cualquier detalle importante"
-                              ></textarea>
-                            </div>
+                          <!-- Sub-accordion por tour -->
+                          <div class="accordion" id="accordionCheckoutTourList">  
                           </div>
+                          <!-- /accordionCheckoutTourList -->
                         </div>
                       </div>
                     </div>
@@ -930,6 +858,7 @@
     <script src="../assets/js/menu.js"></script>
     <script type="module" src="../assets/js/cart.module.js"></script>
     <script type="module" src="../assets/js/cart-modal.js" defer></script>
+    <script type="module" src="../assets/js/checkout-module.js" defer></script>
     <script type="module" src="../assets/js/checkout-page.js" defer></script>
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

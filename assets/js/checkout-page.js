@@ -4,10 +4,13 @@ import {
   validateCoupon,
 } from "./cart.module.js";
 
+import { setTourDetailsForm } from "./checkout-module.js"
+
 (() => {
   document.addEventListener("DOMContentLoaded", () => {
     updateBasket();
     updateCartTotal();
+    setTourDetailsForm();
 
     const btnCoupon = document.getElementById("btn-coupon");
     const inputCoupon = document.getElementById("coupon");
