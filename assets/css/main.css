@@ -69,6 +69,19 @@ body {
   background-color: #2a7e7e !important;
 }
 
+.btn-secondary {
+  --bs-btn-bg: #1f58d0;
+  background-color: var(--bs-btn-bg);
+}
+.btn-secondary:hover {
+  --bs-btn-bg: #072f85;
+  background-color: var(--bs-btn-bg);
+}
+.btn-secondary:active, .btn-secondary:visited{
+  --bs-btn-bg: #04215e;
+  background-color: var(--bs-btn-bg);
+}
+
 /* Hamburger */
 
 #nav-icon3 {
@@ -442,8 +455,8 @@ Estilos para reseñas
   margin-top: 10px;
 }
 
-.subtitulo{
-    background: antiquewhite;
+.subtitulo {
+  background: antiquewhite;
 }
 
 /** Modal */
