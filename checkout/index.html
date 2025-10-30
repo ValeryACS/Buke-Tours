@@ -127,7 +127,7 @@
                       >
                         <div class="accordion-body">
                           <div class="row g-3 text-start">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-6 form-group">
                               <label for="nombre" class="form-label"
                                 >Nombre completo</label
                               >
@@ -141,7 +141,7 @@
                                 required
                               />
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-6 form-group">
                               <label for="email" class="form-label"
                                 >Correo electrónico</label
                               >
@@ -155,7 +155,7 @@
                                 required
                               />
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-6 form-group">
                               <label for="telefono" class="form-label"
                                 >Teléfono</label
                               >
@@ -168,7 +168,7 @@
                                 autocomplete="tel"
                               />
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-6 form-group">
                               <label for="pais" class="form-label"
                                 >País de residencia</label
                               >
@@ -215,7 +215,7 @@
                       >
                         <div class="accordion-body">
                           <div class="row g-3">
-                            <div class="col-6 col-md-4">
+                            <div class="col-6 col-md-4 form-group">
                               <label for="adultos" class="form-label"
                                 >Adultos</label
                               >
@@ -229,7 +229,7 @@
                                 required
                               />
                             </div>
-                            <div class="col-6 col-md-4">
+                            <div class="col-6 col-md-4 form-group">
                               <label for="ninos" class="form-label"
                                 >Niños</label
                               >
@@ -242,7 +242,7 @@
                                 class="form-control text-center"
                               />
                             </div>
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-4 form-group">
                               <label for="idioma" class="form-label"
                                 >Idioma del tour</label
                               >
@@ -256,7 +256,7 @@
                                 <option value="en">Inglés</option>
                               </select>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 form-group text-start">
                               <label for="viajeroPrincipal" class="form-label"
                                 >Viajero principal (para el voucher)</label
                               >
@@ -269,7 +269,7 @@
                                 required
                               />
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-7 form-group text-start">
                               <label for="documento" class="form-label"
                                 >Documento / Pasaporte</label
                               >
@@ -405,7 +405,7 @@
                       >
                         <div class="accordion-body">
                           <div class="row g-3">
-                            <div class="col-12">
+                            <div class="col-12 text-start">
                               <label for="direccion" class="form-label"
                                 >Dirección</label
                               >
@@ -471,7 +471,7 @@
                           aria-expanded="false"
                           aria-controls="collapsePago"
                         >
-                          Pago
+                          Tarjeta de crédito / débito
                         </button>
                       </h2>
                       <div
@@ -481,20 +481,7 @@
                         data-bs-parent="#accordionCheckout"
                       >
                         <div class="accordion-body">
-                          <div class="accordion mb-3" id="accordionPago">
-                            <div class="accordion-item">
-                              <h2 class="accordion-header" id="headingCard">
-                                <button
-                                  class="accordion-button"
-                                  type="button"
-                                  data-bs-toggle="collapse"
-                                  data-bs-target="#pagoTarjeta"
-                                  aria-expanded="true"
-                                  aria-controls="pagoTarjeta"
-                                >
-                                  Tarjeta de crédito / débito
-                                </button>
-                              </h2>
+                             
                               <div
                                 id="pagoTarjeta"
                                 class="accordion-collapse collapse show"
@@ -503,7 +490,7 @@
                               >
                                 <div class="accordion-body">
                                   <div class="row g-3">
-                                    <div class="col-12">
+                                    <div class="col-12 text-start form-group">
                                       <label for="cardName" class="form-label"
                                         >Nombre en la tarjeta</label
                                       >
@@ -516,7 +503,7 @@
                                         required
                                       />
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12 text-start form-group">
                                       <label for="cardNumber" class="form-label"
                                         >Número de tarjeta</label
                                       >
@@ -531,7 +518,7 @@
                                         required
                                       />
                                     </div>
-                                    <div class="col-6 col-md-4">
+                                    <div class="col-6 col-md-4 form-group">
                                       <label for="cardMonth" class="form-label"
                                         >Mes</label
                                       >
@@ -546,7 +533,7 @@
                                         required
                                       />
                                     </div>
-                                    <div class="col-6 col-md-4">
+                                    <div class="col-6 col-md-4 form-group">
                                       <label for="cardYear" class="form-label"
                                         >Año</label
                                       >
@@ -561,7 +548,7 @@
                                         required
                                       />
                                     </div>
-                                    <div class="col-12 col-md-4">
+                                    <div class="col-12 col-md-4 form-group">
                                       <label for="cardCvv" class="form-label"
                                         >CVV</label
                                       >
@@ -580,11 +567,6 @@
                                 </div>
                               </div>
                             </div>
-
-                            
-                          </div>
-                          <!-- /accordionPago -->
-                        </div>
                       </div>
                     </div>
                   </div>

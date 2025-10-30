@@ -23,7 +23,7 @@ export const setTourDetailsForm = () => {
     .then((data) => {
       // Para cada id del carrito busca el tour en el JSON
       const output = ids
-        .map((id) => {
+        .map((id, index) => {
           const tour = data.find((t) => String(t.id) === String(id));
           if (!tour) return ""; // si no existe en el JSON, sáltalo
           return `
@@ -42,13 +42,13 @@ export const setTourDetailsForm = () => {
                 </h2>
                 <div
                 id="collapseTour-${id}"
-                class="accordion-collapse collapse show"
+                class="accordion-collapse collapse ${index === 0 ? 'show' : ''}"
                 aria-labelledby="headingTour-${id}"
                 data-bs-parent="#accordionCheckoutTourList"
                 >
                     <div class="accordion-body">
                         <div class="row g-3">
-                            <div class="col-12">
+                            <div class="col-12 text-start">
                                 <label
                                 for="tour-name-${id}"
                                 class="form-label"
