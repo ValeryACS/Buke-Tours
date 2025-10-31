@@ -1,8 +1,10 @@
 /**
+ * @function
  * Calcula y actualiza el total del carrito en el elemento con id="cartTotal"
  * - Subtotal: suma de (qty * price)
  * - Descuento por tour: suma por ítem (más preciso que sumar %)
  * - Cupones: solo aplica los cupones cuyo tour está en el carrito
+ * @returns {Promise<void>} - Actualiza el total
  */
 export const updateCartTotal = async () => {
   const cartTotalEl = document.getElementById("cartTotal");
@@ -116,7 +118,9 @@ export const updateCartTotal = async () => {
 };
 
 /**
+ * @function
  * Lee los cupones del localStorage como objeto { [cuponCode]: cuponDiscount }
+ * @returns {Object} - El JSON con los cupones o un objeto vacio
  */
 export const readCupons = () => {
   try {
@@ -127,14 +131,18 @@ export const readCupons = () => {
 };
 
 /**
- * Guarda los Cupones
+ * @function
+ * Guarda los Cupones en el localStorage
+ * @returns {void}
  */
 export const saveCupon = (cuponObj) => {
   localStorage.setItem("cupons", JSON.stringify(cuponObj));
 };
 
 /**
+ * @function
  * Lee el carrito del localStorage como objeto { [id]: qty }
+ * @returns {void}
  */
 export const readCart = () => {
   try {
@@ -145,7 +153,9 @@ export const readCart = () => {
 };
 
 /**
+ * @function
  * Guarda el carrito
+ * @returns {void}
  */
 export const saveCart = (cartObj) => {
   localStorage.setItem("cart", JSON.stringify(cartObj));
@@ -154,21 +164,25 @@ export const saveCart = (cartObj) => {
 /**
  * Actualiza los items adentro del Modal del carrito
  * @param {Object} cartObj - Objeto { [id]: qty }
+ * @returns {Promise<void>} - Se basa en los tours que hay guardados en el localStorage para luego obbtener sus datos y renderezarlos
  */
-export const updateCartModal = (cartObj) => {
+export const updateCartModal = async (cartObj) => {
   const cartList = document.getElementById("cartList");
   if (!cartList) return;
 
   const ids = Object.keys(cartObj || {});
   if (ids.length === 0) {
+    document.querySelector(".modal-footer")?.classList.add("d-none");
+    document.querySelector(".resumen-del-pedido")?.classList.add("d-none");
     cartList.innerHTML = `
           <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
           <a href="/tours.html" class="btn btn-danger m-auto">Comprar Tours</a>
         `;
     return;
   }
-
-  fetch("/assets/data/tours.json")
+  document.querySelector(".modal-footer")?.classList.remove("d-none");
+  document.querySelector(".resumen-del-pedido")?.classList.remove("d-none");
+  await fetch("/assets/data/tours.json")
     .then((res) => {
       if (!res.ok) throw new Error("Error al cargar el JSON");
       return res.json();
@@ -233,6 +247,8 @@ export const updateCartModal = (cartObj) => {
                               inputmode="numeric"
                               aria-label="Cantidad"
                               data-tour-id="${tour.id}"
+                              name="quantity-${tour.id}"
+                              id="quantity-${tour.id}"
                             />
                             <button
                               class="btn btn-primary btn-qty btn-add-quantity"
@@ -274,22 +290,24 @@ export const updateCartModal = (cartObj) => {
 };
 
 /**
+ * @function
  * Re-vincula los eventos para los elementos del modal
+ * @returns {void} - Setea los eventos de los inputs del modal
  */
 export const attachCartItemEvents = () => {
   // +
   document.querySelectorAll(".btn-add-quantity").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
+    btn.addEventListener("click", async (e) => {
       const id = e.currentTarget.getAttribute("data-tour-id");
-      changeQty(id, +1);
+      await changeQty(id, +1);
     });
   });
 
   // −
   document.querySelectorAll(".btn-substract-quantity").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
+    btn.addEventListener("click", async (e) => {
       const id = e.currentTarget.getAttribute("data-tour-id");
-      changeQty(id, -1);
+      await changeQty(id, -1);
     });
   });
 
@@ -312,10 +330,13 @@ export const attachCartItemEvents = () => {
 };
 
 /**
+ * @function
  * Permite actualizar la cantidad total (badge del carrito)
+ * @returns {void} - Setea la cantidad total de productos
  */
 export const updateCartQuantity = () => {
   const quantityEl = document.getElementById("quantity");
+  const toursAdded = document.querySelector(".tours-added");
   if (!quantityEl) return;
 
   const cartObj = readCart();
@@ -324,14 +345,21 @@ export const updateCartQuantity = () => {
     0
   );
 
+  if (toursAdded) {
+    toursAdded.textContent = total + " tours";
+    toursAdded.classList.toggle("d-none", total <= 0);
+  }
+
   quantityEl.textContent = total;
   quantityEl.classList.toggle("d-none", total <= 0);
 };
 
 /**
+ * @function
  * Cambia la cantidad en ±1, con mínimo 1
+ * @returns {Promise<void>}
  */
-export const changeQty = (id, delta) => {
+export const changeQty = async (id, delta) => {
   const cart = readCart();
   const curr = Number(cart[id] || 0) + delta;
   if (curr <= 0) {
@@ -340,16 +368,18 @@ export const changeQty = (id, delta) => {
     cart[id] = curr;
   }
   saveCart(cart);
-  updateCartModal(cart);
+  await updateCartModal(cart);
   updateCartQuantity();
-  updateCartTotal();
-  updateBasket();
+  await updateCartTotal();
+  await updateBasket();
 };
 
 /**
+ * @function
  * Fija la cantidad a un valor específico (mínimo 1)
+ * @returns {Promise<void>}
  */
-export const setQty = (id, qty) => {
+export const setQty = async (id, qty) => {
   const cart = readCart();
   if (qty <= 0) {
     delete cart[id];
@@ -357,43 +387,47 @@ export const setQty = (id, qty) => {
     cart[id] = qty;
   }
   saveCart(cart);
-  updateCartModal(cart);
+  await updateCartModal(cart);
   updateCartQuantity();
-  updateCartTotal();
-  updateBasket();
+  await updateCartTotal();
+  await updateBasket();
 };
 
 /**
+ * @function
  * Elimina un tour del carrito
+ * @returns {Promise<void>}
  */
-export const removeFromCart = (id) => {
+export const removeFromCart = async (id) => {
   const cart = readCart();
   delete cart[id];
   saveCart(cart);
-  updateCartModal(cart);
+  await updateCartModal(cart);
   updateCartQuantity();
-  updateCartTotal();
-  updateBasket();
+  await updateCartTotal();
+  await updateBasket();
 };
 
 /**
  * Agrega un Tour al Carrito
  * @param {string} id - Id del Tour
+ * @returns {Promise<void>} - Consulta los datos respectivos al ID del Tour recibido
  */
-export const onAddTourToCart = (id) => {
+export const onAddTourToCart = async (id) => {
   const cart = readCart();
   cart[id] = (Number(cart[id]) || 0) + 1;
   saveCart(cart);
 
-  updateCartModal(cart);
+  await updateCartModal(cart);
   updateCartQuantity();
-  updateCartTotal();
+  await updateCartTotal();
 };
 
 /**
  * Actualiza todos los tours incluidos en el carrito de compras para la pagina del carrito (no es el modal)
- */
-export const updateBasket = () => {
+ * @returns {Promise<void>} - Usado para renderizar los tours incluidos en el carrito
+ **/
+export const updateBasket = async () => {
   const cart = readCart();
   const cartList = document.getElementById("cart-list-tours");
   if (!cartList) return;
@@ -407,7 +441,7 @@ export const updateBasket = () => {
     return;
   }
 
-  fetch("/assets/data/tours.json")
+  await fetch("/assets/data/tours.json")
     .then((res) => {
       if (!res.ok) throw new Error("Error al cargar el JSON");
       return res.json();
@@ -424,7 +458,6 @@ export const updateBasket = () => {
           const subtotal = (qty * price).toFixed(2);
 
           return `
-
             <article class="list-group-item p-3" data-tour-id="${tour.id}">
                   <div class="row g-3 align-items-center">
                     <div class="col-4 col-sm-3">
@@ -476,7 +509,8 @@ export const updateBasket = () => {
                               −
                             </button>
                             <input
-                              id="qty-1"
+                              id="qty-tour-${tour.id}"
+                              name="qty-tour-${tour.id}"
                               type="number"
                               class="form-control text-center input-qty"
                               value="${qty}"
@@ -510,14 +544,14 @@ export const updateBasket = () => {
 
       cartList.innerHTML = output;
 
-      // Re-vincular eventos de + / − / input / eliminar
-      attachCartItemEvents();
+      attachCartItemEvents(); // Re-vincula los eventos de los inputs agregados al DOM
     })
     .catch((err) => console.error("Error:", err));
 };
 /**
  * Valida si el Coupon corresponde a uno de los Tours existentes
  * @param {string} coupon - El Coupon a validar
+ * @returns {Promise<void>} - Consulta el id del coupon recibido por parametro para luego compararlo con los tours
  */
 export const validateCoupon = async (cuponCode) => {
   const code = String(cuponCode || "")
@@ -538,7 +572,7 @@ export const validateCoupon = async (cuponCode) => {
   }
 
   const cart = readCart();
-  const cartIds = new Set(Object.keys(cart || {}));
+  const cartIds = new Set(Object.keys(cart || {})); // Crea una coleccion de Ids unicos basado en las keys que hay almacenadas en el carrito
 
   try {
     const res = await fetch("/assets/data/tours.json");
@@ -599,21 +633,6 @@ export const validateCoupon = async (cuponCode) => {
       return;
     }
 
-    const discountPct = Number(tourByCoupon.cuponDiscount) || 0;
-    if (discountPct <= 0) {
-      Swal.fire({
-        icon: "error",
-        title: "Cupón inválido",
-        text: "El cupón no tiene un descuento válido.",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 6000,
-        timerProgressBar: true,
-      });
-      return;
-    }
-
     // Guardar cupón (solo porcentaje; validaremos contra carrito en el total)
     saveCupon({
       ...existCupons,
@@ -631,7 +650,7 @@ export const validateCoupon = async (cuponCode) => {
       timerProgressBar: true,
     });
 
-    updateCartTotal();
+    updateCartTotal(); // Actualiza el total si todo salio bien
   } catch (err) {
     console.error("Error validando cupón:", err);
     Swal.fire({

@@ -5,14 +5,14 @@ import {
 } from "./cart.module.js";
 
 (() => {
-  document.addEventListener("DOMContentLoaded", () => {
-    updateBasket();
-    updateCartTotal();
+  document.addEventListener("DOMContentLoaded", async () => {
+    await updateBasket();
+    await updateCartTotal();
 
     const btnCoupon = document.getElementById("btn-coupon");
     const inputCoupon = document.getElementById("coupon");
 
-    btnCoupon.addEventListener("click", () => {
+    btnCoupon.addEventListener("click", async () => {
       if (!inputCoupon.value.length) {
         Swal.fire({
           icon: "error",
@@ -26,7 +26,7 @@ import {
         });
         return;
       }
-      validateCoupon(inputCoupon.value);
+      await validateCoupon(inputCoupon.value);
     });
   });
 })();
