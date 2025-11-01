@@ -102,15 +102,27 @@
 
     <main>
       <section id="checkout" class="py-5">
-        <div class="container bg-light">
+        <div class="container bg-light container-content">
           <!-- Encabezado -->
           <div class="d-flex align-items-center justify-content-between mb-4">
             <h1 class="titulo h3 mb-0">Formulario de Compra</h1>
             <span class="badge text-bg-danger tours-added">3 artículos</span>
           </div>
           <div class="row g-4">
+            <article
+              id="empty-checkout-cart"
+              class="col-12 col-lg-8 d-flex flex-column justify-content-center align-items-center"
+            >
+              <div class="text-center text-muted p-4">
+                Tu carrito está vacío.
+              </div>
+              <a href="/tours.html" class="btn btn-danger m-auto"
+                >Comprar Tours</a
+              >
+            </article>
+
             <!-- Formulario -->
-            <div class="col-12 col-lg-8">
+            <article class="col-12 col-lg-8" id="checkout-article-container">
               <div id="checkout-form" class="card shadow-sm border-0">
                 <div class="card-body p-4">
                   <div class="accordion" id="accordionCheckout">
@@ -161,7 +173,7 @@
                                 class="form-control"
                                 placeholder="ejemplo@correo.com"
                                 autocomplete="email"
-                                maxlength="70"
+                                maxlength="90"
                               />
                             </div>
                             <div class="col-12 col-md-6 form-group">
@@ -811,27 +823,13 @@
                   <!-- /accordionCheckout -->
                 </div>
               </div>
-            </div>
+            </article>
 
             <!-- Resumen -->
             <aside class="col-12 col-lg-4 resumen-del-pedido">
               <div class="card shadow-sm sticky-lg-top" style="top: 1rem">
                 <div class="card-body">
                   <h2 class="h6 mb-3">Resumen del pedido</h2>
-
-                  <div class="d-flex justify-content-between">
-                    <span class="small text-muted">Paquete</span>
-                    <span class="small fw-semibold">Arenal + Termales</span>
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <span class="small text-muted">Fecha</span>
-                    <span class="small fw-semibold">10/11/2025 · 08:00</span>
-                  </div>
-                  <div class="d-flex justify-content-between mb-3">
-                    <span class="small text-muted">Viajeros</span>
-                    <span class="small fw-semibold">2 adultos</span>
-                  </div>
-
                   <!-- Cupón -->
                   <div class="mb-3">
                     <label for="coupon" class="form-label small"
@@ -858,10 +856,6 @@
                   <!-- Totales -->
                   <ul class="list-unstyled mb-4">
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Subtotal</span>
-                      <span id="subtotal-cart">$152.29</span>
-                    </li>
-                    <li class="d-flex justify-content-between mb-1">
                       <span>Descuento</span>
                       <span id="discount-cart">−$10.00</span>
                     </li>
@@ -872,10 +866,45 @@
                       <span>Coupon Discounts</span>
                       <span id="cupon-discounts-cart"></span>
                     </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Adultos</span>
+                      <span id="adultos-sidebar-cart">1</span>
+                    </li>
+                     <li class="d-flex justify-content-between mb-1">
+                      <span>Niños</span>
+                      <span id="children-sidebar-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <h3>Extras:</h3>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Desayunos</span><span id="breakfast-cart"> 0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Almuerzos</span><span id="launch-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Cena</span><span id="diner-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Transporte</span><span id="transport-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Seguro</span><span id="security-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Fotografias</span><span id="photos-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <h4>Subtotal</h4>
+                      <span id="subtotal-cart">$152.29</span>
+                      <input type="number" hidden readonly id="subtotal" name="subtotal" class="d-none" />
+                    </li>
                     <li
                       class="d-flex justify-content-between border-top pt-2 fw-semibold"
                     >
-                      <span>Total</span> <span id="total-cart">$147.28</span>
+                      <h2>Total</h2> <span id="total-cart">$147.28</span>
+                      <input type="number" hidden readonly id="total" name="total" class="d-none" />
                     </li>
                     <li>
                       <div class="form-check mb-3 mt-4 text-start">

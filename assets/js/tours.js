@@ -10,7 +10,7 @@ import {
     const tours = document.getElementById("tours");
 
     const onClickViewTour = (id) => {
-      console.log("Tour Clicked:", id);
+      console.log("Tour Clicked:", id);// TODO redirigir a la pagina del tour
     };
 
     const onAddToCart = async (id) => {

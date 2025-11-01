@@ -9,6 +9,7 @@ import {
   validateCheckoutForm,
   renderFlags,
   setOnChangeCheckoutEvents,
+  calculateExtras,
 } from "./checkout-module.js";
 
 import { todayLocalISO } from "./utils.module.js";
@@ -22,35 +23,37 @@ import { todayLocalISO } from "./utils.module.js";
 
     const btnCoupon = document.getElementById("btn-coupon");
     const inputCoupon = document.getElementById("coupon");
-    const btnCheckout = document.getElementById("pagar-con-tarjeta-btn");
+    const btnPayWithCreditCar = document.getElementById("pagar-con-tarjeta-btn");
     const btnPayWithPaypal = document.getElementById("btn-pay-with-paypal");
 
-    let nombreCompleto = document.getElementById("nombre");
-    let email = document.getElementById("email");
-    let telefono = document.getElementById("telefono");
-    let pais = document.getElementById("pais");
-    let adultos = document.getElementById("adultos");
-    let ninos = document.getElementById("ninos");
-    let idioma = document.getElementById("idioma");
-    let viajeroPrincipal = document.getElementById("viajeroPrincipal");
-    let pasaporteOdocumento = document.getElementById("documento");
-    let fechasDeIngreso = document.querySelectorAll(".start-date-input");
-    let fechasDeSalida = document.querySelectorAll(".end-date-input");
-    let seguro = document.getElementById("seguro");
-    let transporte = document.getElementById("transporte");
-    let fotos = document.getElementById("fotos");
-    let desayuno = document.getElementById("desayuno");
-    let almuerzo = document.getElementById("almuerzo");
-    let cena = document.getElementById("cena");
-    let direccion = document.getElementById("direccion");
-    let ciudad = document.getElementById("ciudad");
-    let provincia = document.getElementById("provincia");
-    let codigoPostal = document.getElementById("zip");
-    let nombreDelTitular = document.getElementById("cardName");
-    let numeroDeLaTarjeta = document.getElementById("cardNumber");
-    let mes = document.getElementById("cardMonth");
-    let year = document.getElementById("cardYear");
-    let cvv = document.getElementById("cardCvv");
+    const nombreCompleto = document.getElementById("nombre");
+    const email = document.getElementById("email");
+    const telefono = document.getElementById("telefono");
+    const pais = document.getElementById("pais");
+    const adultos = document.getElementById("adultos");
+    const ninos = document.getElementById("ninos");
+    const idioma = document.getElementById("idioma");
+    const viajeroPrincipal = document.getElementById("viajeroPrincipal");
+    const pasaporteOdocumento = document.getElementById("documento");
+    const fechasDeIngreso = document.querySelectorAll(".start-date-input");
+    const fechasDeSalida = document.querySelectorAll(".end-date-input");
+    const seguro = document.getElementById("seguro");
+    const transporte = document.getElementById("transporte");
+    const fotos = document.getElementById("fotos");
+    const desayuno = document.getElementById("desayuno");
+    const almuerzo = document.getElementById("almuerzo");
+    const cena = document.getElementById("cena");
+    const direccion = document.getElementById("direccion");
+    const ciudad = document.getElementById("ciudad");
+    const provincia = document.getElementById("provincia");
+    const codigoPostal = document.getElementById("zip");
+    const nombreDelTitular = document.getElementById("cardName");
+    const numeroDeLaTarjeta = document.getElementById("cardNumber");
+    const mes = document.getElementById("cardMonth");
+    const year = document.getElementById("cardYear");
+    const cvv = document.getElementById("cardCvv");
+    const subtotal = document.getElementById("subtotal")
+    const total = document.getElementById("total")
 
     setOnChangeCheckoutEvents({
       inputTextStrings: [
@@ -79,6 +82,23 @@ import { todayLocalISO } from "./utils.module.js";
       .forEach((el) => {
         el.setAttribute("min", minDate);
       });
+
+    Array.from([seguro, transporte, fotos, desayuno, almuerzo,cena, adultos, ninos]).forEach((element)=> {
+      element.addEventListener("change", (_)=> {
+        calculateExtras({
+          children: Number(ninos.value),
+          adultos: Number(adultos.value),
+          hasBreakfast: desayuno.checked,
+          hasLaunch: almuerzo.checked,
+          hasDinner: cena.checked,
+          hasSecurity: seguro.checked,
+          hasPhotos: fotos.checked,
+          hasTransport: transporte.checked,
+          subtotal: subtotal.value,
+          total: total.value
+        })
+      })
+    })
 
     btnCoupon.addEventListener("click", async () => {
       if (!inputCoupon.value.length) {
@@ -114,28 +134,6 @@ import { todayLocalISO } from "./utils.module.js";
         });
         return;
       }
-
-      nombreCompleto = document.getElementById("nombre");
-      email = document.getElementById("email");
-      telefono = document.getElementById("telefono");
-      pais = document.getElementById("pais");
-      adultos = document.getElementById("adultos");
-      ninos = document.getElementById("ninos");
-      idioma = document.getElementById("idioma");
-      viajeroPrincipal = document.getElementById("viajeroPrincipal");
-      pasaporteOdocumento = document.getElementById("documento");
-      fechasDeIngreso = document.querySelectorAll(".start-date-input");
-      fechasDeSalida = document.querySelectorAll(".end-date-input");
-      seguro = document.getElementById("seguro");
-      transporte = document.getElementById("transporte");
-      fotos = document.getElementById("fotos");
-      desayuno = document.getElementById("desayuno");
-      almuerzo = document.getElementById("almuerzo");
-      cena = document.getElementById("cena");
-      direccion = document.getElementById("direccion");
-      ciudad = document.getElementById("ciudad");
-      provincia = document.getElementById("provincia");
-      codigoPostal = document.getElementById("zip");
 
       const isValidCheckout = validateCheckoutForm({
         stringsRequeridos: [
@@ -182,7 +180,7 @@ import { todayLocalISO } from "./utils.module.js";
         formData.append("provincia", provincia.value);
         formData.append("codigoPostal", codigoPostal.value);
 
-        //TODO Enviar la data al API de Paypal
+        //TODO Calcular Total y Subtotal luego Enviar la data al API de Paypal
 
         Swal.fire({
           icon: "success",
@@ -199,11 +197,10 @@ import { todayLocalISO } from "./utils.module.js";
         await updateCartTotal();
         await setTourDetailsForm();
         renderFlags();
-        return;
       }
     });
 
-    btnCheckout.addEventListener("click", async (event) => {
+    btnPayWithCreditCar.addEventListener("click", async (event) => {
       event.preventDefault();
       const terms = document.getElementById("terms");
 
@@ -220,33 +217,6 @@ import { todayLocalISO } from "./utils.module.js";
         });
         return;
       }
-
-      nombreCompleto = document.getElementById("nombre");
-      email = document.getElementById("email");
-      telefono = document.getElementById("telefono");
-      pais = document.getElementById("pais");
-      adultos = document.getElementById("adultos");
-      ninos = document.getElementById("ninos");
-      idioma = document.getElementById("idioma");
-      viajeroPrincipal = document.getElementById("viajeroPrincipal");
-      pasaporteOdocumento = document.getElementById("documento");
-      fechasDeIngreso = document.querySelectorAll(".start-date-input");
-      fechasDeSalida = document.querySelectorAll(".end-date-input");
-      seguro = document.getElementById("seguro");
-      transporte = document.getElementById("transporte");
-      fotos = document.getElementById("fotos");
-      desayuno = document.getElementById("desayuno");
-      almuerzo = document.getElementById("almuerzo");
-      cena = document.getElementById("cena");
-      direccion = document.getElementById("direccion");
-      ciudad = document.getElementById("ciudad");
-      provincia = document.getElementById("provincia");
-      codigoPostal = document.getElementById("zip");
-      nombreDelTitular = document.getElementById("cardName");
-      numeroDeLaTarjeta = document.getElementById("cardNumber");
-      mes = document.getElementById("cardMonth");
-      year = document.getElementById("cardYear");
-      cvv = document.getElementById("cardCvv");
 
       const isValidCheckout = validateCheckoutForm({
         stringsRequeridos: [
@@ -299,7 +269,7 @@ import { todayLocalISO } from "./utils.module.js";
         formData.append("year", year.value);
         formData.append("cvv", cvv.value);
 
-        //TODO Enviar la data al endpoint de PHP
+        //TODO Calcular Total y Subtotal luego Enviar la data al endpoint de PHP
 
         Swal.fire({
           icon: "success",
@@ -316,7 +286,6 @@ import { todayLocalISO } from "./utils.module.js";
         await updateCartTotal();
         await setTourDetailsForm();
         renderFlags();
-        return;
       }
     });
   });

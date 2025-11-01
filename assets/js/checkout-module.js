@@ -145,29 +145,29 @@ export const validateCheckoutForm = ({
 
     // Input sin valor
     if (!inputValue) {
-      pushErrorMessage(
+      return pushErrorMessage(
         inputElement,
         `El campo "${inputElement.labels?.[0]?.innerText || id}" es requerido.`
       );
-      return;
     }
 
     if (id === "nombre") {
       // Valida el nombre
       if (containNumbers(inputValue)) {
-        pushErrorMessage(inputElement, "El nombre no puede contener números.");
-        return;
+        return pushErrorMessage(
+          inputElement,
+          "El nombre no puede contener números."
+        );
       }
     }
 
     if (id === "viajeroprincipal") {
       // Valida el nombre del Viajero Principal
       if (containNumbers(inputValue)) {
-        pushErrorMessage(
+        return pushErrorMessage(
           inputElement,
           "El nombre del Viajero Principal no puede contener números."
         );
-        return;
       }
     }
 
@@ -175,11 +175,10 @@ export const validateCheckoutForm = ({
       // Valida el email
       const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue); // Valida si es un email valido
       if (!isValidEmail)
-        pushErrorMessage(
+        return pushErrorMessage(
           inputElement,
           "El correo electrónico no tiene un formato válido."
         );
-      return;
     }
 
     if (id === "telefono") {
@@ -187,18 +186,19 @@ export const validateCheckoutForm = ({
       const digitosDelTelefono = onlyDigits(inputValue);
       const isValidTelephone = digitosDelTelefono.length >= 8; // mínimo razonable
       if (!isValidTelephone)
-        pushErrorMessage(
+        return pushErrorMessage(
           inputElement,
           "El teléfono debe contener mínimo 8 dígitos."
         );
-      return;
     }
 
     if (id === "pais") {
       // Valida el pais
       if (!inputElement.value) {
-        pushErrorMessage(inputElement, "Selecciona un país de residencia.");
-        return;
+        return pushErrorMessage(
+          inputElement,
+          "Selecciona un país de residencia."
+        );
       }
     }
 
@@ -494,4 +494,141 @@ export const setOnChangeCheckoutEvents = ({
       }
     });
   });
+};
+
+/**
+ * @function - Usada para calcular el monto extra dependiendo de si el usuario selecciona o no alguno de los checkobox opcionales
+ * @param {Object} params - Un Objeto el cual contiene todos los extras
+ * @param {Number} params.children - La cantidad de niños
+ * @param {Number} params.adultos - La cantidad de adultos
+ * @param {Boolean} params.hasBreakfast - Determina si la reservacion incluye Desayuno o no
+ * @param {Boolean} params.hasLaunch - Determina si la reservacion incluye Almuerzo o no
+ * @param {Boolean} params.hasDinner - Determina si la reservacion incluye Cena o no
+ * @param {Boolean} params.hasSecurity - Determina si la reservacion incluye Seguro Viajero
+ * @param {Boolean} params.hasPhotos - Determina si la reservacion incluye Fotos o no
+ * @param {Boolean} params.hasTransport - Determina si la reservacion incluye Transporte o no
+ * @param {Number} params.subtotal - El Subtotal sin haber aplicado los costos extra
+ * @param {Number} params.total - El Total final sin haber aplicado los costos extra
+ * @return {void} - Actualiza el Total y el SubTotal
+ */
+export const calculateExtras = ({
+  children,
+  adultos,
+  hasBreakfast,
+  hasLaunch,
+  hasDinner,
+  hasSecurity,
+  hasPhotos,
+  hasTransport,
+  subtotal,
+  total,
+}) => {
+  const breakfastCart = document.getElementById("breakfast-cart");// El texto del Desayuno en el sidebar del Resumen de Pedido
+  const launchCart = document.getElementById("launch-cart");// El texto del Almuerzo en el sidebar del Resumen de Pedido
+  const dinerCart = document.getElementById("diner-cart");// El texto de la Cena en el sidebar del Resumen de Pedido
+  const transportCart = document.getElementById("transport-cart");// El texto del Transport en el sidebar del Resumen de Pedido
+  const securityCart = document.getElementById("security-cart");// El texto del Seguro Viajero en el sidebar del Resumen de Pedido
+  const photoCart = document.getElementById("photos-cart");// El texto del Paquete de Fotos en el sidebar del Resumen de Pedido
+  const totalCartSidebar = document.getElementById("total-cart");// El texto del Total en el sidebar del Resumen de Pedido
+  const subTotalCartSidebar = document.getElementById("subtotal-cart");// El texto del Subtotal en el sidebar del Resumen de Pedido
+  const childrenSidebar = document.getElementById("children-sidebar-cart"); // El texto de los Niños en el sidebar del Resumen de Pedido 
+  const adultosSidebar = document.getElementById("adultos-sidebar-cart");// El texto de los Adultos en el sidebar del Resumen de Pedido 
+  let newTotal = Number(total) || 0;
+  let newSubTotal = Number(subtotal) || 0;
+
+  const quantityOfPersons = Number(children) + Number(adultos);// Cantidad Total de Personas
+  
+
+  const breakFastCost = quantityOfPersons * 11; // Costo del Desayuno
+  const launchCost = quantityOfPersons * 12; // Costo del Almuerzo
+  const dinerCost = quantityOfPersons * 17; // Costo de la Cena
+  const securityCost = quantityOfPersons * 9; // Costo del Seguro Viajero
+  const photosCost = quantityOfPersons * 15; // Costo del Paquete Fotografico
+  const transportCost = quantityOfPersons * 100; // Costo del Transporte
+
+  if (Number(children) > 0) {
+    childrenSidebar.textContent = `X${Number(children)}`;
+  } else {
+    childrenSidebar.textContent = 0;
+  }
+
+  if (Number(adultos) > 1) {
+    newTotal = Number(adultos) * newTotal;
+    newSubTotal = Number(adultos) * newSubTotal;
+    if (adultosSidebar) {
+      adultosSidebar.textContent = `X${adultos}`;
+    }
+  } else {
+    newTotal = newTotal;
+    newSubTotal = newSubTotal;
+    if (adultosSidebar) {
+      adultosSidebar.textContent = `X1`;
+    }
+  }
+  if (hasBreakfast) {
+    newTotal = newTotal + breakFastCost;
+    newSubTotal = newSubTotal + breakFastCost;
+    breakfastCart.textContent = `$${breakFastCost.toLocaleString("es-CR")}`;
+  } else {
+    newTotal = newTotal;
+    newSubTotal = newSubTotal;
+    breakfastCart.textContent = 0;
+  }
+  if (hasLaunch) {
+    newTotal = newTotal + launchCost;
+    newSubTotal = newSubTotal + launchCost;
+    launchCart.textContent = `$${launchCost.toLocaleString("es-CR")}`;
+  } else {
+    newTotal = newTotal;
+    newSubTotal = newSubTotal;
+    launchCart.textContent = 0;
+  }
+
+  if (hasDinner) {
+    newTotal = newTotal + dinerCost;
+    newSubTotal = newSubTotal + dinerCost;
+    dinerCart.textContent = `$${dinerCost.toLocaleString("es-CR")}`;
+  } else {
+    newTotal = newTotal;
+    newSubTotal = newSubTotal;
+    dinerCart.textContent = 0;
+  }
+  if (hasSecurity) {
+    newTotal = newTotal + securityCost;
+    newSubTotal = newSubTotal + securityCost;
+    securityCart.textContent = `$${securityCost.toLocaleString("es-CR")}`;
+  } else {
+    newTotal = newTotal;
+    newSubTotal = newSubTotal;
+    securityCart.textContent = 0;
+  }
+  if (hasPhotos) {
+    newTotal = newTotal + photosCost;
+    newSubTotal = newSubTotal + photosCost;
+    photoCart.textContent = `$${photosCost.toLocaleString("es-CR")}`;
+  } else {
+    newTotal = newTotal;
+    newSubTotal = newSubTotal;
+    photoCart.textContent = 0;
+  }
+  if (hasTransport) {
+    newTotal = newTotal + transportCost;
+    newSubTotal = newSubTotal + transportCost;
+    transportCart.textContent = `$${transportCost.toLocaleString("es-CR")}`;
+  } else {
+    newTotal = newTotal;
+    newSubTotal = newSubTotal;
+    transportCart.textContent = 0;
+  }
+  if (totalCartSidebar) {
+    totalCartSidebar.textContent = `$${String(
+      Number(newTotal).toFixed(2)
+    ).toLocaleString("es-CR")}`;
+  }
+  if (subTotalCartSidebar) {
+    subTotalCartSidebar.textContent = `$${String(
+      Number(newSubTotal).toFixed(2)
+    ).toLocaleString("es-CR")}`;
+  }
+  
 };

@@ -4,25 +4,43 @@
  * - Subtotal: suma de (qty * price)
  * - Descuento por tour: suma por ítem (más preciso que sumar %)
  * - Cupones: solo aplica los cupones cuyo tour está en el carrito
- * @returns {Promise<void>} - Actualiza el total
+ * @returns {Promise<void>} - Actualiza el total tanto en el Modal como en el Carrito asi como tambien en el Formulario de Checkout
  */
 export const updateCartTotal = async () => {
-  const cartTotalEl = document.getElementById("cartTotal");
-  const basketSubTotal = document.getElementById("subtotal-cart");
-  const discountEl = document.getElementById("discount-cart");
-  const totalEl = document.getElementById("total-cart");
-  const cuponEl = document.getElementById("cupon-cart");
-  const cuponDiscountEl = document.getElementById("cupon-discounts-cart");
+  const cartTotalModalElement = document.getElementById("cartTotal"); //El total del modal
+  const subTotalSidebarElement = document.getElementById("subtotal-cart"); // El SubTotal del sidebar de resumen
+  const discountSidebarElement = document.getElementById("discount-cart"); // El Descuento del sidebar de resumen
+  const totalSidebarElement = document.getElementById("total-cart"); // El Total del sidebar de resumen
+  const cuponInputElement = document.getElementById("cupon-cart"); // El Input del Coupon del sidebar de resumen
+  const cuponDiscountEl = document.getElementById("cupon-discounts-cart"); //El coupon del sidebar de resumen
+  const totalElement = document.getElementById("total"); // El Input Total de tipo number
+  const adultos = document.getElementById("adultos"); // El Input de los adultos
+  const subTotalInputElement = document.getElementById("subtotal"); //El Input del subtotal
 
   const existCartData = localStorage.getItem("cart");
   if (!existCartData) {
     const zero = "$0.00";
-    if (cartTotalEl) cartTotalEl.textContent = zero;
-    if (basketSubTotal) basketSubTotal.textContent = zero;
-    if (totalEl) totalEl.textContent = zero;
-    if (discountEl) discountEl.textContent = "-0%";
-    if (cuponEl)
-      cuponEl.innerHTML = `<span class="badge text-bg-danger">No</span>`;
+    if (cartTotalModalElement) {
+      cartTotalModalElement.textContent = zero;
+    }
+    if (subTotalSidebarElement) {
+      subTotalSidebarElement.textContent = zero;
+    }
+    if (totalSidebarElement) {
+      totalSidebarElement.textContent = zero;
+    }
+    if (discountSidebarElement) {
+      discountSidebarElement.textContent = "-0%";
+    }
+    if (cuponInputElement) {
+      cuponInputElement.innerHTML = `<span class="badge text-bg-danger">No</span>`;
+    }
+    if (totalElement) {
+      totalElement.value = 0;
+    }
+    if(subTotalInputElement){
+      subTotalInputElement.value = 0;
+    }
     if (cuponDiscountEl) cuponDiscountEl.textContent = "-0%";
     return;
   }
@@ -31,7 +49,9 @@ export const updateCartTotal = async () => {
 
   try {
     const res = await fetch("/assets/data/tours.json");
-    if (!res.ok) throw new Error("Error al cargar tours.json");
+    if (!res.ok) {
+      throw new Error("Error al cargar tours.json");
+    }
     const data = await res.json();
 
     // 1) Subtotal y descuento por tour (en dólares, por ítem)
@@ -52,13 +72,18 @@ export const updateCartTotal = async () => {
     }
 
     const subtotalFmt = `$${subtotal.toFixed(2)}`;
-    if (basketSubTotal) basketSubTotal.textContent = subtotalFmt;
+    if (subTotalSidebarElement){
+      subTotalSidebarElement.textContent = subtotalFmt;
+    }
+      
 
     // % efectivo de descuento por tour (para mostrar en el UI)
     const itemDiscountPctEffective =
       subtotal > 0 ? (itemDiscountDollars / subtotal) * 100 : 0;
-    if (discountEl)
-      discountEl.textContent = `-${itemDiscountPctEffective.toFixed(0)}%`;
+    if (discountSidebarElement)
+      discountSidebarElement.textContent = `-${itemDiscountPctEffective.toFixed(
+        0
+      )}%`;
 
     // 2) Total parcial tras descuentos por tour
     let totalAfterItemDiscount = subtotal - itemDiscountDollars;
@@ -68,7 +93,7 @@ export const updateCartTotal = async () => {
     const cartIds = new Set(Object.keys(cartObj || {}));
 
     const codesApplied = [];
-    let totalCouponsPct = 0;
+    let totalCouponsPct = 0; // total del descuento del coupon
 
     if (savedCupons && Object.keys(savedCupons).length) {
       for (const [code, pct] of Object.entries(savedCupons)) {
@@ -95,23 +120,37 @@ export const updateCartTotal = async () => {
     }
 
     // 4) Total final
-    const finalTotal = Math.max(
+    let finalTotal = Math.max(
       0,
       totalAfterItemDiscount - couponsDiscountDollars
     );
 
+    if (adultos && Number(adultos.value) > 1) {
+      subtotal = subtotal * Number(adultos.value);
+      finalTotal = finalTotal * Number(adultos.value);
+    }
     // 5) Pintar UI
     const finalFmt = `$${finalTotal.toFixed(2)}`;
-    if (totalEl) totalEl.textContent = finalFmt;
-    if (cartTotalEl) cartTotalEl.textContent = finalFmt;
-
-    if (cuponEl) {
-      cuponEl.innerHTML = codesApplied.length
+    if (totalSidebarElement) {
+      totalSidebarElement.textContent = finalFmt;
+    }
+    if (cartTotalModalElement) {
+      cartTotalModalElement.textContent = finalFmt;
+    }
+    if (totalElement) {
+      totalElement.value = Number(finalTotal.toFixed(2));
+    }
+    if (subTotalInputElement) {
+      subTotalInputElement.value = Number(subtotal).toFixed(2);
+    }
+    if (cuponInputElement) {
+      cuponInputElement.innerHTML = codesApplied.length
         ? codesApplied.join(", ")
         : `<span class="badge text-bg-danger">No</span>`;
     }
-    if (cuponDiscountEl)
+    if (cuponDiscountEl) {
       cuponDiscountEl.textContent = `-${totalCouponsPct || 0}%`;
+    }
   } catch (error) {
     console.error("Error al calcular el total:", error);
   }
@@ -172,16 +211,24 @@ export const updateCartModal = async (cartObj) => {
 
   const ids = Object.keys(cartObj || {});
   if (ids.length === 0) {
-    document.querySelector(".modal-footer")?.classList.add("d-none");
-    document.querySelector(".resumen-del-pedido")?.classList.add("d-none");
+    document.querySelector(".modal-footer")?.classList?.add("d-none");
+    document.querySelector(".resumen-del-pedido")?.classList?.add("d-none");
+    document.querySelector("#empty-checkout-cart")?.classList?.remove("d-none");
+    document
+      .querySelector("#checkout-article-container")
+      ?.classList.add("d-none");
     cartList.innerHTML = `
           <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
           <a href="/tours.html" class="btn btn-danger m-auto">Comprar Tours</a>
         `;
     return;
   }
-  document.querySelector(".modal-footer")?.classList.remove("d-none");
-  document.querySelector(".resumen-del-pedido")?.classList.remove("d-none");
+  document.querySelector(".modal-footer")?.classList?.remove("d-none");
+  document.querySelector(".resumen-del-pedido")?.classList?.remove("d-none");
+  document.querySelector("#empty-checkout-cart")?.classList?.add("d-none");
+  document
+    .querySelector("#checkout-article-container")
+    ?.classList.remove("d-none");
   await fetch("/assets/data/tours.json")
     .then((res) => {
       if (!res.ok) throw new Error("Error al cargar el JSON");
