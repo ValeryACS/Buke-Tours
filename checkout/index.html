@@ -18,6 +18,10 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flag-icons/css/flag-icons.min.css"
+    />
     <link rel="stylesheet" href="../assets/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../assets/css/cart.css" type="text/css" />
     <link rel="stylesheet" href="../assets/css/checkout.css" type="text/css" />
@@ -98,10 +102,27 @@
 
     <main>
       <section id="checkout" class="py-5">
-        <div class="container">
+        <div class="container bg-light container-content">
+          <!-- Encabezado -->
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h1 class="titulo h3 mb-0">Formulario de Compra</h1>
+            <span class="badge text-bg-danger tours-added">3 artículos</span>
+          </div>
           <div class="row g-4">
+            <article
+              id="empty-checkout-cart"
+              class="col-12 col-lg-8 d-flex flex-column justify-content-center align-items-center"
+            >
+              <div class="text-center text-muted p-4">
+                Tu carrito está vacío.
+              </div>
+              <a href="/tours.html" class="btn btn-danger m-auto"
+                >Comprar Tours</a
+              >
+            </article>
+
             <!-- Formulario -->
-            <div class="col-12 col-lg-8">
+            <article class="col-12 col-lg-8" id="checkout-article-container">
               <div id="checkout-form" class="card shadow-sm border-0">
                 <div class="card-body p-4">
                   <div class="accordion" id="accordionCheckout">
@@ -138,7 +159,7 @@
                                 class="form-control"
                                 placeholder="Ej: Ana Rodríguez"
                                 autocomplete="name"
-                                required
+                                maxlength="50"
                               />
                             </div>
                             <div class="col-12 col-md-6 form-group">
@@ -152,7 +173,7 @@
                                 class="form-control"
                                 placeholder="ejemplo@correo.com"
                                 autocomplete="email"
-                                required
+                                maxlength="90"
                               />
                             </div>
                             <div class="col-12 col-md-6 form-group">
@@ -164,11 +185,17 @@
                                 name="telefono"
                                 type="tel"
                                 class="form-control"
-                                placeholder="+506 8888-8888"
+                                placeholder="8888-8888"
                                 autocomplete="tel"
+                                maxlength="15"
                               />
                             </div>
                             <div class="col-12 col-md-6 form-group">
+                              <span
+                                id="flagCountry"
+                                class="fi d-none"
+                                aria-hidden="true"
+                              ></span>
                               <label for="pais" class="form-label"
                                 >País de residencia</label
                               >
@@ -177,15 +204,204 @@
                                 name="pais"
                                 class="form-select"
                                 autocomplete="country-name"
-                                required
                               >
                                 <option value="" selected disabled>
                                   Selecciona un país
                                 </option>
+                                <option value="AF">Afganistán</option>
+                                <option value="AL">Albania</option>
+                                <option value="DE">Alemania</option>
+                                <option value="AD">Andorra</option>
+                                <option value="AO">Angola</option>
+                                <option value="AI">Anguila</option>
+                                <option value="AQ">Antártida</option>
+                                <option value="AG">Antigua y Barbuda</option>
+                                <option value="SA">Arabia Saudita</option>
+                                <option value="DZ">Argelia</option>
+                                <option value="AR">Argentina</option>
+                                <option value="AM">Armenia</option>
+                                <option value="AW">Aruba</option>
+                                <option value="AU">Australia</option>
+                                <option value="AT">Austria</option>
+                                <option value="AZ">Azerbaiyán</option>
+                                <option value="BS">Bahamas</option>
+                                <option value="BH">Baréin</option>
+                                <option value="BD">Bangladés</option>
+                                <option value="BB">Barbados</option>
+                                <option value="BE">Bélgica</option>
+                                <option value="BZ">Belice</option>
+                                <option value="BJ">Benín</option>
+                                <option value="BM">Bermudas</option>
+                                <option value="BY">Bielorrusia</option>
+                                <option value="BO">Bolivia</option>
+                                <option value="BA">Bosnia y Herzegovina</option>
+                                <option value="BW">Botsuana</option>
+                                <option value="BR">Brasil</option>
+                                <option value="BN">Brunéi</option>
+                                <option value="BG">Bulgaria</option>
+                                <option value="BF">Burkina Faso</option>
+                                <option value="BI">Burundi</option>
+                                <option value="BT">Bután</option>
+                                <option value="CV">Cabo Verde</option>
+                                <option value="KH">Camboya</option>
+                                <option value="CM">Camerún</option>
+                                <option value="CA">Canadá</option>
+                                <option value="QA">Catar</option>
+                                <option value="CL">Chile</option>
+                                <option value="CN">China</option>
+                                <option value="CY">Chipre</option>
+                                <option value="CO">Colombia</option>
+                                <option value="KM">Comoras</option>
+                                <option value="CG">Congo</option>
+                                <option value="CD">Congo (Rep. Dem.)</option>
+                                <option value="KP">Corea del Norte</option>
+                                <option value="KR">Corea del Sur</option>
                                 <option value="CR">Costa Rica</option>
-                                <option value="US">Estados Unidos</option>
-                                <option value="MX">México</option>
+                                <option value="CI">Costa de Marfil</option>
+                                <option value="HR">Croacia</option>
+                                <option value="CU">Cuba</option>
+                                <option value="DK">Dinamarca</option>
+                                <option value="DM">Dominica</option>
+                                <option value="EC">Ecuador</option>
+                                <option value="EG">Egipto</option>
+                                <option value="SV">El Salvador</option>
+                                <option value="AE">
+                                  Emiratos Árabes Unidos
+                                </option>
+                                <option value="ER">Eritrea</option>
+                                <option value="SK">Eslovaquia</option>
+                                <option value="SI">Eslovenia</option>
                                 <option value="ES">España</option>
+                                <option value="US">Estados Unidos</option>
+                                <option value="EE">Estonia</option>
+                                <option value="ET">Etiopía</option>
+                                <option value="PH">Filipinas</option>
+                                <option value="FI">Finlandia</option>
+                                <option value="FR">Francia</option>
+                                <option value="GA">Gabón</option>
+                                <option value="GM">Gambia</option>
+                                <option value="GE">Georgia</option>
+                                <option value="GH">Ghana</option>
+                                <option value="GI">Gibraltar</option>
+                                <option value="GR">Grecia</option>
+                                <option value="GD">Granada</option>
+                                <option value="GL">Groenlandia</option>
+                                <option value="GT">Guatemala</option>
+                                <option value="GN">Guinea</option>
+                                <option value="GQ">Guinea Ecuatorial</option>
+                                <option value="GW">Guinea-Bisáu</option>
+                                <option value="GY">Guyana</option>
+                                <option value="HT">Haití</option>
+                                <option value="HN">Honduras</option>
+                                <option value="HU">Hungría</option>
+                                <option value="IN">India</option>
+                                <option value="ID">Indonesia</option>
+                                <option value="IR">Irán</option>
+                                <option value="IQ">Irak</option>
+                                <option value="IE">Irlanda</option>
+                                <option value="IS">Islandia</option>
+                                <option value="IL">Israel</option>
+                                <option value="IT">Italia</option>
+                                <option value="JM">Jamaica</option>
+                                <option value="JP">Japón</option>
+                                <option value="JO">Jordania</option>
+                                <option value="KZ">Kazajistán</option>
+                                <option value="KE">Kenia</option>
+                                <option value="KG">Kirguistán</option>
+                                <option value="KI">Kiribati</option>
+                                <option value="KW">Kuwait</option>
+                                <option value="LA">Laos</option>
+                                <option value="LS">Lesoto</option>
+                                <option value="LV">Letonia</option>
+                                <option value="LB">Líbano</option>
+                                <option value="LR">Liberia</option>
+                                <option value="LY">Libia</option>
+                                <option value="LI">Liechtenstein</option>
+                                <option value="LT">Lituania</option>
+                                <option value="LU">Luxemburgo</option>
+                                <option value="MG">Madagascar</option>
+                                <option value="MY">Malasia</option>
+                                <option value="MW">Malaui</option>
+                                <option value="MV">Maldivas</option>
+                                <option value="ML">Malí</option>
+                                <option value="MT">Malta</option>
+                                <option value="MA">Marruecos</option>
+                                <option value="MU">Mauricio</option>
+                                <option value="MR">Mauritania</option>
+                                <option value="MX">México</option>
+                                <option value="FM">Micronesia</option>
+                                <option value="MD">Moldavia</option>
+                                <option value="MC">Mónaco</option>
+                                <option value="MN">Mongolia</option>
+                                <option value="ME">Montenegro</option>
+                                <option value="MZ">Mozambique</option>
+                                <option value="NA">Namibia</option>
+                                <option value="NR">Nauru</option>
+                                <option value="NP">Nepal</option>
+                                <option value="NI">Nicaragua</option>
+                                <option value="NE">Níger</option>
+                                <option value="NG">Nigeria</option>
+                                <option value="NO">Noruega</option>
+                                <option value="NZ">Nueva Zelanda</option>
+                                <option value="OM">Omán</option>
+                                <option value="NL">Países Bajos</option>
+                                <option value="PK">Pakistán</option>
+                                <option value="PW">Palaos</option>
+                                <option value="PA">Panamá</option>
+                                <option value="PG">Papúa Nueva Guinea</option>
+                                <option value="PY">Paraguay</option>
+                                <option value="PE">Perú</option>
+                                <option value="PL">Polonia</option>
+                                <option value="PT">Portugal</option>
+                                <option value="GB">Reino Unido</option>
+                                <option value="CF">
+                                  República Centroafricana
+                                </option>
+                                <option value="CZ">República Checa</option>
+                                <option value="DO">República Dominicana</option>
+                                <option value="RO">Rumania</option>
+                                <option value="RU">Rusia</option>
+                                <option value="RW">Ruanda</option>
+                                <option value="WS">Samoa</option>
+                                <option value="SM">San Marino</option>
+                                <option value="ST">
+                                  Santo Tomé y Príncipe
+                                </option>
+                                <option value="SN">Senegal</option>
+                                <option value="RS">Serbia</option>
+                                <option value="SC">Seychelles</option>
+                                <option value="SL">Sierra Leona</option>
+                                <option value="SG">Singapur</option>
+                                <option value="SY">Siria</option>
+                                <option value="SO">Somalia</option>
+                                <option value="ZA">Sudáfrica</option>
+                                <option value="SD">Sudán</option>
+                                <option value="SS">Sudán del Sur</option>
+                                <option value="SE">Suecia</option>
+                                <option value="CH">Suiza</option>
+                                <option value="SR">Surinam</option>
+                                <option value="TH">Tailandia</option>
+                                <option value="TZ">Tanzania</option>
+                                <option value="TJ">Tayikistán</option>
+                                <option value="TL">Timor Oriental</option>
+                                <option value="TG">Togo</option>
+                                <option value="TO">Tonga</option>
+                                <option value="TT">Trinidad y Tobago</option>
+                                <option value="TN">Túnez</option>
+                                <option value="TM">Turkmenistán</option>
+                                <option value="TR">Turquía</option>
+                                <option value="TV">Tuvalu</option>
+                                <option value="UA">Ucrania</option>
+                                <option value="UG">Uganda</option>
+                                <option value="UY">Uruguay</option>
+                                <option value="UZ">Uzbekistán</option>
+                                <option value="VU">Vanuatu</option>
+                                <option value="VA">Vaticano</option>
+                                <option value="VE">Venezuela</option>
+                                <option value="VN">Vietnam</option>
+                                <option value="YE">Yemen</option>
+                                <option value="ZM">Zambia</option>
+                                <option value="ZW">Zimbabue</option>
                               </select>
                             </div>
                           </div>
@@ -224,9 +440,8 @@
                                 name="adultos"
                                 type="number"
                                 min="1"
-                                value="2"
+                                value="1"
                                 class="form-control text-center"
-                                required
                               />
                             </div>
                             <div class="col-6 col-md-4 form-group">
@@ -250,15 +465,17 @@
                                 id="idioma"
                                 name="idioma"
                                 class="form-select"
-                                required
                               >
                                 <option value="es" selected>Español</option>
                                 <option value="en">Inglés</option>
+                                <option value="fr">Frances</option>
+                                <option value="it">Italiano</option>
+                                <option value="pt">Portugues</option>
                               </select>
                             </div>
                             <div class="col-12 form-group text-start">
                               <label for="viajeroPrincipal" class="form-label"
-                                >Viajero principal (para el voucher)</label
+                                >Nombre del Viajero principal</label
                               >
                               <input
                                 id="viajeroPrincipal"
@@ -266,7 +483,7 @@
                                 type="text"
                                 class="form-control"
                                 placeholder="Tal como aparece en el documento"
-                                required
+                                maxlength="35"
                               />
                             </div>
                             <div class="col-12 col-md-7 form-group text-start">
@@ -279,7 +496,7 @@
                                 type="text"
                                 class="form-control"
                                 placeholder="Número de documento"
-                                required
+                                maxlength="20"
                               />
                             </div>
                           </div>
@@ -341,18 +558,18 @@
                         <div class="accordion-body">
                           <div class="row g-3">
                             <div class="col-12 col-md-6">
-                              <div class="form-check">
+                              <div class="form-check text-start">
                                 <input
                                   class="form-check-input"
                                   type="checkbox"
-                                  id="seguro"
-                                  name="seguro"
+                                  id="desayuno"
+                                  name="desayuno"
                                 />
-                                <label class="form-check-label" for="seguro"
-                                  >Seguro de viaje (+$9.00 por persona)</label
+                                <label class="form-check-label" for="desayuno"
+                                  >Desayuno incluido (+$11.00)</label
                                 >
                               </div>
-                              <div class="form-check">
+                              <div class="form-check text-start">
                                 <input
                                   class="form-check-input"
                                   type="checkbox"
@@ -360,13 +577,45 @@
                                   name="almuerzo"
                                 />
                                 <label class="form-check-label" for="almuerzo"
-                                  >Almuerzo incluido (+$12.00 por
-                                  persona)</label
+                                  >Almuerzo incluido (+$12.00)</label
+                                >
+                              </div>
+                              <div class="form-check text-start">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="cena"
+                                  name="cena"
+                                />
+                                <label class="form-check-label" for="cena"
+                                  >Cena incluida (+$17.00)</label
                                 >
                               </div>
                             </div>
                             <div class="col-12 col-md-6">
-                              <div class="form-check">
+                              <div class="form-check text-start">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="transporte"
+                                  name="transporte"
+                                />
+                                <label class="form-check-label" for="transporte"
+                                  >Transporte(+$100.00)</label
+                                >
+                              </div>
+                              <div class="form-check text-start">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="seguro"
+                                  name="seguro"
+                                />
+                                <label class="form-check-label" for="seguro"
+                                  >Seguro de viaje (+$9.00)</label
+                                >
+                              </div>
+                              <div class="form-check text-start">
                                 <input
                                   class="form-check-input"
                                   type="checkbox"
@@ -416,7 +665,7 @@
                                 class="form-control"
                                 placeholder="Calle, número, apartamento"
                                 autocomplete="street-address"
-                                required
+                                maxlength="200"
                               />
                             </div>
                             <div class="col-12 col-md-6">
@@ -428,7 +677,7 @@
                                 name="ciudad"
                                 type="text"
                                 class="form-control"
-                                required
+                                maxlength="50"
                               />
                             </div>
                             <div class="col-6 col-md-3">
@@ -440,7 +689,7 @@
                                 name="provincia"
                                 type="text"
                                 class="form-control"
-                                required
+                                maxlength="60"
                               />
                             </div>
                             <div class="col-6 col-md-3">
@@ -453,6 +702,7 @@
                                 type="text"
                                 class="form-control"
                                 autocomplete="postal-code"
+                                maxlength="30"
                               />
                             </div>
                           </div>
@@ -481,119 +731,105 @@
                         data-bs-parent="#accordionCheckout"
                       >
                         <div class="accordion-body">
-                             
-                              <div
-                                id="pagoTarjeta"
-                                class="accordion-collapse collapse show"
-                                aria-labelledby="headingCard"
-                                data-bs-parent="#accordionPago"
-                              >
-                                <div class="accordion-body">
-                                  <div class="row g-3">
-                                    <div class="col-12 text-start form-group">
-                                      <label for="cardName" class="form-label"
-                                        >Nombre en la tarjeta</label
-                                      >
-                                      <input
-                                        id="cardName"
-                                        name="cardName"
-                                        type="text"
-                                        class="form-control"
-                                        autocomplete="cc-name"
-                                        required
-                                      />
-                                    </div>
-                                    <div class="col-12 text-start form-group">
-                                      <label for="cardNumber" class="form-label"
-                                        >Número de tarjeta</label
-                                      >
-                                      <input
-                                        id="cardNumber"
-                                        name="cardNumber"
-                                        type="text"
-                                        inputmode="numeric"
-                                        class="form-control"
-                                        placeholder="1234 5678 9012 3456"
-                                        autocomplete="cc-number"
-                                        required
-                                      />
-                                    </div>
-                                    <div class="col-6 col-md-4 form-group">
-                                      <label for="cardMonth" class="form-label"
-                                        >Mes</label
-                                      >
-                                      <input
-                                        id="cardMonth"
-                                        name="cardMonth"
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="MM"
-                                        inputmode="numeric"
-                                        autocomplete="cc-exp-month"
-                                        required
-                                      />
-                                    </div>
-                                    <div class="col-6 col-md-4 form-group">
-                                      <label for="cardYear" class="form-label"
-                                        >Año</label
-                                      >
-                                      <input
-                                        id="cardYear"
-                                        name="cardYear"
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="AA"
-                                        inputmode="numeric"
-                                        autocomplete="cc-exp-year"
-                                        required
-                                      />
-                                    </div>
-                                    <div class="col-12 col-md-4 form-group">
-                                      <label for="cardCvv" class="form-label"
-                                        >CVV</label
-                                      >
-                                      <input
-                                        id="cardCvv"
-                                        name="cardCvv"
-                                        type="password"
-                                        class="form-control"
-                                        placeholder="***"
-                                        inputmode="numeric"
-                                        autocomplete="cc-csc"
-                                        required
-                                      />
-                                    </div>
-                                  </div>
+                          <div
+                            id="pagoTarjeta"
+                            class="accordion-collapse collapse show"
+                            aria-labelledby="headingCard"
+                            data-bs-parent="#accordionPago"
+                          >
+                            <div class="accordion-body">
+                              <div class="row g-3">
+                                <div class="col-12 text-start form-group">
+                                  <label for="cardName" class="form-label"
+                                    >Nombre del Titular de la tarjeta</label
+                                  >
+                                  <input
+                                    id="cardName"
+                                    name="cardName"
+                                    type="text"
+                                    class="form-control"
+                                    autocomplete="cc-name"
+                                    maxlength="80"
+                                  />
+                                </div>
+                                <div class="col-12 text-start form-group">
+                                  <label for="cardNumber" class="form-label"
+                                    >Número de tarjeta</label
+                                  >
+                                  <input
+                                    id="cardNumber"
+                                    name="cardNumber"
+                                    type="text"
+                                    inputmode="numeric"
+                                    class="form-control"
+                                    placeholder="1234 5678 9012 3456"
+                                    autocomplete="cc-number"
+                                    maxlength="19"
+                                  />
+                                </div>
+                                <div class="col-6 col-md-4 form-group">
+                                  <label for="cardMonth" class="form-label"
+                                    >Mes</label
+                                  >
+                                  <input
+                                    id="cardMonth"
+                                    name="cardMonth"
+                                    type="text"
+                                    step="01"
+                                    class="form-control"
+                                    placeholder="MM"
+                                    inputmode="numeric"
+                                    autocomplete="cc-exp-month"
+                                    maxlength="2"
+                                  />
+                                </div>
+                                <div class="col-6 col-md-4 form-group">
+                                  <label for="cardYear" class="form-label"
+                                    >Año</label
+                                  >
+                                  <input
+                                    id="cardYear"
+                                    name="cardYear"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="YY"
+                                    inputmode="numeric"
+                                    autocomplete="cc-exp-year"
+                                    maxlength="2"
+                                  />
+                                </div>
+                                <div class="col-12 col-md-4 form-group">
+                                  <label for="cardCvv" class="form-label"
+                                    >CVV</label
+                                  >
+                                  <input
+                                    id="cardCvv"
+                                    name="cardCvv"
+                                    type="password"
+                                    class="form-control"
+                                    placeholder="***"
+                                    inputmode="numeric"
+                                    autocomplete="cc-csc"
+                                    maxlength="4"
+                                  />
                                 </div>
                               </div>
                             </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <!-- /accordionCheckout -->
                 </div>
               </div>
-            </div>
+            </article>
 
             <!-- Resumen -->
-            <aside class="col-12 col-lg-4">
+            <aside class="col-12 col-lg-4 resumen-del-pedido">
               <div class="card shadow-sm sticky-lg-top" style="top: 1rem">
                 <div class="card-body">
                   <h2 class="h6 mb-3">Resumen del pedido</h2>
-
-                  <div class="d-flex justify-content-between">
-                    <span class="small text-muted">Paquete</span>
-                    <span class="small fw-semibold">Arenal + Termales</span>
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <span class="small text-muted">Fecha</span>
-                    <span class="small fw-semibold">10/11/2025 · 08:00</span>
-                  </div>
-                  <div class="d-flex justify-content-between mb-3">
-                    <span class="small text-muted">Viajeros</span>
-                    <span class="small fw-semibold">2 adultos</span>
-                  </div>
-
                   <!-- Cupón -->
                   <div class="mb-3">
                     <label for="coupon" class="form-label small"
@@ -602,6 +838,7 @@
                     <div class="input-group">
                       <input
                         id="coupon"
+                        name="coupon"
                         type="text"
                         class="form-control"
                         placeholder="Código de cupón"
@@ -616,60 +853,96 @@
                     </div>
                   </div>
 
-                  <form id="checkout-form">
-                    <!-- Totales -->
-                    <ul class="list-unstyled mb-4">
-                      <li class="d-flex justify-content-between mb-1">
-                        <span>Subtotal</span>
-                        <span id="subtotal-cart">$152.29</span>
-                      </li>
-                      <li class="d-flex justify-content-between mb-1">
-                        <span>Descuento</span>
-                        <span id="discount-cart">−$10.00</span>
-                      </li>
-                      <li class="d-flex justify-content-between mb-1">
-                        <span>Coupon Codes</span> <span id="cupon-cart"></span>
-                      </li>
-                      <li class="d-flex justify-content-between mb-1">
-                        <span>Coupon Discounts</span>
-                        <span id="cupon-discounts-cart"></span>
-                      </li>
-                      <li
-                        class="d-flex justify-content-between border-top pt-2 fw-semibold"
-                      >
-                        <span>Total</span> <span id="total-cart">$147.28</span>
-                      </li>
-                      <li>
-                        <div class="form-check mb-3 mt-4">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="terms"
-                            required
-                          />
-                          <label class="form-check-label" for="terms">
-                            Acepto los términos y condiciones, y la política de
-                            cancelación.
-                          </label>
-                        </div>
-                      </li>
-                    </ul>
+                  <!-- Totales -->
+                  <ul class="list-unstyled mb-4">
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Descuento</span>
+                      <span id="discount-cart">−$10.00</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Coupon Codes</span> <span id="cupon-cart"></span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Coupon Discounts</span>
+                      <span id="cupon-discounts-cart"></span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Adultos</span>
+                      <span id="adultos-sidebar-cart">1</span>
+                    </li>
+                     <li class="d-flex justify-content-between mb-1">
+                      <span>Niños</span>
+                      <span id="children-sidebar-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <h3>Extras:</h3>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Desayunos</span><span id="breakfast-cart"> 0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Almuerzos</span><span id="launch-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Cena</span><span id="diner-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Transporte</span><span id="transport-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Seguro</span><span id="security-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>Fotografias</span><span id="photos-cart">0</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
+                      <h4>Subtotal</h4>
+                      <span id="subtotal-cart">$152.29</span>
+                      <input type="number" hidden readonly id="subtotal" name="subtotal" class="d-none" />
+                    </li>
+                    <li
+                      class="d-flex justify-content-between border-top pt-2 fw-semibold"
+                    >
+                      <h2>Total</h2> <span id="total-cart">$147.28</span>
+                      <input type="number" hidden readonly id="total" name="total" class="d-none" />
+                    </li>
+                    <li>
+                      <div class="form-check mb-3 mt-4 text-start">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="terms"
+                          value=""
+                          id="terms"
+                        />
+                        <label class="form-check-label" for="terms">
+                          Acepto los
+                          <a href="#terminos-y-condiciones"
+                            >términos y condiciones</a
+                          >
+                          .
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
 
-                    <div class="d-grid">
-                      <button id="btn-pay-with-paypal" type="button" class="btn btn-secondary btn-lg mb-3 mt-3">
-                        <i class="bi bi-paypal"></i>
-                        Pagar con Paypal
-                      </button>
-                      <button
-                        class="btn btn-dark btn-lg"
-                        type="submit"
-                        form="checkout-form"
-                      >
-                        <i class="bi bi-credit-card"></i>Pagar con Tarjeta
-                      </button>
-                    </div>
-                  </form>
+                  <div class="d-grid">
+                    <button
+                      id="btn-pay-with-paypal"
+                      type="button"
+                      class="btn btn-secondary btn-lg mb-3 mt-3"
+                    >
+                      <i class="bi bi-paypal"></i>
+                      Pagar con Paypal
+                    </button>
+                    <button
+                      class="btn btn-dark btn-lg"
+                      type="button"
+                      id="pagar-con-tarjeta-btn"
+                    >
+                      <i class="bi bi-credit-card"></i>Pagar con Tarjeta
+                    </button>
+                  </div>
                   <p class="small text-muted mt-3 mb-0">
                     Recibirás el **voucher** y la confirmación por correo
                     electrónico.

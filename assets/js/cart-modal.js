@@ -7,19 +7,22 @@ import {
 } from "./cart.module.js";
 
 (() => {
-  document.addEventListener("DOMContentLoaded", () => {
-    // Botones "Agregar al carrito"
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Botones de "Agregar al carrito"
     const cartTours = document.querySelectorAll(".add-to-cart");
     cartTours.forEach((btn) => {
-      btn.addEventListener("click", (e) => {
+      // Por cada elemento que contiene la clase add-to-cart le agrega un evento
+      btn.addEventListener("click", async (e) => {
         const id = e.currentTarget.getAttribute("data-tour-id");
-        if (id) onAddTourToCart(id);
+        if (id) {
+          await onAddTourToCart(id);
+        }
       });
     });
 
     // Inicializa badge + modal (si corresponde)
     updateCartQuantity();
-    updateCartModal(readCart());
-    updateCartTotal();
+    await updateCartModal(readCart());
+    await updateCartTotal();
   });
 })();
