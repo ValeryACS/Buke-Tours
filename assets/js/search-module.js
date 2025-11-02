@@ -9,17 +9,7 @@ import { onAddToCart } from "./cart.module.js";
     const searchResult = document.getElementById("search-result");
     const slider = document.getElementById("swiper-slider-tours");
     const inputSearch = document.getElementById("search-input");
-
-    const tours = await fetch("/assets/data/tours.json")
-      .then((res) => {
-        if (!res.ok) throw new Error("Error al cargar el JSON");
-        return res.json();
-      })
-      .catch((err) => {
-        console.error("Error Fetching Tours", err);
-        return [];
-      });
-
+    const searchBtn = document.getElementById("btn-search");
     const showEl = (el) => {
       el.classList.add("d-block");
       el.classList.remove("d-none");
@@ -35,10 +25,21 @@ import { onAddToCart } from "./cart.module.js";
         .replace(/\p{Diacritic}/gu, "")
         .toLowerCase()
         .trim();
-
-    inputSearch.addEventListener("input", (event) => {
-      const inputValue = normalizeString(event.currentTarget.value);
-
+    const tours = await fetch("/assets/data/tours.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al cargar el JSON");
+        return res.json();
+      })
+      .catch((err) => {
+        console.error("Error Fetching Tours", err);
+        return [];
+      });
+    /**
+     * @function - Busca tours y los renderiza
+     * @param {string} inputValue - El Input Search
+     * @returns {void}
+     */
+    const renderSearch = (inputValue) => {
       // Si está vacío: mostrar slider, ocultar resultados y limpiar HTML.
       if (!inputValue) {
         showEl(slider);
@@ -115,6 +116,16 @@ import { onAddToCart } from "./cart.module.js";
           onAddToCart(id);
         });
       });
+    };
+
+    searchBtn.addEventListener("click", () => {
+      const inputValue = normalizeString(inputSearch.value);
+      renderSearch(inputValue);
+    });
+
+    inputSearch.addEventListener("input", (event) => {
+      const inputValue = normalizeString(event.currentTarget.value);
+      renderSearch(inputValue);
     });
   });
 })();
