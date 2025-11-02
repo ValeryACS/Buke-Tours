@@ -233,21 +233,14 @@ body {
 }
 
 .barra-busqueda {
-  width: 60%;
   padding: 10px;
   border-radius: 20px;
-  border: 1px solid #ccc;
-  background: white url("../img/lupa.png") no-repeat right 10px center;
-  background-size: 20px;
-  font-size: 16px;
 }
 
 /* Sección de reseñas */
-.reseñas-container {
+.resenas-container {
   margin: 20px auto;
   width: 80%;
-  background: url("../img/reseñas-fondo.jpg") no-repeat center center;
-  background-size: cover;
   padding: 50px 0;
   border-radius: 10px;
 }
@@ -472,6 +465,14 @@ Estilos para reseñas
 /** Modal */
 .modal-dialog img {
   max-width: 150px;
+}
+
+.search-item{
+  padding: 8px 0;
+  border: 2px solid grey;
+}
+.search-item img{
+    max-width: 320px;
 }
 
 @media screen and (max-width: 768px) {

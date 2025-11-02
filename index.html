@@ -97,18 +97,26 @@
 
     <main>
       <section>
-        <div>
-          <input
-            class="barra-busqueda m-5"
+        <div class="form-group mt-5 mb-5 container-md">
+          <form id="search-form" class="d-flex justify-content-center flex-row">
+            <input
+            class="barra-busqueda m-auto form-control "
             placeholder="Buscar tours..."
             type="text"
+            id="search-input"
           />
+          <button type="submit" id="search-btn" class="btn btn-success"><i class="bi bi-search"></i></button>
+          </form>
+        </div>
+        <div id="search-result" class="w-100 bg-white">
+            
         </div>
         <div
           style="
             --swiper-navigation-color: #fff;
             --swiper-pagination-color: #fff;
           "
+          id="swiper-slider-tours"
           class="swiper slider-tours"
         >
           <article class="swiper-wrapper">
@@ -311,7 +319,7 @@
           </form>
         </div>
 
-        <div class="reseñas-container">
+        <div class="resenas-container">
           <div class="reseña">
             <div class="icono">👤</div>
             <div class="text-start">
@@ -407,7 +415,7 @@
       <nav>
         <div>
           <ul class="footer-redes">
-            <li class="footer-redes-li"><a href="#">Facebook</a></li>
+            <li class="footer-redes-li"><a href="#"><i class="bi bi-facebook"></i>Facebook</a></li>
             <li class="footer-redes-li">
               <a
                 href="https://www.instagram.com/unguiaencostarica"
@@ -437,6 +445,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script type="module" src="./assets/js/cart.module.js"></script>
     <script type="module" src="./assets/js/cart-modal.js" defer></script>
+    <script type="module" src="./assets/js/search-module.js" defer></script>
 
     <!-- Initialize Swiper -->
     <script>

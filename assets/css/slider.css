@@ -46,6 +46,9 @@
 .swiper-slide:hover .overlay-effect .bi {
   opacity: 1;
 }
+.swiper-slide h1{
+  font-size: 1.8rem;
+}
 
 @media screen and (max-width: 1024px) {
   .swiper-slide .overlay-effect .bi {
