@@ -38,7 +38,7 @@ export const updateCartTotal = async () => {
     if (totalElement) {
       totalElement.value = 0;
     }
-    if(subTotalInputElement){
+    if (subTotalInputElement) {
       subTotalInputElement.value = 0;
     }
     if (cuponDiscountEl) cuponDiscountEl.textContent = "-0%";
@@ -72,10 +72,9 @@ export const updateCartTotal = async () => {
     }
 
     const subtotalFmt = `$${subtotal.toFixed(2)}`;
-    if (subTotalSidebarElement){
+    if (subTotalSidebarElement) {
       subTotalSidebarElement.textContent = subtotalFmt;
     }
-      
 
     // % efectivo de descuento por tour (para mostrar en el UI)
     const itemDiscountPctEffective =
@@ -683,13 +682,13 @@ export const validateCoupon = async (cuponCode) => {
     // Guardar cupón (solo porcentaje; validaremos contra carrito en el total)
     saveCupon({
       ...existCupons,
-      [code]: discountPct,
+      [code]: tourByCoupon.cuponDiscount,
     });
 
     Swal.fire({
       icon: "success",
       title: "Cupón canjeado",
-      text: `Cupón aplicado: -${discountPct}%`,
+      text: `Cupón aplicado: -${tourByCoupon.cuponDiscount}%`,
       toast: true,
       position: "top-end",
       showConfirmButton: false,
@@ -710,5 +709,13 @@ export const validateCoupon = async (cuponCode) => {
       timer: 5000,
       timerProgressBar: true,
     });
+  }
+};
+
+export const onAddToCart = async (id) => {
+  if (id) {
+    await onAddTourToCart(id);
+    await updateCartModal(readCart());
+    await updateCartTotal();
   }
 };

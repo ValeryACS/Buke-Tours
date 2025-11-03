@@ -1,8 +1,5 @@
 import {
-  onAddTourToCart,
-  updateCartModal,
-  readCart,
-  updateCartTotal,
+  onAddToCart,
 } from "./cart.module.js";
 
 (() => {
@@ -11,14 +8,6 @@ import {
 
     const onClickViewTour = (id) => {
       console.log("Tour Clicked:", id);// TODO redirigir a la pagina del tour
-    };
-
-    const onAddToCart = async (id) => {
-      if (id) {
-        await onAddTourToCart(id);
-        await updateCartModal(readCart());
-        await updateCartTotal();
-      }
     };
 
     const skeleton = document.getElementById("skeleton-tours");
