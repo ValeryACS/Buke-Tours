@@ -57,3 +57,43 @@ export const isOnOrAfterToday = (iso) => {
   if (!iso) return false;
   return iso >= todayLocalISO();
 };
+
+/**
+ * @function - Usada para mostrar un elemento usando las clases bootstrap
+ * @param {HTMLElement} element - El elemento a mostrar
+ * @param {string} className - La clase para mostrar el elemento
+ */
+export const showElement = (element, className = 'd-block') => {
+  element.classList.add(className);
+  element.classList.remove("d-none");
+};
+
+/**
+ * @function - Usada para esconder un elemento usando las clases bootstrap
+ * @param {HTMLElement} element - El elemento a ocultar
+ * @param {string} className - La clase para ocultar el elemento
+ */
+export const hideElement = (element, className= 'd-block') => {
+  element.classList.add("d-none");
+  element.classList.remove(className);
+};
+
+/**
+ * @function - Usada para normalizar un string y convertirlo a letras minusculas comunmnete usada para comparar strings
+ * @param {string | undefined} value 
+ * @returns {string} - El valor del string ya normalizado
+ */
+export const normalizeString = (value) =>
+  String(value || "")
+    .normalize("NFD")// convierte los caracteres acentuados (como á, é, ñ, etc.) en una forma descompuesta.
+    .replace(/\p{Diacritic}/gu, "")// eliminar los signos diacríticos como (acentos, tildes, diéresis, etc.)
+    .toLowerCase()
+    .trim();
+/**
+ * @funtion Redirecciona a un Tour en Especifico
+ * @param {string} id - ID del tour
+ */
+export const onClickViewTour = (id) => {
+    console.log("Tour Clicked:", id);// TODO redirigir a la pagina del tour
+    window.location.href = "/tour/"
+};

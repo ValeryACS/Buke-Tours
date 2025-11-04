@@ -1,14 +1,9 @@
-import {
-  onAddToCart,
-} from "./cart.module.js";
+import { onAddToCart } from "./cart.module.js";
+import { onClickViewTour } from "./utils.module.js";
 
 (() => {
   document.addEventListener("DOMContentLoaded", async () => {
     const tours = document.getElementById("tours");
-
-    const onClickViewTour = (id) => {
-      console.log("Tour Clicked:", id);// TODO redirigir a la pagina del tour
-    };
 
     const skeleton = document.getElementById("skeleton-tours");
     await fetch("/assets/data/tours.json")
