@@ -50,6 +50,10 @@
   font-size: 1.8rem;
 }
 
+.search-item i{
+  cursor: pointer;
+}
+
 @media screen and (max-width: 1024px) {
   .swiper-slide .overlay-effect .bi {
     opacity: 1;
