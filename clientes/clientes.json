@@ -1,0 +1,38 @@
+[
+  {
+    "id": "cli-001",
+    "nombre": "María Fernanda López",
+    "correo": "maria.lopezz@example.com",
+    "telefono": "+506 8888-1111",
+    "pais": "Costa Rica",
+    "ultimaCompra": "2025-10-18",
+    "tours": ["cr-monteverde-hanging-bridges", "cr-arenal-hotsprings"]
+  },
+  {
+    "id": "cli-002",
+    "nombre": "Sebastián Rodríguez",
+    "correo": "sebas.rodriguez@example.com",
+    "telefono": "+506 7000-2233",
+    "pais": "Costa Rica",
+    "ultimaCompra": "2025-09-04",
+    "tours": ["cr-tamarindo-sunset"]
+  },
+  {
+    "id": "cli-003",
+    "nombre": "Lucía Méndez",
+    "correo": "lucia.mendez@example.com",
+    "telefono": "+1 305 555 2211",
+    "pais": "Estados Unidos",
+    "ultimaCompra": "2025-08-29",
+    "tours": []
+  },
+  {
+    "id": "cli-004",
+    "nombre": "Jorge Álvarez",
+    "correo": "jorge.alvarez@example.com",
+    "telefono": "+506 6000-4411",
+    "pais": "Costa Rica",
+    "ultimaCompra": "2025-11-01",
+    "tours": ["cr-manuel-antonio-full-day", "cr-poas-crater"]
+  }
+]
