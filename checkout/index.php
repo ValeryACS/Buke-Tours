@@ -3,129 +3,217 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-    />
     <title>Formulario de Compra</title>
+    <?php 
+      include '../php/styles/common-styles.php';
+    ?>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+      href="/Buke-Tours/assets/css/checkout.css"
+      type="text/css"
     />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/flag-icons/css/flag-icons.min.css"
+      href="/Buke-Tours/assets/css/checkout-skeleton.css"
+      type="text/css"
     />
-    <link rel="stylesheet" href="../assets/css/main.css" type="text/css" />
-    <link rel="stylesheet" href="../assets/css/cart.css" type="text/css" />
-    <link rel="stylesheet" href="../assets/css/checkout.css" type="text/css" />
   </head>
   <body>
-    <nav class="barra-navegadora navbar navbar-expand-lg">
-      <div class="container-fluid">
-        <button
-          class="menu-hamburger navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <div id="nav-icon3">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav m-auto">
-            <li class="nav-item barra-navegadora-li">
-              <a href="../perfil.html" class="nav-link"
-                ><i class="bi bi-person-bounding-box display-6"></i
-              ></a>
-            </li>
-            <li class="nav-item barra-navegadora-li">
-              <a href="../index.html" class="nav-link">Inicio</a>
-            </li>
-
-            <li class="nav-item barra-navegadora-li">
-              <a href="../tours.html" class="nav-link">Tours</a>
-            </li>
-            <!--
-                    TODO Incluir esta pagina
-                    <li class="nav-item barra-navegadora-li"><a href="fechas.html">Fechas/Horarios</a></li> -->
-            <li class="nav-item barra-navegadora-li">
-              <a href="../index.html"
-                ><img class="logo" src="../assets/img/logo.png" alt="logo"
-              /></a>
-            </li>
-            <li class="nav-item barra-navegadora-li">
-              <a href="../resenas.html" class="nav-link">Reseñas</a>
-            </li>
-            <li class="nav-item barra-navegadora-li">
-              <a href="../nosotros.html" class="nav-link">Sobre Nosotros</a>
-            </li>
-            <li class="nav-item barra-navegadora-li">
-              <a href="../login.html" class="nav-link"
-                ><i class="bi bi-person-circle display-6"></i
-              ></a>
-            </li>
-            <li class="nav-item barra-navegadora-li">
-                <a href="../contacto.html" class="nav-link">Contacto</a>
-            </li>
-          </ul>
-        </div>
-
-        <button
-          id="shopping-cart"
-          class="btn btn-light position-relative"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#cartModal"
-        >
-          <i class="bi bi-cart3 display-5"></i>
-          <span
-            id="quantity"
-            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger quantity"
-          >
-            <span class="visually-hidden">artículos en el carrito</span>
-          </span>
-        </button>
-      </div>
-    </nav>
-
+    <?php
+    include '../php/components/navbar.php';
+    ?>
     <main>
       <section id="checkout" class="py-5">
-        <div class="container bg-light container-content">
+        <div
+          class="container bg-light container-content float-lg-none float-start"
+        >
           <!-- Encabezado -->
           <div class="d-flex align-items-center justify-content-between mb-4">
             <h1 class="titulo h3 mb-0">Formulario de Compra</h1>
-            <span class="badge text-bg-danger tours-added">3 artículos</span>
+            <span class="badge text-bg-danger tours-added d-none d-lg-flex"
+              >3 artículos</span
+            >
           </div>
           <div class="row g-4">
             <article
               id="empty-checkout-cart"
-              class="col-12 col-lg-8 d-flex flex-column justify-content-center align-items-center"
+              class="col-12 col-lg-8 d-flex flex-column justify-content-center align-items-center d-none"
             >
               <div class="text-center text-muted p-4">
                 Tu carrito está vacío.
               </div>
-              <a href="/tours.html" class="btn btn-danger m-auto"
+              <a href="/Buke-Tours/tours/" class="btn btn-danger m-auto"
                 >Comprar Tours</a
               >
             </article>
+            <!-- Formulario  SKELETON: Formulario de Compra -->
+            <article
+              class="col-12 col-lg-8 skeleton-wrapper"
+              id="checkout-form-skeleton"
+            >
+              <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                  <!-- Cabecera (opcional) -->
+                  <div
+                    class="mb-3 d-flex justify-content-between align-items-center"
+                  >
+                    <div
+                      class="skeleton-line skeleton"
+                      style="width: 40%; height: 22px"
+                    ></div>
+                    <span
+                      class="badge skeleton skeleton-pill d-none d-lg-inline-block"
+                    ></span>
+                  </div>
 
+                  <!-- Acordeón skeleton -->
+                  <div class="accordion">
+                    <!-- 1) Datos de contacto (header + algo de contenido) -->
+                    <div class="accordion-item mb-2">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button collapsed skeleton-accordion-btn skeleton"
+                          type="button"
+                          disabled
+                        ></button>
+                      </h2>
+                      <div class="accordion-body pt-3">
+                        <div class="row g-3">
+                          <div class="col-12 col-md-6">
+                            <div
+                              class="skeleton-line skeleton mb-2"
+                              style="width: 60%"
+                            ></div>
+                            <div class="skeleton-input skeleton"></div>
+                          </div>
+                          <div class="col-12 col-md-6">
+                            <div
+                              class="skeleton-line skeleton mb-2"
+                              style="width: 70%"
+                            ></div>
+                            <div class="skeleton-input skeleton"></div>
+                          </div>
+                          <div class="col-12 col-md-6">
+                            <div
+                              class="skeleton-line skeleton mb-2"
+                              style="width: 55%"
+                            ></div>
+                            <div class="skeleton-input skeleton"></div>
+                          </div>
+                          <div class="col-12 col-md-6">
+                            <div
+                              class="skeleton-line skeleton mb-2"
+                              style="width: 65%"
+                            ></div>
+                            <div class="skeleton-input skeleton"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 2) Viajeros (solo barra) -->
+                    <div class="accordion-item mb-2">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button collapsed skeleton-accordion-btn skeleton"
+                          type="button"
+                          disabled
+                        ></button>
+                      </h2>
+                    </div>
+
+                    <!-- 3) Fechas de Ingreso y Salida (solo barra) -->
+                    <div class="accordion-item mb-2">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button collapsed skeleton-accordion-btn skeleton"
+                          type="button"
+                          disabled
+                        ></button>
+                      </h2>
+                    </div>
+
+                    <!-- 4) Extras opcionales (solo barra) -->
+                    <div class="accordion-item mb-2">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button collapsed skeleton-accordion-btn skeleton"
+                          type="button"
+                          disabled
+                        ></button>
+                      </h2>
+                    </div>
+
+                    <!-- 5) Datos de facturación (solo barra) -->
+                    <div class="accordion-item mb-2">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button collapsed skeleton-accordion-btn skeleton"
+                          type="button"
+                          disabled
+                        ></button>
+                      </h2>
+                    </div>
+
+                    <!-- 6) Tarjeta crédito / débito (header + inputs simulados) -->
+                    <div class="accordion-item mb-2">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button collapsed skeleton-accordion-btn skeleton"
+                          type="button"
+                          disabled
+                        ></button>
+                      </h2>
+                      <div class="accordion-body pt-3">
+                        <div class="row g-3">
+                          <div class="col-12">
+                            <div
+                              class="skeleton-line skeleton mb-2"
+                              style="width: 70%"
+                            ></div>
+                            <div class="skeleton-input skeleton"></div>
+                          </div>
+                          <div class="col-12">
+                            <div
+                              class="skeleton-line skeleton mb-2"
+                              style="width: 60%"
+                            ></div>
+                            <div class="skeleton-input skeleton"></div>
+                          </div>
+                          <div class="col-6 col-md-4">
+                            <div
+                              class="skeleton-line skeleton mb-2"
+                              style="width: 40%"
+                            ></div>
+                            <div class="skeleton-input skeleton"></div>
+                          </div>
+                          <div class="col-6 col-md-4">
+                            <div
+                              class="skeleton-line skeleton mb-2"
+                              style="width: 40%"
+                            ></div>
+                            <div class="skeleton-input skeleton"></div>
+                          </div>
+                          <div class="col-12 col-md-4">
+                            <div
+                              class="skeleton-line skeleton mb-2"
+                              style="width: 30%"
+                            ></div>
+                            <div class="skeleton-input skeleton"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /accordion -->
+                </div>
+              </div>
+            </article>
             <!-- Formulario -->
-            <article class="col-12 col-lg-8" id="checkout-article-container">
+            <article
+              class="col-12 col-lg-8 d-none"
+              id="checkout-article-container"
+            >
               <div id="checkout-form" class="card shadow-sm border-0">
                 <div class="card-body p-4">
                   <div class="accordion" id="accordionCheckout">
@@ -829,7 +917,7 @@
             </article>
 
             <!-- Resumen -->
-            <aside class="col-12 col-lg-4 resumen-del-pedido">
+            <aside class="col-12 col-lg-4 resumen-del-pedido d-none">
               <div class="card shadow-sm sticky-lg-top" style="top: 1rem">
                 <div class="card-body">
                   <h2 class="h6 mb-3">Resumen del pedido</h2>
@@ -873,7 +961,7 @@
                       <span>Adultos</span>
                       <span id="adultos-sidebar-cart">1</span>
                     </li>
-                     <li class="d-flex justify-content-between mb-1">
+                    <li class="d-flex justify-content-between mb-1">
                       <span>Niños</span>
                       <span id="children-sidebar-cart">0</span>
                     </li>
@@ -901,13 +989,28 @@
                     <li class="d-flex justify-content-between mb-1">
                       <h4>Subtotal</h4>
                       <span id="subtotal-cart">$152.29</span>
-                      <input type="number" hidden readonly id="subtotal" name="subtotal" class="d-none" />
+                      <input
+                        type="number"
+                        hidden
+                        readonly
+                        id="subtotal"
+                        name="subtotal"
+                        class="d-none"
+                      />
                     </li>
                     <li
                       class="d-flex justify-content-between border-top pt-2 fw-semibold"
                     >
-                      <h2>Total</h2> <span id="total-cart">$147.28</span>
-                      <input type="number" hidden readonly id="total" name="total" class="d-none" />
+                      <h2>Total</h2>
+                      <span id="total-cart">$147.28</span>
+                      <input
+                        type="number"
+                        hidden
+                        readonly
+                        id="total"
+                        name="total"
+                        class="d-none"
+                      />
                     </li>
                     <li>
                       <div class="form-check mb-3 mt-4 text-start">
@@ -953,106 +1056,215 @@
                 </div>
               </div>
             </aside>
+
+            <!-- SKELETON: Resumen del pedido -->
+            <aside
+              class="col-12 col-lg-4 skeleton-wrapper"
+              id="checkout-summary-skeleton"
+            >
+              <div class="card shadow-sm sticky-lg-top" style="top: 1rem">
+                <div class="card-body">
+                  <!-- Título -->
+                  <div
+                    class="skeleton-line skeleton mb-3"
+                    style="width: 40%; height: 18px"
+                  ></div>
+
+                  <!-- Cupón -->
+                  <div class="mb-3">
+                    <div
+                      class="skeleton-line skeleton mb-2"
+                      style="width: 55%"
+                    ></div>
+                    <div class="input-group">
+                      <div
+                        class="skeleton-input skeleton"
+                        style="border-radius: 0.375rem 0 0 0.375rem"
+                      ></div>
+                      <div
+                        class="skeleton-btn-lg skeleton"
+                        style="
+                          width: 90px;
+                          height: 40px;
+                          border-radius: 0 0.375rem 0.375rem 0;
+                        "
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Totales / Extras: filas de dos columnas -->
+                  <ul class="list-unstyled mb-4">
+                    <!-- Descuento -->
+                    <li class="d-flex justify-content-between mb-2">
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 30%"
+                      ></span>
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 25%"
+                      ></span>
+                    </li>
+                    <!-- Coupon Codes -->
+                    <li class="d-flex justify-content-between mb-2">
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 40%"
+                      ></span>
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 20%"
+                      ></span>
+                    </li>
+                    <!-- Coupon Discounts -->
+                    <li class="d-flex justify-content-between mb-2">
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 45%"
+                      ></span>
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 20%"
+                      ></span>
+                    </li>
+                    <!-- Adultos -->
+                    <li class="d-flex justify-content-between mb-2">
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 30%"
+                      ></span>
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 15%"
+                      ></span>
+                    </li>
+                    <!-- Niños -->
+                    <li class="d-flex justify-content-between mb-2">
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 25%"
+                      ></span>
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 15%"
+                      ></span>
+                    </li>
+
+                    <!-- Título Extras -->
+                    <li class="d-flex justify-content-between mb-2">
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 30%; height: 16px"
+                      ></span>
+                    </li>
+
+                    <!-- Extras (6 filas) -->
+                    <li class="d-flex justify-content-between mb-2">
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 45%"
+                      ></span>
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 10%"
+                      ></span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-2">
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 45%"
+                      ></span>
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 10%"
+                      ></span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-2">
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 45%"
+                      ></span>
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 10%"
+                      ></span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-2">
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 45%"
+                      ></span>
+                      <span
+                        class="skeleton-line skeleton"
+                        style="width: 10%"
+                      ></span>
+                    </li>
+                  </ul>
+
+                  <!-- Subtotal -->
+                  <div class="d-flex justify-content-between mb-2">
+                    <div
+                      class="skeleton-line skeleton"
+                      style="width: 35%; height: 16px"
+                    ></div>
+                    <div
+                      class="skeleton-line skeleton"
+                      style="width: 25%; height: 16px"
+                    ></div>
+                  </div>
+
+                  <!-- Total -->
+                  <div
+                    class="d-flex justify-content-between border-top pt-2 mb-3"
+                  >
+                    <div
+                      class="skeleton-line skeleton"
+                      style="width: 30%; height: 20px"
+                    ></div>
+                    <div
+                      class="skeleton-line skeleton"
+                      style="width: 30%; height: 20px"
+                    ></div>
+                  </div>
+
+                  <!-- Checkbox términos -->
+                  <div class="d-flex align-items-center mb-3">
+                    <div
+                      class="skeleton skeleton"
+                      style="width: 18px; height: 18px; border-radius: 0.25rem"
+                    ></div>
+                    <div
+                      class="skeleton-line skeleton ms-2"
+                      style="width: 70%"
+                    ></div>
+                  </div>
+
+                  <!-- Botones -->
+                  <div class="d-grid">
+                    <div class="skeleton-btn-lg skeleton mb-3"></div>
+                    <div class="skeleton-btn-lg skeleton"></div>
+                  </div>
+
+                  <!-- Nota inferior -->
+                  <div
+                    class="skeleton-line skeleton mt-3"
+                    style="width: 90%"
+                  ></div>
+                  <div
+                    class="skeleton-line skeleton mt-1"
+                    style="width: 60%"
+                  ></div>
+                </div>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
     </main>
-    <!-- Sección principal -->
-
-    <footer>
-      <nav>
-        <div>
-          <ul class="footer-redes">
-            <li class="footer-redes-li"><a href="#">Facebook</a></li>
-            <li class="footer-redes-li">
-              <a
-                href="https://www.instagram.com/unguiaencostarica"
-                target="_blank"
-                >Instagram</a
-              >
-            </li>
-            <li class="footer-redes-li">
-              <a
-                href="https://www.tiktok.com/@unguiaencostarica"
-                target="_blank"
-                >TikTok</a
-              >
-            </li>
-            <li class="footer-redes-li"><a href="#">Bukë Tours</a></li>
-          </ul>
-        </div>
-      </nav>
-    </footer>
-    <!-- Cart Modal -->
-    <div
-      class="modal fade"
-      id="cartModal"
-      tabindex="-1"
-      aria-labelledby="cartModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="cartModalLabel">
-              Carrito de compras
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Cerrar"
-            ></button>
-          </div>
-
-          <div class="modal-body">
-            <!-- Lista de items -->
-            <div class="list-group" id="cartList"></div>
-
-            <!-- Estado vacío -->
-            <div class="text-center py-4 d-none" id="emptyState">
-              <p class="lead mb-2">Tu carrito está vacío</p>
-              <a href="#" class="btn btn-outline-secondary">Explorar tours</a>
-            </div>
-          </div>
-
-          <div
-            class="modal-footer flex-column flex-sm-row gap-2 justify-content-between"
-          >
-            <div class="ms-auto me-sm-3">
-              <div class="text-muted small">Total</div>
-              <div class="fs-5 fw-semibold" aria-live="polite">
-                <span id="cartTotal"></span>
-              </div>
-            </div>
-            <div class="d-flex gap-2">
-              <a
-                href="/checkout/index.html"
-                type="button"
-                class="btn btn-danger"
-              >
-                Pagar
-              </a>
-              <a href="/cart/index.html" class="btn btn-primary"
-                >Ir al carrito</a
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
-    ></script>
-    <script src="../assets/js/menu.js"></script>
-    <script type="module" src="../assets/js/cart.module.js"></script>
-    <script type="module" src="../assets/js/cart-modal.js" defer></script>
-    <script type="module" src="../assets/js/checkout-module.js" defer></script>
-    <script type="module" src="../assets/js/checkout-page.js" defer></script>
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <?php 
+      include '../php/components/footer.php';
+      include '../php/components/cart-modal.php';
+      include '../php/scripts/checkout-scripts.php';
+    ?>
   </body>
 </html>

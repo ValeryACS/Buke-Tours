@@ -1,36 +1,24 @@
+<?php
+
+/**
+ * Usado para listar los Clientes
+ */
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-    />
+    
     <title>Clientes</title>
- 
+    <?php 
+      include '../../php/components/admin/styles/admin-common-styles.php';
+    ?>
     </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
-      <div class="container">
-        <a class="navbar-brand fw-semibold" href="/index.html">Buke Tours</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navMain">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="/tours.html">Tours</a></li>
-            <li class="nav-item"><a class="nav-link" href="/cart/index.html">Carrito</a></li>
-            <li class="nav-item"><a class="nav-link active" href="/clientes.html">Clientes</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <?php 
+      include '../../php/components/admin/nav-bar-admin.php';
+    ?>
 
     <main class="container py-4">
       <div class="row g-3 align-items-end">
@@ -58,8 +46,6 @@
 
       <div id="clientes-resultado" class="row g-3"></div>
 
-
-    <script type="module" src="clientes.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   </body>
 </html>

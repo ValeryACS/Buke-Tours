@@ -48,7 +48,7 @@ export const updateCartTotal = async () => {
   const cartObj = JSON.parse(existCartData || "{}");
 
   try {
-    const res = await fetch("/assets/data/tours.json");
+    const res = await fetch("/Buke-Tours/assets/data/tours.json");
     if (!res.ok) {
       throw new Error("Error al cargar tours.json");
     }
@@ -180,7 +180,7 @@ export const saveCupon = (cuponObj) => {
 /**
  * @function
  * Lee el carrito del localStorage como objeto { [id]: qty }
- * @returns {void}
+ * @returns {Object}
  */
 export const readCart = () => {
   try {
@@ -209,16 +209,18 @@ export const updateCartModal = async (cartObj) => {
   if (!cartList) return;
 
   const ids = Object.keys(cartObj || {});
-  if (ids.length === 0) {
+  if (!ids.length) {
     document.querySelector(".modal-footer")?.classList?.add("d-none");
     document.querySelector(".resumen-del-pedido")?.classList?.add("d-none");
     document.querySelector("#empty-checkout-cart")?.classList?.remove("d-none");
     document
       .querySelector("#checkout-article-container")
       ?.classList.add("d-none");
+    document.querySelector("#checkout-summary-skeleton")?.classList?.add("d-none");
+    document.querySelector("#checkout-form-skeleton")?.classList.add("d-none")
     cartList.innerHTML = `
           <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
-          <a href="/tours.html" class="btn btn-danger m-auto">Comprar Tours</a>
+          <a href="/Buke-Tours/tours/" class="btn btn-danger m-auto">Comprar Tours</a>
         `;
     return;
   }
@@ -228,7 +230,8 @@ export const updateCartModal = async (cartObj) => {
   document
     .querySelector("#checkout-article-container")
     ?.classList.remove("d-none");
-  await fetch("/assets/data/tours.json")
+    document.querySelector("#checkout-form-skeleton")?.classList.add("d-none")
+  await fetch("/Buke-Tours/assets/data/tours.json")
     .then((res) => {
       if (!res.ok) throw new Error("Error al cargar el JSON");
       return res.json();
@@ -326,7 +329,8 @@ export const updateCartModal = async (cartObj) => {
                 </aside>`;
         })
         .join("");
-
+      document.querySelector("#checkout-summary-skeleton")?.classList?.add("d-none");
+      document.querySelector("#checkout-form-skeleton")?.classList.add("d-none")
       cartList.innerHTML = output;
 
       // Re-vincular eventos de + / − / input / eliminar
@@ -482,12 +486,12 @@ export const updateBasket = async () => {
   if (ids.length === 0) {
     cartList.innerHTML = `
           <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
-          <a href="/tours.html" class="btn btn-danger m-auto">Comprar Tours</a>
+          <a href="/Buke-Tours/tours/" class="btn btn-danger m-auto">Comprar Tours</a>
         `;
     return;
   }
 
-  await fetch("/assets/data/tours.json")
+  await fetch("/Buke-Tours/assets/data/tours.json")
     .then((res) => {
       if (!res.ok) throw new Error("Error al cargar el JSON");
       return res.json();
@@ -621,7 +625,7 @@ export const validateCoupon = async (cuponCode) => {
   const cartIds = new Set(Object.keys(cart || {})); // Crea una coleccion de Ids unicos basado en las keys que hay almacenadas en el carrito
 
   try {
-    const res = await fetch("/assets/data/tours.json");
+    const res = await fetch("/Buke-Tours/assets/data/tours.json");
     if (!res.ok) throw new Error("Error al cargar el JSON");
     const data = await res.json();
 

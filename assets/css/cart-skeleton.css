@@ -1,0 +1,36 @@
+.skeleton {
+  background: #e2e2e2;
+  border-radius: 4px;
+  min-height: 12px;
+  animation: skeleton-loading 1.2s infinite linear;
+}
+
+@keyframes skeleton-loading {
+  0% { background-color: #e3e3e3; }
+  50% { background-color: #f0f0f0; }
+  100% { background-color: #e3e3e3; }
+}
+
+.skeleton-img {
+  width: 100%;
+  height: 110px;
+  border-radius: 6px;
+  background: #d6d6d6;
+  animation: skeleton-loading 1.2s infinite linear;
+}
+
+.skeleton-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 5px;
+  background: #ddd;
+  animation: skeleton-loading 1.2s infinite linear;
+}
+
+.skeleton-line {
+  height: 12px;
+  width: 100%;
+  border-radius: 4px;
+  background: #e3e3e3;
+  animation: skeleton-loading 1.2s infinite linear;
+}
