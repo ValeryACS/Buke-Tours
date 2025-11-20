@@ -11,8 +11,6 @@ import {
     await updateCartTotal();
     const cartProducts = readCart();
 
-    console.log('cartProducts', cartProducts)
-
     if(Object.keys(cartProducts).length){
       const summary = document.getElementById("summary-content");
       const cartSummarySkeleton = document.getElementById("cart-summary-payment")
