@@ -1,0 +1,71 @@
+/* ---------- Skeleton base ---------- */
+.skeleton {
+  background: #e3e3e3;
+  border-radius: .25rem;
+  min-height: 12px;
+  animation: skeleton-loading 1.2s linear infinite;
+}
+
+@keyframes skeleton-loading {
+  0%   { background-color: #e3e3e3; }
+  50%  { background-color: #f5f5f5; }
+  100% { background-color: #e3e3e3; }
+}
+
+/* Líneas genéricas */
+.skeleton-line {
+  width: 100%;
+  height: 12px;
+  border-radius: .25rem;
+}
+
+/* Input rectangular */
+.skeleton-input {
+  width: 100%;
+  height: 38px;
+  border-radius: .375rem;
+}
+
+/* Badges / botones cuadrados */
+.skeleton-pill {
+  min-width: 80px;
+  height: 28px;
+  border-radius: 999px;
+}
+
+/* Botones grandes (Paypal / Tarjeta) */
+.skeleton-btn-lg {
+  width: 100%;
+  height: 48px;
+  border-radius: .5rem;
+}
+
+/* Barra del acordeón (simula el header naranja) */
+.skeleton-accordion-btn {
+  width: 100%;
+  height: 52px;
+  border-radius: .25rem;
+}
+
+/* Aplica animación a todo lo skeleton */
+.skeleton,
+.skeleton-line,
+.skeleton-input,
+.skeleton-pill,
+.skeleton-btn-lg,
+.skeleton-accordion-btn {
+  background: linear-gradient(90deg, #e1e1e1 25%, #f0f0f0 50%, #e1e1e1 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.2s ease-in-out infinite;
+}
+
+/* Opcional: deshabilitar interacciones mientras carga */
+.skeleton-wrapper {
+  pointer-events: none;
+}
+
+#checkout-form-skeleton .accordion-button:not(.collapsed){
+    background: linear-gradient(90deg, #e1e1e1 25%, #f0f0f0 50%, #e1e1e1 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.2s ease-in-out infinite;
+}

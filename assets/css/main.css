@@ -28,6 +28,8 @@ main{
 }
 footer{
   z-index: 90;
+  top: 92%;
+  position: sticky;
 }
 h1,
 h2,
@@ -281,7 +283,6 @@ body {
   background-color: #2a7e7e;
   color: white;
   text-align: center;
-  position: fixed;
   display: flex;
   justify-content: center;
   bottom: 0;
@@ -302,6 +303,10 @@ body {
 
 .footer-redes a:hover {
   color: lightblue;
+}
+
+img.logo-footer{
+  height: 60px;
 }
 
 /* Página de Tours */
@@ -443,7 +448,6 @@ Estilos para reseñas
 .perfil-formulario {
   display: flex;
   justify-content: space-between;
-  background: #f0f0f0;
   padding: 20px;
   border-radius: 10px;
   width: 80%;

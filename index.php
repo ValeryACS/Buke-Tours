@@ -3,101 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-    />
     <title>Inicio</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-    />
-    <link rel="stylesheet" href="./assets/css/main.css" type="text/css" />
-    <link rel="stylesheet" href="./assets/css/cart.css" type="text/css" />
-    <link rel="stylesheet" href="./assets/css/slider.css" type="text/css" />
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/Buke-Tours/assets/css/slider.css" type="text/css" />
+    <?php 
+      include './php/styles/common-styles.php';
+    ?>
   </head>
   <body>
-    <nav class="barra-navegadora navbar navbar-expand-lg">
-      <div class="container-fluid">
-        <button
-          class="menu-hamburger navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <div id="nav-icon3">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav m-auto">
-            <li class="nav-item barra-navegadora-li">
-              <a href="./profile/index.html" class="nav-link"
-                ><i class="bi bi-person-bounding-box display-6"></i
-              ></a>
-            </li>
-            <li class="nav-item barra-navegadora-li">
-              <a href="./index.html" class="nav-link">Inicio</a>
-            </li>
-
-            <li class="nav-item barra-navegadora-li">
-              <a href="./tours.html" class="nav-link">Tours</a>
-            </li>
-            <!--
-                    TODO Incluir esta pagina
-                    <li class="nav-item barra-navegadora-li"><a href="fechas.html">Fechas/Horarios</a></li> -->
-            <li class="nav-item barra-navegadora-li">
-              <a href="./index.html"
-                ><img class="logo" src="./assets/img/logo.png" alt="logo"
-              /></a>
-            </li>
-            <li class="nav-item barra-navegadora-li">
-              <a href="./resenas.html" class="nav-link">Reseñas</a>
-            </li>
-            <li class="nav-item barra-navegadora-li">
-              <a href="./nosotros.html" class="nav-link">Sobre Nosotros</a>
-            </li>
-            <li class="nav-item barra-navegadora-li">
-              <a href="./auth/login.html" class="nav-link"
-                ><i class="bi bi-person-circle display-6"></i
-              ></a>
-            </li>
-            <li class="nav-item barra-navegadora-li">
-                <a href="./contacto.html" class="nav-link">Contacto</a>
-            </li>
-          </ul>
-        </div>
-
-        <button
-          id="shopping-cart"
-          class="btn btn-light position-relative"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#cartModal"
-        >
-          <i class="bi bi-cart3 display-5"></i>
-          <span
-            id="quantity"
-            class="d-none position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger quantity"
-          >
-          </span>
-        </button>
-      </div>
-    </nav>
-
+   <?php 
+    include './php/components/navbar.php';
+   ?>
     <main>
       <section>
         <div class="form-group mt-5 mb-5 container-md">
@@ -371,142 +288,12 @@
         </div>
       </section>
     </main>
-    <!-- Sección principal -->
-    <!-- Cart Modal -->
-    <div
-      class="modal fade"
-      id="cartModal"
-      tabindex="-1"
-      aria-labelledby="cartModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="cartModalLabel">
-              Carrito de compras
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Cerrar"
-            ></button>
-          </div>
-
-          <div class="modal-body">
-            <!-- Lista de items -->
-            <div class="list-group" id="cartList"></div>
-
-            <!-- Estado vacío -->
-            <div class="text-center py-4 d-none" id="emptyState">
-              <p class="lead mb-2">Tu carrito está vacío</p>
-              <a href="#" class="btn btn-outline-secondary">Explorar tours</a>
-            </div>
-          </div>
-
-          <div
-            class="modal-footer flex-column flex-sm-row gap-2 justify-content-between"
-          >
-            <div class="ms-auto me-sm-3">
-              <div class="text-muted small">Total</div>
-              <div class="fs-5 fw-semibold" aria-live="polite">
-                <span id="cartTotal"></span>
-              </div>
-            </div>
-            <div class="d-flex gap-2">
-              <a
-                href="./checkout/index.html"
-                type="button"
-                class="btn btn-danger"
-              >
-                Pagar
-              </a>
-              <a href="./cart/index.html" class="btn btn-primary"
-                >Ir al carrito</a
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer>
-      <nav>
-        <div>
-          <ul class="footer-redes">
-            <li class="footer-redes-li">
-              <a href="#"><i class="bi bi-facebook"></i>Facebook</a>
-            </li>
-            <li class="footer-redes-li">
-              <a
-                href="https://www.instagram.com/unguiaencostarica"
-                target="_blank"
-                >Instagram</a
-              >
-            </li>
-            <li class="footer-redes-li">
-              <a
-                href="https://www.tiktok.com/@unguiaencostarica"
-                target="_blank"
-                >TikTok</a
-              >
-            </li>
-            <li class="footer-redes-li"><a href="#">Bukë Tours</a></li>
-          </ul>
-        </div>
-      </nav>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
-    ></script>
-    <script src="./assets/js/menu.js"></script>
-    <!-- Swiper JS -->
+    
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script type="module" src="./assets/js/cart.module.js"></script>
-    <script type="module" src="./assets/js/cart-modal.js" defer></script>
-    <script type="module" src="./assets/js/search-module.js" defer></script>
-    <script type="module" src="./assets/js/home.page.js" defer></script>
-
-    <!-- Initialize Swiper -->
-    <script>
-      (() => {
-        let slidesPerView = window.innerWidth > 768 ? 3 : 1;
-        var swiper = new Swiper(".slider-tours", {
-          lazy: true,
-          slidesPerView,
-          spaceBetween: 30,
-          loop: true,
-          breakpoints: {
-            "@0.00": {
-              slidesPerView: 1,
-              spaceBetween: 10,
-            },
-            "@0.75": {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-            "@1.00": {
-              slidesPerView: 3,
-              spaceBetween: 30,
-            },
-            "@1.50": {
-              slidesPerView: 4,
-              spaceBetween: 40,
-            },
-          },
-          pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-          },
-          navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-          },
-        });
-      })();
-    </script>
+    <?php 
+    include './php/components/cart-modal.php';
+    include './php/components/footer.php';
+    include './php/scripts/home-page.php';
+    ?>
   </body>
 </html>

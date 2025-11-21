@@ -10,7 +10,7 @@
     "rating": 4.8,
     "durationHours": 2.5,
     "discount": 3,
-    "img": "/assets/img/tour2.jpg",
+    "img": "/Buke-Tours/assets/img/tour2.jpg",
     "description": "Caminata guiada por bosque nuboso, observación de aves y biodiversidad única."
   },
   {
@@ -36,7 +36,7 @@
     "rating": 4.9,
     "discount": 5,
     "durationHours": 4,
-    "img": "/assets/img/tour3.jpg",
+    "img": "/Buke-Tours/assets/img/tour3.jpg",
     "description": "Recorrido en bote por canales, avistamiento de fauna y aprendizaje sobre conservación."
   },
   {

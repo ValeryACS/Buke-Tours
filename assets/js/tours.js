@@ -6,7 +6,7 @@ import { onClickViewTour } from "./utils.module.js";
     const tours = document.getElementById("tours");
 
     const skeleton = document.getElementById("skeleton-tours");
-    await fetch("/assets/data/tours.json")
+    await fetch("/Buke-Tours/assets/data/tours.json")
       .then((res) => {
         if (!res.ok) throw new Error("Error al cargar el JSON");
         return res.json();

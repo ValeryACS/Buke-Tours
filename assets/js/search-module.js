@@ -18,7 +18,7 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
     );
     const btnSearchTours = document.getElementById("btn-search-tours");
 
-    const tours = await fetch("/assets/data/tours.json")
+    const tours = await fetch("/Buke-Tours/assets/data/tours.json")
       .then((res) => {
         if (!res.ok) throw new Error("Error al cargar el JSON");
         return res.json();
