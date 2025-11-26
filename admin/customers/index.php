@@ -1,51 +1,66 @@
-<?php
-
-/**
- * Usado para listar los Clientes
- */
-?>
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes</title>
-    <?php 
-      include '../../php/components/admin/styles/admin-common-styles.php';
-    ?>
-    </head>
-  <body>
-    <?php 
-      include '../../php/components/admin/nav-bar-admin.php';
-    ?>
+    <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<?php include '../../php/components/admin/nav-bar-admin.php'; ?>
 
-    <main class="container py-4">
-      <div class="row g-3 align-items-end">
-        <div class="col-12 col-md-6">
-          <label for="clientes-search" class="form-label">Buscar clientes</label>
-          <input
-            id="clientes-search"
-            type="search"
-            class="form-control"
-            placeholder="Nombre, correo, telÃ©fono o paÃ­s"
-            autocomplete="off"
-          />
-        </div>
-        <div class="col-12 col-md-3">
-          <button id="btn-clientes-search" class="btn btn-primary w-100">
-            <i class="bi bi-search"></i> Buscar
-          </button>
-        </div>
-        <div class="col-12 col-md-3 text-md-end">
-          <small class="text-muted d-block">Escribe para ver resultados en vivo.</small>
-        </div>
-      </div>
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Lista de Clientes</h2>
+        <button class="btn btn-primary">Agregar Cliente</button>
+    </div>
 
-      <hr class="my-4" />
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Tour</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Fila de ejemplo 1 -->
+                <tr>
+                    <td>1</td>
+                    <td>Ejemplo</td>
+                    <td>Uno</td>
+                    <td>8888-0001</td>
+                    <td>uno@mail.com</td>
+                    <td>Tour Aventura</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning">Editar</button>
+                        <button class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de eliminar este cliente?')">Eliminar</button>
+                    </td>
+                </tr>
+                <!-- Fila de ejemplo 2 -->
+                <tr>
+                    <td>2</td>
+                    <td>Ejemplo</td>
+                    <td>Dos</td>
+                    <td>8888-0002</td>
+                    <td>dos@mail.com</td>
+                    <td>Tour Cultural</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning">Editar</button>
+                        <button class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de eliminar este cliente?')">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-      <div id="clientes-resultado" class="row g-3"></div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-  </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
 </html>
