@@ -20,16 +20,16 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav m-auto">
         <li class="nav-item barra-navegadora-li">
-          <a href="/Buke-Tours/profile/" class="nav-link" title="Editar Perfil"
+          <a href="/Buke-Tours/profile/" class="nav-link" title="<?php echo $lang['editar_perfil']; ?>"
             ><i class="bi bi-person-bounding-box display-6"></i
           ></a>
         </li>
         <li class="nav-item barra-navegadora-li">
-          <a href="/Buke-Tours/" class="nav-link">Inicio</a>
+          <a href="/Buke-Tours/" class="nav-link"><?php echo $lang['inicio'] ?? 'Inicio'; ?></a>
         </li>
 
         <li class="nav-item barra-navegadora-li">
-          <a href="/Buke-Tours/tours/" class="nav-link">Tours</a>
+          <a href="/Buke-Tours/tours/" class="nav-link"><?php echo $lang['tours'] ?? 'Tours'; ?></a>
         </li>
 
         <li class="nav-item barra-navegadora-li">
@@ -39,18 +39,24 @@
         </a>
         </li>
         <li class="nav-item barra-navegadora-li">
-          <a href="/Buke-Tours/reviews/" class="nav-link">Reseñas</a>
+          <a href="/Buke-Tours/reviews/" class="nav-link"><?php echo $lang['reseñas'] ?? 'Reseñas'; ?></a>
         </li>
         <li class="nav-item barra-navegadora-li">
-          <a href="/Buke-Tours/about-us/" class="nav-link">Sobre Nosotros</a>
+          <a href="/Buke-Tours/about-us/" class="nav-link"><?php echo $lang['sobre_nosotros'] ?? 'Sobre Nosotros'; ?></a>
         </li>
         <li class="nav-item barra-navegadora-li">
-          <a href="/Buke-Tours/auth/login/" class="nav-link" title="Iniciar Session"
+          <a href="/Buke-Tours/auth/login/" class="nav-link" title="<?php echo $lang['iniciar_sesion']; ?>"
             ><i class="bi bi-person-circle display-6"></i
           ></a>
         </li>
         <li class="nav-item barra-navegadora-li">
-          <a href="/Buke-Tours/contact/" class="nav-link" title="Contacto"><i class="display-6 bi bi-person-lines-fill"></i></a>
+          <a href="/Buke-Tours/contact/" class="nav-link" title="<?php echo $lang['contacto']; ?>"><i class="display-6 bi bi-person-lines-fill"></i></a>
+        </li>
+          <li class="nav-item barra-navegadora-li d-flex align-items-center">
+            <select id="language-switcher" class="form-select form-select-sm">
+                <option value="es" <?php if ($_SESSION['lang'] == 'es') echo 'selected'; ?>>Español</option>
+                <option value="en" <?php if ($_SESSION['lang'] == 'en') echo 'selected'; ?>>English</option>
+            </select>
         </li>
       </ul>
     </div>

@@ -1,5 +1,18 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Idioma por defecto español
+}
+
+include 'language/lang_' . $_SESSION['lang'] . '.php'; 
+
+$html_lang = $_SESSION['lang'];
+?>
+
+
 <!DOCTYPE html>
-<html lang="es">
+<html lang="<?php echo $html_lang; ?>">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -288,7 +301,7 @@
         </div>
       </section>
     </main>
-    
+    <script src="js/script.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <?php 
     include './php/components/cart-modal.php';
