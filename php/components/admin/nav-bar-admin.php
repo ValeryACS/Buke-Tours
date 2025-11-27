@@ -12,13 +12,13 @@
     <div class="collapse navbar-collapse" id="navMain">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/admin/tours/">Tours</a>
+          <a class="nav-link" href="/Buke-Tours/admin/tours/">Tours</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/admin/invoices/">Facturas</a>
+          <a class="nav-link" href="/Buke-Tours/admin/invoices/">Facturas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="/admin/customers/">Clientes</a>
+          <a class="nav-link" href="/Buke-Tours/admin/customers/">Clientes</a>
         </li>
       </ul>
     </div>

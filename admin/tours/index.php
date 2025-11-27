@@ -12,7 +12,6 @@ header("Content-Type: text/html; charset=UTF-8");
 <body class="bg-light">
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
 <div class="container py-4">
-
   <div class="row g-3 align-items-end mb-3">
     <div class="col-12 col-md-6">
       <label for="tours-search" class="form-label">Buscar Tours</label>
@@ -26,7 +25,7 @@ header("Content-Type: text/html; charset=UTF-8");
     </div>
 
     <div class="col-12 col-md-3 text-md-end">
-      <a href="/admin/tours/create.php" class="btn btn-success mb-2">Agregar Tour</a>
+      <a href="create.php" class="btn btn-success mb-2">Agregar Tour</a>
       <small class="text-muted d-block">Escribe para ver resultados en vivo.</small>
     </div>
   </div>
@@ -45,10 +44,13 @@ header("Content-Type: text/html; charset=UTF-8");
             </p>
             <div class="mt-auto">
               <div class="d-flex justify-content-between align-items-center">
-                <small class="text-muted">Costa Rica · 3h</small>
+               
                 <div class="btn-group">
-                  <a href="/admin/tours/edit.php?id=<?= $i ?>" class="btn btn-sm btn-primary">Editar</a>
-                  <a href="/admin/tours/delete.php?id=<?= $i ?>" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que deseas eliminar el Tour <?= $i ?>?');">Eliminar</a>
+                  <!-- Botón Editar -->
+                  <a href="edit.php?id=<?= $i ?>" class="btn btn-sm btn-primary">Editar</a>
+
+                  <!-- Botón Eliminar -->
+<a href="delete.php?id=<?= $i ?>" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que deseas eliminar el Tour <?= $i ?>?');">Eliminar</a>
                 </div>
               </div>
             </div>
@@ -57,7 +59,6 @@ header("Content-Type: text/html; charset=UTF-8");
       </div>
     <?php endfor; ?>
   </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

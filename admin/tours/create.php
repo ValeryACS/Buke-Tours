@@ -27,10 +27,7 @@ header("Content-Type: text/html; charset=UTF-8");
       <textarea name="descripcion" class="form-control" rows="4" required></textarea>
     </div>
 
-    <div class="mb-3">
-      <label class="form-label">Duración</label>
-      <input type="text" name="duracion" class="form-control" placeholder="3h, 2 días, etc">
-    </div>
+
 
     <div class="mb-3">
       <label class="form-label">Ubicación</label>
