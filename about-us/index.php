@@ -12,14 +12,14 @@ header('Content-Type: text/html; charset=UTF-8');
 
     <?php 
       // ⚠ IMPORTANTE: estos archivos deben estar guardados en UTF-8 sin BOM
-      include '../../php/components/admin/styles/admin-common-styles.php';
+      include './../php/components/admin/styles/admin-common-styles.php';
     ?>
   </head>
 
   <body>
     <?php 
       // ⚠ IMPORTANTE: también debe estar guardado en UTF-8 sin BOM
-      include '../../php/components/admin/nav-bar-admin.php';
+      include './../php/components/admin/nav-bar-admin.php';
     ?>
 
     <main class="container py-4">
