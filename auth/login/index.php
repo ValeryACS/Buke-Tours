@@ -1,8 +1,20 @@
+
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+session_start();
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Idioma por defecto español
+}
+
+include '../../language/lang_' . $_SESSION['lang'] . '.php'; 
+
+$html_lang = $_SESSION['lang'];
 ?>
+
+
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -22,31 +34,31 @@ error_reporting(E_ALL);
       class="container bg-warning-subtle mx-auto p-4 mt-5 bg-buke-tours"
       style="max-width: 500px"
     >
-      <h1>Iniciar Sesión</h1>
+      <h1><?php echo $lang['iniciar_sesion'];?></h1>
       <form>
         <input
           required
           type="email"
           class="login-textinput"
-          placeholder="Correo electrónico..."
+          placeholder="<?php echo $lang['correo_electronico_ph'];?>"
         />
         <br />
         <input
           required
           type="password"
           class="login-textinput"
-          placeholder="Contraseña..."
+          placeholder="<?php echo $lang['contrasena_ph'];?>"
         />
         <br />
-        <button class="login-boton btn">Iniciar Sesión</button>
+        <button class="login-boton btn"><?php echo $lang['iniciar_sesion'];?></button>
       </form>
       <br />
       <br />
       <br />
       <div class="login-no-tienes-una-cuenta">
-        <h2>No tienes una cuenta?</h2>
+        <h2><?php echo $lang['no_tienes_cuenta_msg'];?></h2>
         <a href="/Buke-Tours/auth/signup/"
-          ><button class="login-boton btn">Registrarme</button></a
+          ><button class="login-boton btn"><?php echo $lang['registrarme'];?></button></a
         >
       </div>
     </section>

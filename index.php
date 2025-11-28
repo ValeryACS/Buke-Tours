@@ -38,7 +38,7 @@ $html_lang = $_SESSION['lang'];
           <form id="search-form" class="d-flex justify-content-center flex-row">
             <input
               class="barra-busqueda m-auto form-control"
-              placeholder="Buscar tours..."
+              placeholder="<?php echo $lang['Buscar_Tour'];?>"
               type="text"
               id="search-input"
             />
@@ -217,24 +217,24 @@ $html_lang = $_SESSION['lang'];
         <article class="hero">
           <h1 class="titulo">Bukë Tours</h1>
           <p class="m-4">
-            En Bukë Tours nos especializamos en ofrecer experiencias únicas y
-            auténticas en Costa Rica. Nuestro objetivo es brindarte los mejores
-            tours para descubrir la naturaleza, la cultura y la aventura en los
-            lugares más impresionantes del país.
+           <?php echo $lang['informacion'] ?? "At Bukë Tours, we specialize in offering unique and 
+                    authentic experiences in Costa Rica. Our goal is to provide you with the
+                    best tours to discover the nature, culture, and adventure in the country's 
+                    most impressive locations."; ?>
           </p>
         </article>
 
         <article class="rectangle-bbf6cb004687">
-          <h2 class="titulo">Nuestra Misión</h2>
+          <h2 class="titulo"><?php echo $lang['mision_titulo'] ?? 'Nuestra misión'; ?></h2>
           <p class="m-4">
-            Queremos que cada viaje sea una experiencia inolvidable, llena de
-            emoción y conexión con la naturaleza.
+            <?php echo $lang['nuestra_mision'] ?? 'Queremos que cada viaje sea una experiencia inolvidable, llena de
+                        emoción y conexión con la naturaleza.'; ?>
           </p>
 
-          <h2 class="titulo">Nuestro Equipo</h2>
+          <h2 class="titulo"><?php echo $lang['equipo'] ?? 'Nuestro equipo'; ?></h2>
           <p class="m-4">
-            Contamos con un equipo de guías profesionales y apasionados por
-            compartir la belleza de Costa Rica contigo.
+            <?php echo $lang['nuestro_equipo'] ?? 'Contamos con un equipo de guías profesionales y apasionados por 
+                        compartir la belleza de Costa Rica contigo.'; ?>
           </p>
         </article>
       </section>
@@ -244,16 +244,16 @@ $html_lang = $_SESSION['lang'];
         style="max-width: 768px"
       >
         <!-- Sección principal -->
-        <h1 class="subtitulo">Reseñas</h1>
-        <h2>Sobre los Tours</h2>
+        <h1 class="subtitulo"><?php echo $lang['resenas'] ?? 'Reseñas'; ?></h1>
+        <h2><?php echo $lang['sobre_tours'] ?? 'Sobre los tours'; ?></h2>
 
         <div class="formulario-resena">
-          <h3>⭐Agrega tu reseña</h3>
+          <h3>⭐<?php echo $lang['titulo_resena']; ?></h3>
           <form action="#" method="post">
-            <label for="nombre">Nombre:</label>
+            <label for="nombre"><?php echo $lang['label_nombre'];?></label>
             <input type="text" id="nombre" name="nombre" required />
 
-            <label for="calificacion">Calificación:</label>
+            <label for="calificacion"><?php echo $lang['label_calificacion'];?></label>
             <select id="calificacion" name="calificacion" required>
               <option value="5">⭐⭐⭐⭐⭐</option>
               <option value="4">⭐⭐⭐⭐</option>
@@ -262,7 +262,7 @@ $html_lang = $_SESSION['lang'];
               <option value="1">⭐</option>
             </select>
 
-            <label for="comentario">Comentario:</label>
+            <label for="comentario"><?php echo $lang['comentario'];?></label>
             <textarea
               id="comentario"
               name="comentario"
@@ -270,7 +270,7 @@ $html_lang = $_SESSION['lang'];
               required
             ></textarea>
 
-            <button type="submit">Enviar Reseña</button>
+            <button type="submit"><?php echo $lang['boton_enviar'];?></button>
           </form>
         </div>
 
