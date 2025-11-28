@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * Usado para renderizar el Home Page
+ */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 
 if (!isset($_SESSION['lang'])) {
@@ -9,8 +16,6 @@ include 'language/lang_' . $_SESSION['lang'] . '.php';
 
 $html_lang = $_SESSION['lang'];
 ?>
-
-
 <!DOCTYPE html>
 <html lang="<?php echo $html_lang; ?>">
   <head>

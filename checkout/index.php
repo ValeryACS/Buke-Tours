@@ -1,3 +1,8 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -495,99 +500,30 @@
                                 <option value="ZW">Zimbabue</option>
                               </select>
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- 2) Viajeros -->
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingViajeros">
-                        <button
-                          class="accordion-button collapsed"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapseViajeros"
-                          aria-expanded="false"
-                          aria-controls="collapseViajeros"
-                        >
-                          Viajeros
-                        </button>
-                      </h2>
-                      <div
-                        id="collapseViajeros"
-                        class="accordion-collapse collapse"
-                        aria-labelledby="headingViajeros"
-                        data-bs-parent="#accordionCheckout"
-                      >
-                        <div class="accordion-body">
-                          <div class="row g-3">
-                            <div class="col-6 col-md-4 form-group">
-                              <label for="adultos" class="form-label"
-                                >Adultos</label
-                              >
-                              <input
-                                id="adultos"
-                                name="adultos"
-                                type="number"
-                                min="1"
-                                value="1"
-                                class="form-control text-center"
-                              />
-                            </div>
-                            <div class="col-6 col-md-4 form-group">
-                              <label for="ninos" class="form-label"
-                                >Niños</label
-                              >
-                              <input
-                                id="ninos"
-                                name="ninos"
-                                type="number"
-                                min="0"
-                                value="0"
-                                class="form-control text-center"
-                              />
-                            </div>
-                            <div class="col-12 col-md-4 form-group">
-                              <label for="idioma" class="form-label"
-                                >Idioma del tour</label
-                              >
-                              <select
-                                id="idioma"
-                                name="idioma"
-                                class="form-select"
-                              >
-                                <option value="es" selected>Español</option>
-                                <option value="en">Inglés</option>
-                                <option value="fr">Frances</option>
-                                <option value="it">Italiano</option>
-                                <option value="pt">Portugues</option>
-                              </select>
-                            </div>
-                            <div class="col-12 form-group text-start">
-                              <label for="viajeroPrincipal" class="form-label"
-                                >Nombre del Viajero principal</label
-                              >
-                              <input
-                                id="viajeroPrincipal"
-                                name="viajeroPrincipal"
-                                type="text"
-                                class="form-control"
-                                placeholder="Tal como aparece en el documento"
-                                maxlength="35"
-                              />
-                            </div>
-                            <div class="col-12 col-md-7 form-group text-start">
+                            <div class="col-12 col-md-6 form-group text-start">
                               <label for="documento" class="form-label"
-                                >Documento / Pasaporte</label
+                                >Cédula / Pasaporte</label
                               >
                               <input
                                 id="documento"
                                 name="documento"
                                 type="text"
                                 class="form-control"
-                                placeholder="Número de documento"
+                                placeholder="Número de Cédula"
                                 maxlength="20"
+                              />
+                            </div>
+                            <div class="col-12 col-md-6 form-group text-start">
+                              <label for="idioma" class="form-label"
+                                >Idioma</label
+                              >
+                              <input
+                                id="idioma"
+                                name="idioma"
+                                type="text"
+                                class="form-control"
+                                placeholder="Idioma"
+                                maxlength="30"
                               />
                             </div>
                           </div>
@@ -647,6 +583,7 @@
                         data-bs-parent="#accordionCheckout"
                       >
                         <div class="accordion-body">
+                          <h6 class="mb-2">Costo por persona: </h6>
                           <div class="row g-3">
                             <div class="col-12 col-md-6">
                               <div class="form-check text-start">
@@ -692,7 +629,7 @@
                                   name="transporte"
                                 />
                                 <label class="form-check-label" for="transporte"
-                                  >Transporte(+$100.00)</label
+                                  >Transporte(+$30.00)</label
                                 >
                               </div>
                               <div class="form-check text-start">

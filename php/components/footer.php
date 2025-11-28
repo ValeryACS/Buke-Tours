@@ -1,3 +1,11 @@
+<?php
+/**
+ * Usado para renderizar el footer
+ */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
 <footer>
   <nav>
       <ul class="footer-redes py-3">

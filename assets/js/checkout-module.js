@@ -1,4 +1,9 @@
-import { readCart } from "./cart.module.js";
+import {
+  readCart,
+  getTotal,
+  getCoupons,
+  getSubTotalAndDiscounts,
+} from "./cart.module.js";
 import {
   onlyDigits,
   containNumbers,
@@ -22,48 +27,53 @@ export const setTourDetailsForm = async () => {
     return;
   }
 
-  await fetch("/Buke-Tours/assets/data/tours.json")
+  await fetch("/Buke-Tours/api/tours/")
     .then((res) => {
       if (!res.ok) throw new Error("Error al cargar el JSON");
       return res.json();
     })
-    .then((data) => {
+    .then(({ data }) => {
       // Para cada id del carrito busca el tour en el JSON
       const output = ids
-        .map((id, index) => {
-          const tour = data.find((t) => String(t.id) === String(id));
+        .map((sku, index) => {
+          const tour = data.find((t) => String(t.sku) === String(sku));
           if (!tour) return ""; // si no existe en el JSON lo ignora
-          return `
-            <div class="accordion-item" data-tour-id="${id}">
-                <h2 class="accordion-header" id="headingTour-${id}">
+          const checkoutResult = [];
+
+          const quantityOfTours = Number(cartData[sku]); // la cantidad de tours que el usuario tiene adentro del carrito
+
+          for (let tourIndex = 0; tourIndex < quantityOfTours; tourIndex++) {
+            const accordionHtml = `
+            <div class="accordion-item" data-tour-id="${sku}">
+                <h2 class="accordion-header" id="headingTour-${sku}-${tourIndex}">
                     <button
                         class="accordion-button"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#collapseTour-${id}"
+                        data-bs-target="#collapseTour-${sku}-${tourIndex}"
                         aria-expanded="true"
-                        aria-controls="collapseTour-${id}"
+                        aria-controls="collapseTour-${sku}-${tourIndex}"
                     >
                     ${tour.title}
                     </button>
                 </h2>
                 <div
-                id="collapseTour-${id}"
+                id="collapseTour-${sku}-${tourIndex}"
                 class="accordion-collapse collapse ${index === 0 ? "show" : ""}"
-                aria-labelledby="headingTour-${id}"
+                aria-labelledby="headingTour-${sku}-${tourIndex}"
                 data-bs-parent="#accordionCheckoutTourList"
                 >
                     <div class="accordion-body">
                         <div class="row g-3">
                             <div class="col-12 text-start">
                                 <label
-                                for="tour-name-${id}"
+                                for="tour-name-${sku}"
                                 class="form-label"
                                 >Tour</label
                                 >
                                 <input
-                                id="tour-name-${id}"
-                                name="tour-name-${id}"
+                                id="tour-name-${sku}"
+                                name="tour-name-${sku}"
                                 type="text"
                                 class="form-control"
                                 value="${tour.title}"
@@ -72,38 +82,76 @@ export const setTourDetailsForm = async () => {
                             </div>
                             <div class="col-12 col-md-6">
                                 <label
-                                for="fechaIngresoTour-${id}"
+                                for="fechaIngresoTour-${sku}"
                                 class="form-label"
                                 >Fecha de ingreso</label
                                 >
                                 <input
-                                id="fechaIngresoTour-${id}"
-                                name="fechaIngresoTour-${id}"
+                                id="fechaIngresoTour-${sku}"
+                                name="fechaIngresoTour-${sku}"
                                 type="date"
                                 class="form-control start-date-input"
-                                data-tour-id="${id}"
+                                data-tour-id="${tour.id}"
                                 required
                                 />
                             </div>
                             <div class="col-12 col-md-6">
                                 <label
-                                for="fechaSalidaTour-${id}"
+                                for="fechaSalidaTour-${sku}"
                                 class="form-label"
                                 >Fecha de salida</label
                                 >
                                 <input
-                                id="fechaSalidaTour-${id}"
-                                name="fechaSalidaTour-${id}"
+                                id="fechaSalidaTour-${sku}"
+                                name="fechaSalidaTour-${sku}"
                                 type="date"
                                 class="form-control end-date-input"
-                                data-tour-id="${id}"
+                                data-tour-id="${tour.id}"
                                 required
                                 />
+                            </div>
+
+                            <div class="col-6 col-md-4 form-group">
+                              <label for="adultos-${sku}" class="form-label"
+                                >Adultos <span class="badge text-bg-success m-2">$${
+                                  tour.price_usd
+                                }</span></label
+                              >
+                              <input
+                                id="adultos-${sku}"
+                                name="adultos-${sku}"
+                                type="number"
+                                data-tour-id="${sku}"
+                                data-tour-price="${tour.price_usd}"
+                                min="1"
+                                value="1"
+                                class="form-control text-center adults-quantity tour-quantity"
+                              />
+                            </div>
+                            <div class="col-6 col-md-4 form-group">
+                              <label for="ninos-${sku}" class="form-label"
+                                >Niños <span class="badge text-bg-success m-2">$${
+                                  Number(tour.price_usd) - 5
+                                }</span></label
+                              >
+                              <input
+                                id="ninos-${sku}"
+                                name="ninos-${sku}"
+                                type="number"
+                                data-tour-id="${sku}"
+                                data-tour-price="${Number(tour.price_usd) - 5}"
+                                min="0"
+                                value="0"
+                                class="form-control text-center children-quantity tour-quantity"
+                              />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>`;
+            checkoutResult.push(accordionHtml);
+          }
+          return checkoutResult.join("");
         })
         .join("");
 
@@ -161,16 +209,6 @@ export const validateCheckoutForm = ({
       }
     }
 
-    if (id === "viajeroprincipal") {
-      // Valida el nombre del Viajero Principal
-      if (containNumbers(inputValue)) {
-        return pushErrorMessage(
-          inputElement,
-          "El nombre del Viajero Principal no puede contener números."
-        );
-      }
-    }
-
     if (id === "email") {
       // Valida el email
       const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue); // Valida si es un email valido
@@ -212,105 +250,138 @@ export const validateCheckoutForm = ({
 
   numerosRequeridos.forEach((inputElement) => {
     if (!inputElement) return;
-    const id = (inputElement.id || "").toLowerCase();
-    const numberValue = (inputElement.value ?? "").trim();
+    if (Array.isArray(inputElement)) {
+      inputElement.forEach((numb) => {
+        const id = (numb.id || "").toLowerCase();
+        const numberValue = (numb.value ?? "").trim();
 
-    // Input del numero vacio
-    if (!numberValue) {
-      pushErrorMessage(
-        inputElement,
-        `El campo "${inputElement.labels?.[0]?.innerText || id}" es requerido.`
-      );
-      return;
-    }
+        const minAttr = numb.getAttribute("min");
+        const number = Number(onlyDigits(numberValue)) || Number(numberValue);
 
-    // por defecto: comprobar número y min (si existe)
-    const minAttr = inputElement.getAttribute("min");
-    const number = Number(onlyDigits(numberValue)) || Number(numberValue);
+        if (Number.isNaN(number)) {
+          pushErrorMessage(
+            numb,
+            `El campo "${numb.labels?.[0]?.innerText || id}" debe ser numérico.`
+          );
+          return;
+        }
 
-    if (Number.isNaN(number)) {
-      pushErrorMessage(
-        inputElement,
-        `El campo "${
-          inputElement.labels?.[0]?.innerText || id
-        }" debe ser numérico.`
-      );
-      return;
-    }
+        if (minAttr !== null && !Number.isNaN(Number(minAttr))) {
+          const min = Number(minAttr);
+          if (number < min) {
+            pushErrorMessage(
+              numb,
+              `El campo "${
+                numb.labels?.[0]?.innerText || id
+              }" debe ser mayor o igual a ${min}.`
+            );
+            return;
+          }
+        }
+      });
+    } else {
+      const id = (inputElement.id || "").toLowerCase();
+      const numberValue = (inputElement.value ?? "").trim();
 
-    if (minAttr !== null && !Number.isNaN(Number(minAttr))) {
-      const min = Number(minAttr);
-      if (number < min) {
+      // Input del numero vacio
+      if (!numberValue) {
         pushErrorMessage(
           inputElement,
           `El campo "${
             inputElement.labels?.[0]?.innerText || id
-          }" debe ser mayor o igual a ${min}.`
+          }" es requerido.`
         );
         return;
       }
-    }
 
-    // Reglas específicas de tarjeta
-    if (id === "cardnumber") {
-      const digits = onlyDigits(numberValue);
-      if (digits.length < 13 || digits.length > 19) {
-        return pushErrorMessage(
+      // por defecto: comprobar número y min (si existe)
+      const minAttr = inputElement.getAttribute("min");
+      const number = Number(onlyDigits(numberValue)) || Number(numberValue);
+
+      if (Number.isNaN(number)) {
+        pushErrorMessage(
           inputElement,
-          "El número de tarjeta debe tener entre 13 y 19 dígitos."
+          `El campo "${
+            inputElement.labels?.[0]?.innerText || id
+          }" debe ser numérico.`
         );
+        return;
       }
-    }
 
-    if (id === "cardmonth") {
-      const mm = Number(onlyDigits(numberValue));
-      if (mm < 1 || mm > 12) {
-        return pushErrorMessage(
-          inputElement,
-          "El mes de expiración debe estar entre 01 y 12."
-        );
-      }
-    }
-
-    if (id === "cardyear") {
-      // Representa el año
-      let year = onlyDigits(numberValue);
-      if (!(year.length === 2)) {
-        return pushErrorMessage(
-          inputElement,
-          "El año de expiración debe tener 2 dígitos."
-        );
-      }
-      const year2 = Number(year);
-
-      // si tenemos el mes, comprobamos no expirada
-      const monthEl = document.getElementById("cardMonth");
-      if (monthEl && monthEl.value) {
-        const mm = Number(onlyDigits(monthEl.value));
-        // tarjeta expirada: año menor, o año igual y mes menor
-        if (year2 < curYY || (year2 === curYY && mm < curMM)) {
-          return pushErrorMessage(inputElement, "La tarjeta está expirada.");
+      if (minAttr !== null && !Number.isNaN(Number(minAttr))) {
+        const min = Number(minAttr);
+        if (number < min) {
+          pushErrorMessage(
+            inputElement,
+            `El campo "${
+              inputElement.labels?.[0]?.innerText || id
+            }" debe ser mayor o igual a ${min}.`
+          );
+          return;
         }
-      } else if (year2 < curYY) {
-        // si no hay mes, al menos año no menor al actual (mejor que nada)
-        return pushErrorMessage(
-          inputElement,
-          "La tarjeta podría estar expirada (verifica mes y año)."
-        );
       }
-    }
 
-    if (id === "cardcvv") {
-      const digits = onlyDigits(numberValue);
-      if (digits.length < 3 || digits.length > 4) {
-        return pushErrorMessage(
-          inputElement,
-          "El CVV debe ser de 3 o 4 dígitos."
-        );
+      // Reglas específicas de tarjeta
+      if (id === "cardnumber") {
+        const digits = onlyDigits(numberValue);
+        if (digits.length < 13 || digits.length > 19) {
+          return pushErrorMessage(
+            inputElement,
+            "El número de tarjeta debe tener entre 13 y 19 dígitos."
+          );
+        }
       }
-    }
 
-    setState(inputElement, true);
+      if (id === "cardmonth") {
+        const mm = Number(onlyDigits(numberValue));
+        if (mm < 1 || mm > 12) {
+          return pushErrorMessage(
+            inputElement,
+            "El mes de expiración debe estar entre 01 y 12."
+          );
+        }
+      }
+
+      if (id === "cardyear") {
+        // Representa el año
+        let year = onlyDigits(numberValue);
+        if (!(year.length === 2)) {
+          return pushErrorMessage(
+            inputElement,
+            "El año de expiración debe tener 2 dígitos."
+          );
+        }
+        const year2 = Number(year);
+
+        // si tenemos el mes, comprobamos no expirada
+        const monthEl = document.getElementById("cardMonth");
+        if (monthEl && monthEl.value) {
+          const mm = Number(onlyDigits(monthEl.value));
+          // tarjeta expirada: año menor, o año igual y mes menor
+          if (year2 < curYY || (year2 === curYY && mm < curMM)) {
+            return pushErrorMessage(inputElement, "La tarjeta está expirada.");
+          }
+        } else if (year2 < curYY) {
+          // si no hay mes, al menos año no menor al actual (mejor que nada)
+          return pushErrorMessage(
+            inputElement,
+            "La tarjeta podría estar expirada (verifica mes y año)."
+          );
+        }
+      }
+
+      if (id === "cardcvv") {
+        const digits = onlyDigits(numberValue);
+        if (digits.length < 3 || digits.length > 4) {
+          return pushErrorMessage(
+            inputElement,
+            "El CVV debe ser de 3 o 4 dígitos."
+          );
+        }
+      }
+
+      setState(inputElement, true);
+    }
   });
 
   // ---- 3) Valida las fechas de los Tours
@@ -486,13 +557,25 @@ export const setOnChangeCheckoutEvents = ({
   // --- Inputs tipo número: no se permiten letras
   inputNumbers.forEach((element) => {
     if (!element) return;
-    element.addEventListener("input", (event) => {
-      const original = event.target.value;
-      const cleaned = removeLetters(original);
-      if (original !== cleaned) {
-        event.target.value = cleaned;
-      }
-    });
+    if (Array.isArray(element)) {
+      element.forEach((elm) => {
+        elm.addEventListener("input", (event) => {
+          const original = event.target.value;
+          const cleaned = removeLetters(original);
+          if (original !== cleaned) {
+            event.target.value = cleaned;
+          }
+        });
+      });
+    } else {
+      element.addEventListener("input", (event) => {
+        const original = event.target.value;
+        const cleaned = removeLetters(original);
+        if (original !== cleaned) {
+          event.target.value = cleaned;
+        }
+      });
+    }
   });
 };
 
@@ -502,7 +585,7 @@ export const setOnChangeCheckoutEvents = ({
  * @param {Number} params.children - La cantidad de niños
  * @param {Number} params.adultos - La cantidad de adultos
  * @param {Boolean} params.hasBreakfast - Determina si la reservacion incluye Desayuno o no
- * @param {Boolean} params.hasLaunch - Determina si la reservacion incluye Almuerzo o no
+ * @param {Boolean} params.hasLunch - Determina si la reservacion incluye Almuerzo o no
  * @param {Boolean} params.hasDinner - Determina si la reservacion incluye Cena o no
  * @param {Boolean} params.hasSecurity - Determina si la reservacion incluye Seguro Viajero
  * @param {Boolean} params.hasPhotos - Determina si la reservacion incluye Fotos o no
@@ -515,7 +598,7 @@ export const calculateExtras = ({
   children,
   adultos,
   hasBreakfast,
-  hasLaunch,
+  hasLunch,
   hasDinner,
   hasSecurity,
   hasPhotos,
@@ -523,46 +606,41 @@ export const calculateExtras = ({
   subtotal,
   total,
 }) => {
-  const breakfastCart = document.getElementById("breakfast-cart");// El texto del Desayuno en el sidebar del Resumen de Pedido
-  const launchCart = document.getElementById("launch-cart");// El texto del Almuerzo en el sidebar del Resumen de Pedido
-  const dinerCart = document.getElementById("diner-cart");// El texto de la Cena en el sidebar del Resumen de Pedido
-  const transportCart = document.getElementById("transport-cart");// El texto del Transport en el sidebar del Resumen de Pedido
-  const securityCart = document.getElementById("security-cart");// El texto del Seguro Viajero en el sidebar del Resumen de Pedido
-  const photoCart = document.getElementById("photos-cart");// El texto del Paquete de Fotos en el sidebar del Resumen de Pedido
-  const totalCartSidebar = document.getElementById("total-cart");// El texto del Total en el sidebar del Resumen de Pedido
-  const subTotalCartSidebar = document.getElementById("subtotal-cart");// El texto del Subtotal en el sidebar del Resumen de Pedido
-  const childrenSidebar = document.getElementById("children-sidebar-cart"); // El texto de los Niños en el sidebar del Resumen de Pedido 
-  const adultosSidebar = document.getElementById("adultos-sidebar-cart");// El texto de los Adultos en el sidebar del Resumen de Pedido 
+  const breakfastCart = document.getElementById("breakfast-cart"); // El texto del Desayuno en el sidebar del Resumen de Pedido
+  const launchCart = document.getElementById("launch-cart"); // El texto del Almuerzo en el sidebar del Resumen de Pedido
+  const dinerCart = document.getElementById("diner-cart"); // El texto de la Cena en el sidebar del Resumen de Pedido
+  const transportCart = document.getElementById("transport-cart"); // El texto del Transport en el sidebar del Resumen de Pedido
+  const securityCart = document.getElementById("security-cart"); // El texto del Seguro Viajero en el sidebar del Resumen de Pedido
+  const photoCart = document.getElementById("photos-cart"); // El texto del Paquete de Fotos en el sidebar del Resumen de Pedido
+  const totalCartSidebar = document.getElementById("total-cart"); // El texto del Total en el sidebar del Resumen de Pedido
+  const subTotalCartSidebar = document.getElementById("subtotal-cart"); // El texto del Subtotal en el sidebar del Resumen de Pedido
+  const childrenSidebar = document.getElementById("children-sidebar-cart"); // El texto de los Niños en el sidebar del Resumen de Pedido
+  const adultosSidebar = document.getElementById("adultos-sidebar-cart"); // El texto de los Adultos en el sidebar del Resumen de Pedido
   let newTotal = Number(total) || 0;
   let newSubTotal = Number(subtotal) || 0;
 
-  const quantityOfPersons = Number(children) + Number(adultos);// Cantidad Total de Personas
-  
+  const quantityOfPersons = Number(children) + Number(adultos); // Cantidad Total de Personas
 
   const breakFastCost = quantityOfPersons * 11; // Costo del Desayuno
-  const launchCost = quantityOfPersons * 12; // Costo del Almuerzo
+  const lunchCost = quantityOfPersons * 12; // Costo del Almuerzo
   const dinerCost = quantityOfPersons * 17; // Costo de la Cena
   const securityCost = quantityOfPersons * 9; // Costo del Seguro Viajero
   const photosCost = quantityOfPersons * 15; // Costo del Paquete Fotografico
-  const transportCost = quantityOfPersons * 100; // Costo del Transporte
+  const transportCost = quantityOfPersons * 30; // Costo del Transporte
 
   if (Number(children) > 0) {
-    childrenSidebar.textContent = `X${Number(children)}`;
+    childrenSidebar.textContent = `x${Number(children)}`;
   } else {
-    childrenSidebar.textContent = 0;
+    childrenSidebar.textContent = "x0";
   }
 
-  if (Number(adultos) > 1) {
-    newTotal = Number(adultos) * newTotal;
-    newSubTotal = Number(adultos) * newSubTotal;
+  if (quantityOfPersons > 1) {
     if (adultosSidebar) {
-      adultosSidebar.textContent = `X${adultos}`;
+      adultosSidebar.textContent = `x${adultos}`;
     }
   } else {
-    newTotal = newTotal;
-    newSubTotal = newSubTotal;
     if (adultosSidebar) {
-      adultosSidebar.textContent = `X1`;
+      adultosSidebar.textContent = `x1`;
     }
   }
   if (hasBreakfast) {
@@ -572,16 +650,16 @@ export const calculateExtras = ({
   } else {
     newTotal = newTotal;
     newSubTotal = newSubTotal;
-    breakfastCart.textContent = 0;
+    breakfastCart.innerHTML = `<span class="badge text-bg-danger">No</span>`;
   }
-  if (hasLaunch) {
-    newTotal = newTotal + launchCost;
-    newSubTotal = newSubTotal + launchCost;
-    launchCart.textContent = `$${launchCost.toLocaleString("es-CR")}`;
+  if (hasLunch) {
+    newTotal = newTotal + lunchCost;
+    newSubTotal = newSubTotal + lunchCost;
+    launchCart.textContent = `$${lunchCost.toLocaleString("es-CR")}`;
   } else {
     newTotal = newTotal;
     newSubTotal = newSubTotal;
-    launchCart.textContent = 0;
+    launchCart.innerHTML = `<span class="badge text-bg-danger">No</span>`;
   }
 
   if (hasDinner) {
@@ -591,7 +669,7 @@ export const calculateExtras = ({
   } else {
     newTotal = newTotal;
     newSubTotal = newSubTotal;
-    dinerCart.textContent = 0;
+    dinerCart.innerHTML = `<span class="badge text-bg-danger">No</span>`;
   }
   if (hasSecurity) {
     newTotal = newTotal + securityCost;
@@ -600,7 +678,7 @@ export const calculateExtras = ({
   } else {
     newTotal = newTotal;
     newSubTotal = newSubTotal;
-    securityCart.textContent = 0;
+    securityCart.innerHTML = `<span class="badge text-bg-danger">No</span>`;
   }
   if (hasPhotos) {
     newTotal = newTotal + photosCost;
@@ -609,7 +687,7 @@ export const calculateExtras = ({
   } else {
     newTotal = newTotal;
     newSubTotal = newSubTotal;
-    photoCart.textContent = 0;
+    photoCart.innerHTML = `<span class="badge text-bg-danger">No</span>`;
   }
   if (hasTransport) {
     newTotal = newTotal + transportCost;
@@ -618,17 +696,63 @@ export const calculateExtras = ({
   } else {
     newTotal = newTotal;
     newSubTotal = newSubTotal;
-    transportCart.textContent = 0;
+    transportCart.innerHTML = `<span class="badge text-bg-danger">No</span>`;
   }
   if (totalCartSidebar) {
     totalCartSidebar.textContent = `$${String(
-      Number(newTotal).toFixed(2)
+      Number(newTotal).toFixed(0)
     ).toLocaleString("es-CR")}`;
   }
   if (subTotalCartSidebar) {
     subTotalCartSidebar.textContent = `$${String(
-      Number(newSubTotal).toFixed(2)
+      Number(newSubTotal).toFixed(0)
     ).toLocaleString("es-CR")}`;
   }
-  
+};
+/**
+ * @function
+ *
+ * Calcula el total en base a la cantidad de personas ya que el precio del tour es por persona
+ */
+export const calculateAccordionTotal = (data) => {
+  let subtotal = 0;
+
+  const accordionItems = document.querySelectorAll(
+    "#accordionCheckoutTourList .accordion-item"
+  );
+
+  console.log("accordionItems", accordionItems);
+
+  accordionItems.forEach((item) => {
+    // Obtener el input dentro del accordion item
+    const inputs = Array.from(item.querySelectorAll(".tour-quantity"));
+    if (!inputs.length) return;
+
+    inputs.forEach((input) => {
+      const price = Number(input.getAttribute("data-tour-price"));
+      const qty = Number(input.value);
+
+      if (!isNaN(price) && !isNaN(qty)) {
+        subtotal += price * qty;
+      }
+    });
+  });
+
+  // Subtotal y descuento por tour (en dólares, por ítem)
+  const { itemDiscountDollars } = getSubTotalAndDiscounts(data);
+
+  // Aplicar cupones válidos (solo si su tour está en el carrito)
+  const { totalCouponsPct } = getCoupons(data);
+
+  const { finalTotal, finalFmt } = getTotal({
+    subtotal,
+    itemDiscountDollars,
+    totalCouponsPct,
+  });
+
+  document.getElementById("subtotal-cart").textContent = `$${subtotal.toFixed(2)}`;
+  document.getElementById("subtotal").value = subtotal.toFixed(2);
+
+  document.getElementById("total-cart").textContent = finalFmt;
+  document.getElementById("total").value = finalTotal.toFixed(2);
 };

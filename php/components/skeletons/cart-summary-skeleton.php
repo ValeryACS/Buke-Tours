@@ -2,6 +2,9 @@
 /**
  * Contiene el skeleton del resumen del pedido
  */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ?>
 <div class="card shadow-sm sticky-lg-top" id="cart-summary-payment" style="top: 1rem">
   <div class="card-body">

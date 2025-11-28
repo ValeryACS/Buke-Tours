@@ -14,7 +14,6 @@ export const updateCartTotal = async () => {
   const cuponInputElement = document.getElementById("cupon-cart"); // El Input del Coupon del sidebar de resumen
   const cuponDiscountEl = document.getElementById("cupon-discounts-cart"); //El coupon del sidebar de resumen
   const totalElement = document.getElementById("total"); // El Input Total de tipo number
-  const adultos = document.getElementById("adultos"); // El Input de los adultos
   const subTotalInputElement = document.getElementById("subtotal"); //El Input del subtotal
 
   const existCartData = localStorage.getItem("cart");
@@ -45,91 +44,34 @@ export const updateCartTotal = async () => {
     return;
   }
 
-  const cartObj = JSON.parse(existCartData || "{}");
-
   try {
-    const res = await fetch("/Buke-Tours/assets/data/tours.json");
+    const res = await fetch("/Buke-Tours/api/tours/");
     if (!res.ok) {
       throw new Error("Error al cargar tours.json");
     }
-    const data = await res.json();
+    const { data } = await res.json();
 
-    // 1) Subtotal y descuento por tour (en dólares, por ítem)
-    let subtotal = 0;
-    let itemDiscountDollars = 0;
+    // Subtotal y descuento por tour (en dólares, por ítem)
+    const { subtotal, itemDiscountPctEffective, itemDiscountDollars } =
+      getSubTotalAndDiscounts(data);
 
-    for (const [id, qtyRaw] of Object.entries(cartObj)) {
-      const tour = data.find((t) => String(t.id) === String(id));
-      if (!tour) continue;
-
-      const qty = Math.max(0, Number(qtyRaw) || 0);
-      const price = Number(tour.priceUSD) || 0;
-      const pct = Number(tour.discount) || 0;
-
-      const line = qty * price;
-      subtotal += line;
-      itemDiscountDollars += line * (pct / 100);
-    }
-
-    const subtotalFmt = `$${subtotal.toFixed(2)}`;
+    const subtotalFmt = `$${subtotal}`;
     if (subTotalSidebarElement) {
       subTotalSidebarElement.textContent = subtotalFmt;
     }
 
-    // % efectivo de descuento por tour (para mostrar en el UI)
-    const itemDiscountPctEffective =
-      subtotal > 0 ? (itemDiscountDollars / subtotal) * 100 : 0;
-    if (discountSidebarElement)
-      discountSidebarElement.textContent = `-${itemDiscountPctEffective.toFixed(
-        0
-      )}%`;
-
-    // 2) Total parcial tras descuentos por tour
-    let totalAfterItemDiscount = subtotal - itemDiscountDollars;
-
-    // 3) Aplicar cupones válidos (solo si su tour está en el carrito)
-    const savedCupons = readCupons(); // { [code]: pct }
-    const cartIds = new Set(Object.keys(cartObj || {}));
-
-    const codesApplied = [];
-    let totalCouponsPct = 0; // total del descuento del coupon
-
-    if (savedCupons && Object.keys(savedCupons).length) {
-      for (const [code, pct] of Object.entries(savedCupons)) {
-        // Buscar el tour dueño del cupón
-        const tourForCode = data.find(
-          (t) =>
-            String(t.cuponCode || "")
-              .trim()
-              .toUpperCase() === String(code).trim().toUpperCase()
-        );
-
-        // Aplica si y solo si el tour del cupón está en el carrito
-        if (tourForCode && cartIds.has(String(tourForCode.id))) {
-          totalCouponsPct += Number(pct) || 0;
-          codesApplied.push(code);
-        }
-      }
+    if (discountSidebarElement) {
+      discountSidebarElement.textContent = `-${itemDiscountPctEffective}%`;
     }
 
-    // Descuento por cupones sobre el total parcial
-    let couponsDiscountDollars = 0;
-    if (totalCouponsPct > 0 && totalAfterItemDiscount > 0) {
-      couponsDiscountDollars = totalAfterItemDiscount * (totalCouponsPct / 100);
-    }
+    // Aplicar cupones válidos (solo si su tour está en el carrito)
+    const { totalCouponsPct, codesApplied } = getCoupons(data);
 
-    // 4) Total final
-    let finalTotal = Math.max(
-      0,
-      totalAfterItemDiscount - couponsDiscountDollars
-    );
-
-    if (adultos && Number(adultos.value) > 1) {
-      subtotal = subtotal * Number(adultos.value);
-      finalTotal = finalTotal * Number(adultos.value);
-    }
-    // 5) Pintar UI
-    const finalFmt = `$${finalTotal.toFixed(2)}`;
+    const { finalTotal, finalFmt } = getTotal({
+      subtotal,
+      itemDiscountDollars,
+      totalCouponsPct,
+    });
     if (totalSidebarElement) {
       totalSidebarElement.textContent = finalFmt;
     }
@@ -137,10 +79,10 @@ export const updateCartTotal = async () => {
       cartTotalModalElement.textContent = finalFmt;
     }
     if (totalElement) {
-      totalElement.value = Number(finalTotal.toFixed(2));
+      totalElement.value = finalTotal;
     }
     if (subTotalInputElement) {
-      subTotalInputElement.value = Number(subtotal).toFixed(2);
+      subTotalInputElement.value = subtotal;
     }
     if (cuponInputElement) {
       cuponInputElement.innerHTML = codesApplied.length
@@ -157,7 +99,7 @@ export const updateCartTotal = async () => {
 
 /**
  * @function
- * Lee los cupones del localStorage como objeto { [cuponCode]: cuponDiscount }
+ * Lee los cupones del localStorage como objeto { [cupon_code]: cupon_discount }
  * @returns {Object} - El JSON con los cupones o un objeto vacio
  */
 export const readCupons = () => {
@@ -179,7 +121,7 @@ export const saveCupon = (cuponObj) => {
 
 /**
  * @function
- * Lee el carrito del localStorage como objeto { [id]: qty }
+ * Lee el carrito del localStorage como objeto { [sku]: qty }
  * @returns {Object}
  */
 export const readCart = () => {
@@ -201,7 +143,7 @@ export const saveCart = (cartObj) => {
 
 /**
  * Actualiza los items adentro del Modal del carrito
- * @param {Object} cartObj - Objeto { [id]: qty }
+ * @param {Object} cartObj - Objeto { [sku]: qty }
  * @returns {Promise<void>} - Se basa en los tours que hay guardados en el localStorage para luego obbtener sus datos y renderezarlos
  */
 export const updateCartModal = async (cartObj) => {
@@ -216,8 +158,10 @@ export const updateCartModal = async (cartObj) => {
     document
       .querySelector("#checkout-article-container")
       ?.classList.add("d-none");
-    document.querySelector("#checkout-summary-skeleton")?.classList?.add("d-none");
-    document.querySelector("#checkout-form-skeleton")?.classList.add("d-none")
+    document
+      .querySelector("#checkout-summary-skeleton")
+      ?.classList?.add("d-none");
+    document.querySelector("#checkout-form-skeleton")?.classList.add("d-none");
     cartList.innerHTML = `
           <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
           <a href="/Buke-Tours/tours/" class="btn btn-danger m-auto">Comprar Tours</a>
@@ -230,26 +174,26 @@ export const updateCartModal = async (cartObj) => {
   document
     .querySelector("#checkout-article-container")
     ?.classList.remove("d-none");
-    document.querySelector("#checkout-form-skeleton")?.classList.add("d-none")
-  await fetch("/Buke-Tours/assets/data/tours.json")
+  document.querySelector("#checkout-form-skeleton")?.classList.add("d-none");
+  await fetch("/Buke-Tours/api/tours/")
     .then((res) => {
       if (!res.ok) throw new Error("Error al cargar el JSON");
       return res.json();
     })
-    .then((data) => {
-      // Para cada id del carrito busca el tour en el JSON
+    .then(({ data }) => {
+      // Para cada sku del carrito busca el tour en el JSON
       const output = ids
-        .map((id) => {
-          const tour = data.find((t) => String(t.id) === String(id));
+        .map((sku) => {
+          const tour = data.find((t) => String(t.sku) === String(sku));
           if (!tour) return ""; // si no existe en el JSON, sáltalo
 
-          const qty = Number(cartObj[id]) || 0;
-          const price = Number(tour.priceUSD) || 0;
+          const qty = Number(cartObj[sku]) || 0;
+          const price = Number(tour.price_usd) || 0;
           const subtotal = (qty * price).toFixed(2);
 
           return `
                 <aside class="list-group-item d-flex flex-column" data-tour-id="${
-                  tour.id
+                  tour.sku
                 }">
                   <div class="row g-3 align-items-start d-flex flex-column flex-lg-row justify-content-md-start align-items-md-start">
                     <div class="col-4 col-sm-3">
@@ -283,7 +227,7 @@ export const updateCartModal = async (cartObj) => {
                               class="btn btn-danger btn-qty btn-substract-quantity"
                               type="button"
                               data-action="minus"
-                              data-tour-id="${tour.id}"
+                              data-tour-id="${tour.sku}"
                               aria-label="Disminuir cantidad"
                             >
                               −
@@ -295,15 +239,15 @@ export const updateCartModal = async (cartObj) => {
                               min="1"
                               inputmode="numeric"
                               aria-label="Cantidad"
-                              data-tour-id="${tour.id}"
-                              name="quantity-${tour.id}"
-                              id="quantity-${tour.id}"
+                              data-tour-id="${tour.sku}"
+                              name="quantity-${tour.sku}"
+                              id="quantity-${tour.sku}"
                             />
                             <button
                               class="btn btn-primary btn-qty btn-add-quantity"
                               type="button"
                               data-action="plus"
-                              data-tour-id="${tour.id}"
+                              data-tour-id="${tour.sku}"
                               aria-label="Aumentar cantidad"
                             >
                               +
@@ -318,7 +262,7 @@ export const updateCartModal = async (cartObj) => {
                           <button
                             class="btn btn-link p-0 small text-danger btn-remove"
                             type="button"
-                            data-tour-id="${tour.id}"
+                            data-tour-id="${tour.sku}"
                           >
                             <i class="bi bi-trash3-fill display-6"></i>
                           </button>
@@ -329,8 +273,12 @@ export const updateCartModal = async (cartObj) => {
                 </aside>`;
         })
         .join("");
-      document.querySelector("#checkout-summary-skeleton")?.classList?.add("d-none");
-      document.querySelector("#checkout-form-skeleton")?.classList.add("d-none")
+      document
+        .querySelector("#checkout-summary-skeleton")
+        ?.classList?.add("d-none");
+      document
+        .querySelector("#checkout-form-skeleton")
+        ?.classList.add("d-none");
       cartList.innerHTML = output;
 
       // Re-vincular eventos de + / − / input / eliminar
@@ -348,33 +296,33 @@ export const attachCartItemEvents = () => {
   // +
   document.querySelectorAll(".btn-add-quantity").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
-      const id = e.currentTarget.getAttribute("data-tour-id");
-      await changeQty(id, +1);
+      const sku = e.currentTarget.getAttribute("data-tour-id");
+      await changeQty(sku, +1);
     });
   });
 
   // −
   document.querySelectorAll(".btn-substract-quantity").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
-      const id = e.currentTarget.getAttribute("data-tour-id");
-      await changeQty(id, -1);
+      const sku = e.currentTarget.getAttribute("data-tour-id");
+      await changeQty(sku, -1);
     });
   });
 
   // input directo
   document.querySelectorAll(".input-qty").forEach((input) => {
     input.addEventListener("change", (e) => {
-      const id = e.currentTarget.getAttribute("data-tour-id");
+      const sku = e.currentTarget.getAttribute("data-tour-id");
       const val = Math.max(1, Number(e.currentTarget.value) || 1);
-      setQty(id, val);
+      setQty(sku, val);
     });
   });
 
   // eliminar
   document.querySelectorAll(".btn-remove").forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      const id = e.currentTarget.getAttribute("data-tour-id");
-      removeFromCart(id);
+      const sku = e.currentTarget.getAttribute("data-tour-id");
+      removeFromCart(sku);
     });
   });
 };
@@ -409,13 +357,13 @@ export const updateCartQuantity = () => {
  * Cambia la cantidad en ±1, con mínimo 1
  * @returns {Promise<void>}
  */
-export const changeQty = async (id, delta) => {
+export const changeQty = async (sku, delta) => {
   const cart = readCart();
-  const curr = Number(cart[id] || 0) + delta;
+  const curr = Number(cart[sku] || 0) + delta;
   if (curr <= 0) {
-    delete cart[id];
+    delete cart[sku];
   } else {
-    cart[id] = curr;
+    cart[sku] = curr;
   }
   saveCart(cart);
   await updateCartModal(cart);
@@ -429,12 +377,12 @@ export const changeQty = async (id, delta) => {
  * Fija la cantidad a un valor específico (mínimo 1)
  * @returns {Promise<void>}
  */
-export const setQty = async (id, qty) => {
+export const setQty = async (sku, qty) => {
   const cart = readCart();
   if (qty <= 0) {
-    delete cart[id];
+    delete cart[sku];
   } else {
-    cart[id] = qty;
+    cart[sku] = qty;
   }
   saveCart(cart);
   await updateCartModal(cart);
@@ -448,9 +396,9 @@ export const setQty = async (id, qty) => {
  * Elimina un tour del carrito
  * @returns {Promise<void>}
  */
-export const removeFromCart = async (id) => {
+export const removeFromCart = async (sku) => {
   const cart = readCart();
-  delete cart[id];
+  delete cart[sku];
   saveCart(cart);
   await updateCartModal(cart);
   updateCartQuantity();
@@ -460,12 +408,12 @@ export const removeFromCart = async (id) => {
 
 /**
  * Agrega un Tour al Carrito
- * @param {string} id - Id del Tour
+ * @param {string} sku - sku del Tour
  * @returns {Promise<void>} - Consulta los datos respectivos al ID del Tour recibido
  */
-export const onAddTourToCart = async (id) => {
+export const onAddTourToCart = async (sku) => {
   const cart = readCart();
-  cart[id] = (Number(cart[id]) || 0) + 1;
+  cart[sku] = (Number(cart[sku]) || 0) + 1;
   saveCart(cart);
 
   await updateCartModal(cart);
@@ -491,24 +439,24 @@ export const updateBasket = async () => {
     return;
   }
 
-  await fetch("/Buke-Tours/assets/data/tours.json")
+  await fetch("/Buke-Tours/api/tours/")
     .then((res) => {
       if (!res.ok) throw new Error("Error al cargar el JSON");
       return res.json();
     })
-    .then((data) => {
-      // Para cada id del carrito busca el tour en el JSON
+    .then(({ data }) => {
+      // Para cada sku del carrito busca el tour en el JSON
       const output = ids
-        .map((id) => {
-          const tour = data.find((t) => String(t.id) === String(id));
+        .map((sku) => {
+          const tour = data.find((t) => String(t.sku) === String(sku));
           if (!tour) return ""; // si no existe en el JSON, sáltalo
 
-          const qty = Number(cart[id]) || 0;
-          const price = Number(tour.priceUSD) || 0;
+          const qty = Number(cart[sku]) || 0;
+          const price = Number(tour.price_usd) || 0;
           const subtotal = (qty * price).toFixed(2);
 
           return `
-            <article class="list-group-item p-3" data-tour-id="${tour.id}">
+            <article class="list-group-item p-3" data-tour-id="${tour.sku}">
                   <div class="row g-3 align-items-center">
                     <div class="col-4 col-sm-3">
                       <img
@@ -527,7 +475,7 @@ export const updateBasket = async () => {
                           <div class="d-flex gap-2">
                             <button class="btn btn-link p-0 text-danger">
                               <i class="bi bi-trash3-fill display-6 btn-remove" data-tour-id="${
-                                tour.id
+                                tour.sku
                               }"></i>
                             </button>
                             <button class="btn btn-link p-0">
@@ -537,15 +485,17 @@ export const updateBasket = async () => {
                         </div>
                         <div class="text-end d-none d-sm-block">
                           <div class="fw-semibold">$${String(
-                            tour.priceUSD
+                            tour.price_usd
                           ).toLocaleString("es-CR")}</div>
-                          <div class="text-muted small">SKU: ${tour.id}</div>
+                          <div class="text-muted small">SKU: ${tour.sku}</div>
                         </div>
                       </div>
 
                       <div class="row mt-3 g-2">
                         <div class="col-8 col-sm-6 col-md-5">
-                          <label class="form-label small mb-1" for="qty-1"
+                          <label class="form-label small mb-1" for="qty-tour-${
+                            tour.sku
+                          }"
                             >Cantidad</label
                           >
                           <div class="input-group">
@@ -553,27 +503,27 @@ export const updateBasket = async () => {
                               class="btn btn-danger btn-qty btn-substract-quantity"
                               type="button"
                               data-action="minus"
-                              data-tour-id="${tour.id}"
+                              data-tour-id="${tour.sku}"
                               aria-label="Disminuir cantidad"
                             >
                               −
                             </button>
                             <input
-                              id="qty-tour-${tour.id}"
-                              name="qty-tour-${tour.id}"
+                              id="qty-tour-${tour.sku}"
+                              name="qty-tour-${tour.sku}"
                               type="number"
                               class="form-control text-center input-qty"
                               value="${qty}"
                               min="1"
                               inputmode="numeric"
-                               data-tour-id="${tour.id}"
+                               data-tour-id="${tour.sku}"
                             />
                             <button
                               class="btn btn-primary btn-qty btn-add-quantity"
                               type="button"
                               aria-label="Aumentar"
                               data-action="plus"
-                              data-tour-id="${tour.id}"
+                              data-tour-id="${tour.sku}"
                             >
                               +
                             </button>
@@ -603,8 +553,8 @@ export const updateBasket = async () => {
  * @param {string} coupon - El Coupon a validar
  * @returns {Promise<void>} - Consulta el id del coupon recibido por parametro para luego compararlo con los tours
  */
-export const validateCoupon = async (cuponCode) => {
-  const code = String(cuponCode || "")
+export const validateCoupon = async (cupon_code) => {
+  const code = String(cupon_code || "")
     .trim()
     .toUpperCase();
   if (!code) {
@@ -625,14 +575,14 @@ export const validateCoupon = async (cuponCode) => {
   const cartIds = new Set(Object.keys(cart || {})); // Crea una coleccion de Ids unicos basado en las keys que hay almacenadas en el carrito
 
   try {
-    const res = await fetch("/Buke-Tours/assets/data/tours.json");
+    const res = await fetch("/Buke-Tours/api/tours/");
     if (!res.ok) throw new Error("Error al cargar el JSON");
-    const data = await res.json();
+    const { data } = await res.json();
 
     // Busca el tour por código de cupón (case-insensitive)
     const tourByCoupon = data.find(
       (t) =>
-        String(t.cuponCode || "")
+        String(t.cupon_code || "")
           .trim()
           .toUpperCase() === code
     );
@@ -653,7 +603,7 @@ export const validateCoupon = async (cuponCode) => {
     }
 
     // 2) El tour del cupón NO está en el carrito
-    if (!cartIds.has(String(tourByCoupon.id))) {
+    if (!cartIds.has(String(tourByCoupon.sku))) {
       Swal.fire({
         icon: "error",
         title: "Cupón no aplicable",
@@ -686,13 +636,13 @@ export const validateCoupon = async (cuponCode) => {
     // Guardar cupón (solo porcentaje; validaremos contra carrito en el total)
     saveCupon({
       ...existCupons,
-      [code]: tourByCoupon.cuponDiscount,
+      [code]: tourByCoupon.cupon_discount,
     });
 
     Swal.fire({
       icon: "success",
       title: "Cupón canjeado",
-      text: `Cupón aplicado: -${tourByCoupon.cuponDiscount}%`,
+      text: `Cupón aplicado: -${tourByCoupon.cupon_discount}%`,
       toast: true,
       position: "top-end",
       showConfirmButton: false,
@@ -700,7 +650,7 @@ export const validateCoupon = async (cuponCode) => {
       timerProgressBar: true,
     });
 
-    updateCartTotal(); // Actualiza el total si todo salio bien
+    await updateCartTotal(); // Actualiza el total si todo salio bien
   } catch (err) {
     console.error("Error validando cupón:", err);
     Swal.fire({
@@ -716,10 +666,122 @@ export const validateCoupon = async (cuponCode) => {
   }
 };
 
-export const onAddToCart = async (id) => {
-  if (id) {
-    await onAddTourToCart(id);
+export const onAddToCart = async (sku) => {
+  if (sku) {
+    await onAddTourToCart(sku);
     await updateCartModal(readCart());
     await updateCartTotal();
   }
+};
+
+/**
+ * @function
+ * Calcula los descuentos de los cupones que un usuario tiene
+ * @param data {Object} - Los datos de todos los tours disponibles
+ */
+export const getCoupons = (data) => {
+  if (!data) {
+    return {
+      totalCouponsPct: 0,
+      codesApplied: [],
+    };
+  }
+  const cartObj = JSON.parse(localStorage.getItem("cart") || "{}");
+  const savedCupons = readCupons(); // { [code]: pct }
+  const cartIds = new Set(Object.keys(cartObj || {}));
+
+  const codesApplied = [];
+  let totalCouponsPct = 0; // total del descuento del coupon
+  if (savedCupons && Object.keys(savedCupons).length) {
+    for (const [code, pct] of Object.entries(savedCupons)) {
+      // Buscar el tour dueño del cupón
+      const tourForCode = data.find(
+        (t) =>
+          String(t.cupon_code || "")
+            .trim()
+            .toUpperCase() === String(code).trim().toUpperCase()
+      );
+
+      // Aplica si y solo si el tour del cupón está en el carrito
+      if (tourForCode && cartIds.has(String(tourForCode.sku))) {
+        totalCouponsPct += Number(pct) || 0;
+        codesApplied.push(code);
+      }
+    }
+  }
+  return {
+    totalCouponsPct,
+    codesApplied,
+  };
+};
+/**
+ * @function
+ * Usada para retornar el subtotal del carrito de compras y los descuentos aplicados
+ * @param {Object} data - Los datos de todos los tours disponibles
+ * @returns {Object} - El Subtotal y el total de descuentos
+ */
+export const getSubTotalAndDiscounts = (data) => {
+  const cartObj = JSON.parse(localStorage.getItem("cart") || "{}");
+  let subtotal = 0;
+
+  const totalOfDiscounts = [];
+
+  for (const [sku, qtyRaw] of Object.entries(cartObj)) {
+    const tour = data.find((t) => String(t.sku) === String(sku));
+
+    if (!tour) continue;
+
+    const qty = Math.max(0, Number(qtyRaw) || 0);
+    const price = Number(tour.price_usd) || 0;
+    const pct = Number(tour.discount) || 0;
+    totalOfDiscounts.push(pct);
+
+    const line = qty * price;
+    subtotal += line;
+  }
+
+  // % efectivo de descuento por tour (para mostrar en el UI)
+  const itemDiscountPctEffective = totalOfDiscounts.reduce(
+    (prevValue, currentValue) => prevValue + currentValue,
+    0
+  );
+
+  const itemDiscountDollars = parseFloat(
+    (subtotal * itemDiscountPctEffective) / 100
+  );
+
+  return {
+    subtotal,
+    totalOfDiscounts,
+    itemDiscountPctEffective,
+    itemDiscountDollars,
+  };
+};
+/**
+ *
+ * @param {Object} params - Requiere del Subtotal, de la cantidad de dinero de los descuentos asi como el total de descuentos en porcentage
+ * @returns
+ */
+export const getTotal = ({
+  subtotal,
+  itemDiscountDollars,
+  totalCouponsPct,
+}) => {
+  //  Total parcial tras descuentos por tour
+  let totalAfterItemDiscount = parseFloat(subtotal - itemDiscountDollars);
+  // Descuento por cupones sobre el total parcial
+  let couponsDiscountDollars = 0;
+  if (totalCouponsPct > 0 && totalAfterItemDiscount > 0) {
+    couponsDiscountDollars = totalAfterItemDiscount * (totalCouponsPct / 100);
+  }
+  // Total final numerico
+  let finalTotal = totalAfterItemDiscount - couponsDiscountDollars;
+
+  // Total final con signo de dolar
+  const finalFmt = `$${finalTotal.toFixed(0)}`;
+
+  return {
+    finalTotal,
+    finalFmt,
+  };
 };

@@ -1,3 +1,11 @@
+<?php
+/**
+ * Usado para renderizar el Menu
+ */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
 <nav class="barra-navegadora navbar navbar-expand-lg">
   <div class="container-fluid">
     <button

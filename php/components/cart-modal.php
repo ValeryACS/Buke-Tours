@@ -1,7 +1,10 @@
 <?php
 /**
  * Contiene el Modal usado para el carrito de compras en todas las paginas
- **/
+ */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ?>
 <div
   class="modal fade"
@@ -37,7 +40,7 @@
         class="modal-footer flex-column flex-sm-row gap-2 justify-content-between"
       >
         <div class="ms-auto me-sm-3">
-          <div class="text-muted small">Total</div>
+          <div class="text-muted small">Costo por Persona</div>
           <div class="fs-5 fw-semibold" aria-live="polite">
             <span id="cartTotal"></span>
           </div>
