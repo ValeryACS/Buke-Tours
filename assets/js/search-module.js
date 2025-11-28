@@ -18,7 +18,7 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
     );
     const btnSearchTours = document.getElementById("btn-search-tours");
 
-    const tours = await fetch("/Buke-Tours/assets/data/tours.json")
+    const tours = await fetch("/Buke-Tours/api/tours/")
       .then((res) => {
         if (!res.ok) throw new Error("Error al cargar el JSON");
         return res.json();
@@ -42,7 +42,7 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
           return;
         }
 
-        const toursFiltered = tours.filter((tour) => {
+        const toursFiltered = tours?.data?.filter((tour) => {
           const t = normalizeString(tour.title);
           const l = normalizeString(tour.location);
           const d = normalizeString(tour.description);
@@ -93,9 +93,9 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
                   class="bi bi-cart-plus-fill display-4 add-to-cart"
                   data-bs-toggle="modal"
                   data-bs-target="#cartModal"
-                  data-tour-id="${tour.id}"
+                  data-tour-id="${tour.sku}"
                 ></i>
-                <i class="bi bi-cursor-fill view-tour-page" data-tour-id="${tour.id}"></i>
+                <i class="bi bi-cursor-fill view-tour-page" data-tour-id="${tour.sku}"></i>
               </h1>
               <p>${tour.description}</p>
             </div>
@@ -187,14 +187,14 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
               </div>
               <div class="d-flex">
                 <button type="button" data-id="${
-                  tour.id
+                  tour.sku
                 }" class="btn btn-dark w-50 py-3 add-to-cart-btn rounded-2">
                   <i class="bi bi-cart-plus display-6" data-bs-toggle="modal" data-bs-target="#cartModal"></i>
                 </button>
                 <button 
                   type="button" 
                   class="btn btn-dark w-50 py-3 read-more rounded-2" 
-                  data-id="${tour.id}">
+                  data-id="${tour.sku}">
                   <i class="bi bi-cursor-fill display-6"></i>
                 </button>
               </div>

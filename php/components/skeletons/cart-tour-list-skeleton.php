@@ -1,3 +1,11 @@
+<?php
+/**
+ * Usado para cargar los Tours
+ */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
 <article class="list-group-item p-3">
   <div class="row g-3 align-items-center">
     <!-- Imagen -->
