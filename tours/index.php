@@ -1,3 +1,17 @@
+
+<?php
+session_start();
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Idioma por defecto español
+}
+
+include '../language/lang_' . $_SESSION['lang'] . '.php'; 
+
+$html_lang = $_SESSION['lang'];
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -18,7 +32,7 @@
         <form id="search-form-tours" class="d-flex justify-content-center flex-row">
           <input
             class="barra-busqueda m-auto form-control"
-            placeholder="Buscar tours..."
+            placeholder="<?php echo $lang['Buscar_Tour'];?>"
             type="text"
             id="search-input-tour"
           />
