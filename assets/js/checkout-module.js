@@ -44,7 +44,7 @@ export const setTourDetailsForm = async () => {
 
           for (let tourIndex = 0; tourIndex < quantityOfTours; tourIndex++) {
             const accordionHtml = `
-            <div class="accordion-item" data-tour-id="${sku}">
+            <div class="accordion-item" data-tour-id="${sku}" data-accordion-id="${sku}-${tourIndex}" data-tour-discount="${tour.discount}">
                 <h2 class="accordion-header" id="headingTour-${sku}-${tourIndex}">
                     <button
                         class="accordion-button"
@@ -87,8 +87,8 @@ export const setTourDetailsForm = async () => {
                                 >Fecha de ingreso</label
                                 >
                                 <input
-                                id="fechaIngresoTour-${sku}"
-                                name="fechaIngresoTour-${sku}"
+                                id="fechaIngresoTour-${sku}-${tourIndex}"
+                                name="fechaIngresoTour-${sku}-${tourIndex}"
                                 type="date"
                                 class="form-control start-date-input"
                                 data-tour-id="${tour.id}"
@@ -102,8 +102,8 @@ export const setTourDetailsForm = async () => {
                                 >Fecha de salida</label
                                 >
                                 <input
-                                id="fechaSalidaTour-${sku}"
-                                name="fechaSalidaTour-${sku}"
+                                id="fechaSalidaTour-${sku}-${tourIndex}"
+                                name="fechaSalidaTour-${sku}-${tourIndex}"
                                 type="date"
                                 class="form-control end-date-input"
                                 data-tour-id="${tour.id}"
@@ -131,7 +131,7 @@ export const setTourDetailsForm = async () => {
                             <div class="col-6 col-md-4 form-group">
                               <label for="ninos-${sku}" class="form-label"
                                 >Niños <span class="badge text-bg-success m-2">$${
-                                  Number(tour.price_usd) - 5
+                                  tour.price_usd
                                 }</span></label
                               >
                               <input
@@ -139,7 +139,7 @@ export const setTourDetailsForm = async () => {
                                 name="ninos-${sku}"
                                 type="number"
                                 data-tour-id="${sku}"
-                                data-tour-price="${Number(tour.price_usd) - 5}"
+                                data-tour-price="${tour.price_usd}"
                                 min="0"
                                 value="0"
                                 class="form-control text-center children-quantity tour-quantity"
@@ -700,59 +700,106 @@ export const calculateExtras = ({
   }
   if (totalCartSidebar) {
     totalCartSidebar.textContent = `$${String(
-      Number(newTotal).toFixed(0)
+      Number(newTotal)
     ).toLocaleString("es-CR")}`;
   }
   if (subTotalCartSidebar) {
     subTotalCartSidebar.textContent = `$${String(
-      Number(newSubTotal).toFixed(0)
+      Number(newSubTotal)
     ).toLocaleString("es-CR")}`;
   }
 };
 /**
  * @function
  *
- * Calcula el total en base a la cantidad de personas ya que el precio del tour es por persona
+ * Calcula el total en base a la cantidad de personas y en base a la cantidad de dias ya que el precio del tour es por persona
  */
 export const calculateAccordionTotal = (data) => {
   let subtotal = 0;
+  let itemDiscountDollars = 0;
+  let totalDescuento = 0;
+  let diffDays = 1;
 
   const accordionItems = document.querySelectorAll(
     "#accordionCheckoutTourList .accordion-item"
   );
 
-  console.log("accordionItems", accordionItems);
+  accordionItems.forEach((item, index) => {
+    const sku = item.getAttribute("data-tour-id");
+    const tourDiscount = Number(item.getAttribute("data-tour-discount"));
+    const startDate = item.querySelector(`#fechaIngresoTour-${sku}-${index}`);
+    const endDate = item.querySelector(`#fechaSalidaTour-${sku}-${index}`);
 
-  accordionItems.forEach((item) => {
+    if (sku) {
+      diffDays = getDaysDifference({
+        startDate: String(startDate.value),
+        endDate: String(endDate.value),
+      });
+    }
+    const { totalOfDiscounts } = getSubTotalAndDiscounts(data);
+
     // Obtener el input dentro del accordion item
     const inputs = Array.from(item.querySelectorAll(".tour-quantity"));
     if (!inputs.length) return;
 
+    // % efectivo de descuento por tour (para mostrar en el UI)
+    const itemDiscountPctEffective = totalOfDiscounts.reduce(
+      (prevValue, currentValue) => prevValue + currentValue,
+      0
+    );
+
     inputs.forEach((input) => {
-      const price = Number(input.getAttribute("data-tour-price"));
+      let price = Number(input.getAttribute("data-tour-price"));
       const qty = Number(input.value);
+      if (diffDays >= 1) {
+        price = price * diffDays;
+      }
 
       if (!isNaN(price) && !isNaN(qty)) {
         subtotal += price * qty;
       }
+      
     });
+    itemDiscountDollars += parseFloat((subtotal * tourDiscount * diffDays) / 100);
+    totalDescuento += diffDays * itemDiscountPctEffective;
+    
   });
-
-  // Subtotal y descuento por tour (en dólares, por ítem)
-  const { itemDiscountDollars } = getSubTotalAndDiscounts(data);
 
   // Aplicar cupones válidos (solo si su tour está en el carrito)
   const { totalCouponsPct } = getCoupons(data);
-
   const { finalTotal, finalFmt } = getTotal({
     subtotal,
     itemDiscountDollars,
     totalCouponsPct,
   });
 
-  document.getElementById("subtotal-cart").textContent = `$${subtotal.toFixed(2)}`;
+  document.getElementById("subtotal-cart").textContent = `$${subtotal.toFixed(
+    2
+  )}`;
   document.getElementById("subtotal").value = subtotal.toFixed(2);
-
   document.getElementById("total-cart").textContent = finalFmt;
   document.getElementById("total").value = finalTotal.toFixed(2);
+  document.getElementById("discount-cart").textContent = `-${totalDescuento}%`;
+
+  document.getElementById("dias-cart").textContent = `x${diffDays}`;
+};
+
+/**
+ * @function
+ * Usada para calcular la cantidad de dias que hay al restar 2 fechas,comunmente usada para multiplicar la cantidad por las veces que fue reservado un Tour
+ * @param {Object} params - Las fechas de reservacion
+ * @param {string} params.startDate - La fecha del check-in
+ * @param {string} params.endDate - La fecha del check-out
+ * @returns {number} - La diferencia en dias con respecto a la fecha final - fecha inicial
+ */
+export const getDaysDifference = ({ startDate, endDate }) => {
+  let daysDifference = 1;
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  if (!isNaN(start) && !isNaN(end)) {
+    const msPerDay = 24 * 60 * 60 * 1000;
+    daysDifference = Math.floor((end - start) / msPerDay) + 1;
+  }
+
+  return daysDifference;
 };

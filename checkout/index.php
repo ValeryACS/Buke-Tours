@@ -884,6 +884,10 @@ error_reporting(E_ALL);
                   <!-- Totales -->
                   <ul class="list-unstyled mb-4">
                     <li class="d-flex justify-content-between mb-1">
+                      <span>D&iacute;as</span>
+                      <span id="dias-cart">x1</span>
+                    </li>
+                    <li class="d-flex justify-content-between mb-1">
                       <span>Descuento</span>
                       <span id="discount-cart">−$10.00</span>
                     </li>

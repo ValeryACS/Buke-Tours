@@ -52,24 +52,27 @@ export const updateCartTotal = async () => {
     const { data } = await res.json();
 
     // Subtotal y descuento por tour (en dólares, por ítem)
-    const { subtotal, itemDiscountPctEffective, itemDiscountDollars } =
+    const { subtotal,totalOfDiscounts } =
       getSubTotalAndDiscounts(data);
 
     const subtotalFmt = `$${subtotal}`;
     if (subTotalSidebarElement) {
       subTotalSidebarElement.textContent = subtotalFmt;
     }
-
+    
+    const itemDiscountPctEffective = totalOfDiscounts.reduce(
+        (prevValue, currentValue) => prevValue + currentValue,
+        0
+      )
     if (discountSidebarElement) {
       discountSidebarElement.textContent = `-${itemDiscountPctEffective}%`;
     }
-
     // Aplicar cupones válidos (solo si su tour está en el carrito)
     const { totalCouponsPct, codesApplied } = getCoupons(data);
 
     const { finalTotal, finalFmt } = getTotal({
       subtotal,
-      itemDiscountDollars,
+      itemDiscountDollars: Number((subtotal * itemDiscountPctEffective) / 100),
       totalCouponsPct,
     });
     if (totalSidebarElement) {
@@ -733,28 +736,16 @@ export const getSubTotalAndDiscounts = (data) => {
 
     const qty = Math.max(0, Number(qtyRaw) || 0);
     const price = Number(tour.price_usd) || 0;
-    const pct = Number(tour.discount) || 0;
-    totalOfDiscounts.push(pct);
+    const discountPct = Number(tour.discount) || 0;
+    totalOfDiscounts.push(discountPct * qty);
 
     const line = qty * price;
     subtotal += line;
   }
 
-  // % efectivo de descuento por tour (para mostrar en el UI)
-  const itemDiscountPctEffective = totalOfDiscounts.reduce(
-    (prevValue, currentValue) => prevValue + currentValue,
-    0
-  );
-
-  const itemDiscountDollars = parseFloat(
-    (subtotal * itemDiscountPctEffective) / 100
-  );
-
   return {
     subtotal,
     totalOfDiscounts,
-    itemDiscountPctEffective,
-    itemDiscountDollars,
   };
 };
 /**
@@ -778,7 +769,7 @@ export const getTotal = ({
   let finalTotal = totalAfterItemDiscount - couponsDiscountDollars;
 
   // Total final con signo de dolar
-  const finalFmt = `$${finalTotal.toFixed(0)}`;
+  const finalFmt = `$${finalTotal}`;
 
   return {
     finalTotal,
