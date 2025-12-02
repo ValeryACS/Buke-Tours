@@ -33,47 +33,47 @@ export const setTourDetailsForm = async () => {
       return res.json();
     })
     .then(({ data }) => {
+      let counter = 0;
       // Para cada id del carrito busca el tour en el JSON
       const output = ids
         .map((sku, index) => {
           const tour = data.find((t) => String(t.sku) === String(sku));
           if (!tour) return ""; // si no existe en el JSON lo ignora
           const checkoutResult = [];
-
           const quantityOfTours = Number(cartData[sku]); // la cantidad de tours que el usuario tiene adentro del carrito
-
           for (let tourIndex = 0; tourIndex < quantityOfTours; tourIndex++) {
             const accordionHtml = `
-            <div class="accordion-item" data-tour-id="${sku}" data-accordion-id="${sku}-${tourIndex}" data-tour-discount="${tour.discount}">
-                <h2 class="accordion-header" id="headingTour-${sku}-${tourIndex}">
+            <div class="accordion-item" data-tour-id="${sku}" data-accordion-id="${sku}-${counter}" >
+                <input type="hidden" class="d-none" id="data-tour-discount-${sku}-${counter}" value="${tour.discount}"/>
+                <h2 class="accordion-header" id="headingTour-${sku}-${counter}">
                     <button
                         class="accordion-button"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#collapseTour-${sku}-${tourIndex}"
+                        data-bs-target="#collapseTour-${sku}-${counter}"
                         aria-expanded="true"
-                        aria-controls="collapseTour-${sku}-${tourIndex}"
+                        aria-controls="collapseTour-${sku}-${counter}"
                     >
                     ${tour.title}
                     </button>
                 </h2>
                 <div
-                id="collapseTour-${sku}-${tourIndex}"
+                id="collapseTour-${sku}-${counter}"
                 class="accordion-collapse collapse ${index === 0 ? "show" : ""}"
-                aria-labelledby="headingTour-${sku}-${tourIndex}"
+                aria-labelledby="headingTour-${sku}-${counter}"
                 data-bs-parent="#accordionCheckoutTourList"
                 >
                     <div class="accordion-body">
                         <div class="row g-3">
                             <div class="col-12 text-start">
                                 <label
-                                for="tour-name-${sku}"
+                                for="tour-name-${sku}-${counter}"
                                 class="form-label"
                                 >Tour</label
                                 >
                                 <input
-                                id="tour-name-${sku}"
-                                name="tour-name-${sku}"
+                                id="tour-name-${sku}-${counter}"
+                                name="tour-name-${sku}-${counter}"
                                 type="text"
                                 class="form-control"
                                 value="${tour.title}"
@@ -82,13 +82,13 @@ export const setTourDetailsForm = async () => {
                             </div>
                             <div class="col-12 col-md-6">
                                 <label
-                                for="fechaIngresoTour-${sku}"
+                                for="fechaIngresoTour-${sku}-${counter}"
                                 class="form-label"
                                 >Fecha de ingreso</label
                                 >
                                 <input
-                                id="fechaIngresoTour-${sku}-${tourIndex}"
-                                name="fechaIngresoTour-${sku}-${tourIndex}"
+                                id="fechaIngresoTour-${sku}-${counter}"
+                                name="fechaIngresoTour-${sku}-${counter}"
                                 type="date"
                                 class="form-control start-date-input"
                                 data-tour-id="${tour.id}"
@@ -97,13 +97,13 @@ export const setTourDetailsForm = async () => {
                             </div>
                             <div class="col-12 col-md-6">
                                 <label
-                                for="fechaSalidaTour-${sku}"
+                                for="fechaSalidaTour-${sku}-${counter}"
                                 class="form-label"
                                 >Fecha de salida</label
                                 >
                                 <input
-                                id="fechaSalidaTour-${sku}-${tourIndex}"
-                                name="fechaSalidaTour-${sku}-${tourIndex}"
+                                id="fechaSalidaTour-${sku}-${counter}"
+                                name="fechaSalidaTour-${sku}-${counter}"
                                 type="date"
                                 class="form-control end-date-input"
                                 data-tour-id="${tour.id}"
@@ -112,14 +112,14 @@ export const setTourDetailsForm = async () => {
                             </div>
 
                             <div class="col-6 col-md-4 form-group">
-                              <label for="adultos-${sku}" class="form-label"
+                              <label for="adultos-${sku}-${counter}" class="form-label"
                                 >Adultos <span class="badge text-bg-success m-2">$${
                                   tour.price_usd
                                 }</span></label
                               >
                               <input
-                                id="adultos-${sku}"
-                                name="adultos-${sku}"
+                                id="adultos-${sku}-${counter}"
+                                name="adultos-${sku}-${counter}"
                                 type="number"
                                 data-tour-id="${sku}"
                                 data-tour-price="${tour.price_usd}"
@@ -129,14 +129,14 @@ export const setTourDetailsForm = async () => {
                               />
                             </div>
                             <div class="col-6 col-md-4 form-group">
-                              <label for="ninos-${sku}" class="form-label"
+                              <label for="ninos-${sku}-${counter}" class="form-label"
                                 >Niños <span class="badge text-bg-success m-2">$${
                                   tour.price_usd
                                 }</span></label
                               >
                               <input
-                                id="ninos-${sku}"
-                                name="ninos-${sku}"
+                                id="ninos-${sku}-${counter}"
+                                name="ninos-${sku}-${counter}"
                                 type="number"
                                 data-tour-id="${sku}"
                                 data-tour-price="${tour.price_usd}"
@@ -149,6 +149,7 @@ export const setTourDetailsForm = async () => {
                     </div>
                 </div>
             </div>`;
+            counter++;
             checkoutResult.push(accordionHtml);
           }
           return checkoutResult.join("");
@@ -565,6 +566,11 @@ export const setOnChangeCheckoutEvents = ({
           if (original !== cleaned) {
             event.target.value = cleaned;
           }
+          const minValue = Number(elm.getAttribute("min"));
+
+          if(Number(cleaned)<= minValue){
+            event.target.value = minValue;
+          }
         });
       });
     } else {
@@ -712,7 +718,8 @@ export const calculateExtras = ({
 /**
  * @function
  *
- * Calcula el total en base a la cantidad de personas y en base a la cantidad de dias ya que el precio del tour es por persona
+ * Calcula el total en base a la cantidad de personas y en base a la cantidad de dias ,
+ * ya que el precio del tour es por persona y por cada dia.
  */
 export const calculateAccordionTotal = (data) => {
   let subtotal = 0;
@@ -726,7 +733,7 @@ export const calculateAccordionTotal = (data) => {
 
   accordionItems.forEach((item, index) => {
     const sku = item.getAttribute("data-tour-id");
-    const tourDiscount = Number(item.getAttribute("data-tour-discount"));
+    const tourDiscount = Number(item.querySelector(`#data-tour-discount-${sku}-${index}`).value);
     const startDate = item.querySelector(`#fechaIngresoTour-${sku}-${index}`);
     const endDate = item.querySelector(`#fechaSalidaTour-${sku}-${index}`);
 
@@ -736,17 +743,10 @@ export const calculateAccordionTotal = (data) => {
         endDate: String(endDate.value),
       });
     }
-    const { totalOfDiscounts } = getSubTotalAndDiscounts(data);
-
+    
     // Obtener el input dentro del accordion item
     const inputs = Array.from(item.querySelectorAll(".tour-quantity"));
     if (!inputs.length) return;
-
-    // % efectivo de descuento por tour (para mostrar en el UI)
-    const itemDiscountPctEffective = totalOfDiscounts.reduce(
-      (prevValue, currentValue) => prevValue + currentValue,
-      0
-    );
 
     inputs.forEach((input) => {
       let price = Number(input.getAttribute("data-tour-price"));
@@ -758,13 +758,17 @@ export const calculateAccordionTotal = (data) => {
       if (!isNaN(price) && !isNaN(qty)) {
         subtotal += price * qty;
       }
-      
     });
-    itemDiscountDollars += parseFloat((subtotal * tourDiscount * diffDays) / 100);
-    totalDescuento += diffDays * itemDiscountPctEffective;
-    
+   
+    if(diffDays >= 1){
+      totalDescuento += diffDays * tourDiscount
+    }
+    else{
+      totalDescuento += tourDiscount
+    }
   });
-
+  itemDiscountDollars = Number((subtotal * totalDescuento ) / 100);
+  
   // Aplicar cupones válidos (solo si su tour está en el carrito)
   const { totalCouponsPct } = getCoupons(data);
   const { finalTotal, finalFmt } = getTotal({
