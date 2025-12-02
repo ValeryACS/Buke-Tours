@@ -427,7 +427,6 @@ export const onAddTourToCart = async (sku) => {
   await updateCartModal(cart);
   updateCartQuantity();
   await updateCartTotal();
-  await setTourDetailsForm()
 };
 
 /**
