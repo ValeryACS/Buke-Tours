@@ -517,14 +517,15 @@ error_reporting(E_ALL);
                               <label for="idioma" class="form-label"
                                 >Idioma</label
                               >
-                              <input
-                                id="idioma"
-                                name="idioma"
-                                type="text"
-                                class="form-control"
-                                placeholder="Idioma"
-                                maxlength="30"
-                              />
+                              <select id="idioma"
+                                name="idioma" 
+                                class="form-select" 
+                                aria-label="Idioma Seleccionado"
+                              >
+                                <option selected value="no-seleccionado">Seleccione un Idioma</option>
+                                <option value="en">Ingles</option>
+                                <option value="es">Español</option>
+                              </select>
                             </div>
                           </div>
                         </div>

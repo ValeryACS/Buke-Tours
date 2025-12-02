@@ -2,7 +2,6 @@ import {
   readCart,
   getTotal,
   getCoupons,
-  getSubTotalAndDiscounts,
 } from "./cart.module.js";
 import {
   onlyDigits,

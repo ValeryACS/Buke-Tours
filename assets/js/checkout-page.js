@@ -250,6 +250,8 @@ import { todayLocalISO } from "./utils.module.js";
         formData.append("ciudad", ciudad.value);
         formData.append("provincia", provincia.value);
         formData.append("codigoPostal", codigoPostal.value);
+        formData.append("subtotal", subtotal.value);
+        formData.append("total", total.value);
 
         //TODO Calcular Total y Subtotal luego Enviar la data al API de Paypal
 
@@ -364,6 +366,8 @@ import { todayLocalISO } from "./utils.module.js";
         formData.append("mes", mes.value);
         formData.append("year", year.value);
         formData.append("cvv", cvv.value);
+        formData.append("subtotal", subtotal.value);
+        formData.append("total", total.value);
 
         try {
           const response = await fetch("/Buke-Tours/api/checkout/", {

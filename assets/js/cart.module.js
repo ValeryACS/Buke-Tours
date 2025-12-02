@@ -1,3 +1,5 @@
+import {setTourDetailsForm} from './checkout-module.js';
+
 /**
  * @function
  * Calcula y actualiza el total del carrito en el elemento con id="cartTotal"
@@ -373,6 +375,7 @@ export const changeQty = async (sku, delta) => {
   updateCartQuantity();
   await updateCartTotal();
   await updateBasket();
+  await setTourDetailsForm()
 };
 
 /**
@@ -392,6 +395,7 @@ export const setQty = async (sku, qty) => {
   updateCartQuantity();
   await updateCartTotal();
   await updateBasket();
+  await setTourDetailsForm()
 };
 
 /**
@@ -407,6 +411,7 @@ export const removeFromCart = async (sku) => {
   updateCartQuantity();
   await updateCartTotal();
   await updateBasket();
+  await setTourDetailsForm()
 };
 
 /**
@@ -422,6 +427,7 @@ export const onAddTourToCart = async (sku) => {
   await updateCartModal(cart);
   updateCartQuantity();
   await updateCartTotal();
+  await setTourDetailsForm()
 };
 
 /**
@@ -674,6 +680,7 @@ export const onAddToCart = async (sku) => {
     await onAddTourToCart(sku);
     await updateCartModal(readCart());
     await updateCartTotal();
+    
   }
 };
 
