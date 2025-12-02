@@ -517,14 +517,15 @@ error_reporting(E_ALL);
                               <label for="idioma" class="form-label"
                                 >Idioma</label
                               >
-                              <input
-                                id="idioma"
-                                name="idioma"
-                                type="text"
-                                class="form-control"
-                                placeholder="Idioma"
-                                maxlength="30"
-                              />
+                              <select id="idioma"
+                                name="idioma" 
+                                class="form-select" 
+                                aria-label="Idioma Seleccionado"
+                              >
+                                <option selected value="no-seleccionado">Seleccione un Idioma</option>
+                                <option value="en">Ingles</option>
+                                <option value="es">Español</option>
+                              </select>
                             </div>
                           </div>
                         </div>
@@ -883,6 +884,10 @@ error_reporting(E_ALL);
 
                   <!-- Totales -->
                   <ul class="list-unstyled mb-4">
+                    <li class="d-flex justify-content-between mb-1">
+                      <span>D&iacute;as</span>
+                      <span id="dias-cart">x1</span>
+                    </li>
                     <li class="d-flex justify-content-between mb-1">
                       <span>Descuento</span>
                       <span id="discount-cart">−$10.00</span>

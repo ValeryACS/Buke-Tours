@@ -105,17 +105,12 @@ import { todayLocalISO } from "./utils.module.js";
         el.setAttribute("min", minDate);
       });
 
-    Array.from([seguro, transporte, fotos, desayuno, almuerzo, cena, adultos, ninos]).forEach(
+    Array.from([seguro, transporte, fotos, desayuno, almuerzo, cena, adultos, ninos, Array.from(fechasDeIngreso), Array.from(fechasDeSalida)]).forEach(
       (element) => {
         if (Array.isArray(element)) {
           element.forEach((elmnt) => {
             elmnt.addEventListener("change", (e) => {
               e.preventDefault();
-              const tourPrice = Number(e.currentTarget.getAttribute("data-tour-price"));
-              const id = e.currentTarget.getAttribute("id")
-
-              console.log('id', id)
-              console.log("tourPrice", tourPrice);
               totalOfAdults = adultos.reduce(
                 (acc, input) => acc + Number(input.value),
                 0
@@ -124,6 +119,8 @@ import { todayLocalISO } from "./utils.module.js";
                 (acc, input) => acc + Number(input.value),
                 0
               );
+              
+              calculateAccordionTotal(data);
               calculateExtras({
                 children: totalOfChildren,
                 adultos: totalOfAdults,
@@ -136,8 +133,6 @@ import { todayLocalISO } from "./utils.module.js";
                 subtotal: subtotal.value,
                 total: total.value,
               });
-              calculateAccordionTotal(data);
-              
             });
           });
         } else {
@@ -255,6 +250,8 @@ import { todayLocalISO } from "./utils.module.js";
         formData.append("ciudad", ciudad.value);
         formData.append("provincia", provincia.value);
         formData.append("codigoPostal", codigoPostal.value);
+        formData.append("subtotal", subtotal.value);
+        formData.append("total", total.value);
 
         //TODO Calcular Total y Subtotal luego Enviar la data al API de Paypal
 
@@ -369,6 +366,8 @@ import { todayLocalISO } from "./utils.module.js";
         formData.append("mes", mes.value);
         formData.append("year", year.value);
         formData.append("cvv", cvv.value);
+        formData.append("subtotal", subtotal.value);
+        formData.append("total", total.value);
 
         try {
           const response = await fetch("/Buke-Tours/api/checkout/", {

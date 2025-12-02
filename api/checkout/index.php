@@ -18,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pais = isset($_POST['pais']) ? trim((string)$_POST['pais']) : '';
     $adultos = isset($_POST['adultos']) ? trim((string)$_POST['adultos']) : '0';
     $ninos = isset($_POST['ninos']) ? trim((string)$_POST['ninos']) : '0';
+    $subtotal = isset($_POST['subtotal']) ? floatval($_POST['subtotal']) : 0;
+    $total = isset($_POST['total']) ? floatval($_POST['total']) : 0;
     $idioma = isset($_POST['idioma']) ? trim((string)$_POST['idioma']) : '';
     $pasaporteOdocumento = isset($_POST['pasaporteOdocumento']) ? trim((string)$_POST['pasaporteOdocumento']) : '';
 
@@ -80,7 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         return [];
     };
-
+    /**
+     * Valida si las fechas cumplen con el formato esperado
+     */
     $isValidDate = function ($dateStr) {
         if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateStr)) return false;
         [$y, $m, $d] = explode('-', $dateStr);
@@ -103,6 +107,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!$isValidDate($date)) {
                 $errors[] = "Fecha de ingreso #$idx inválida (formato YYYY-MM-DD)";
             }
+            if(!$item['tour_id'] || $item['tour_id']<=0){
+                $errors[] = "El Tour ID es inválido";
+            }
         }
     }
 
@@ -118,6 +125,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $date = $item['check_out_date'] ?? '';
             if (!$isValidDate($date)) {
                 $errors[] = "Fecha de salida #$idx inválida (formato YYYY-MM-DD)";
+            }
+            if(!$item['tour_id'] || $item['tour_id']<=0){
+                $errors[] = "El Tour ID es inválido";
             }
         }
     }
@@ -165,8 +175,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Ninos debe ser entero >= 0';
     }
 
-    if ($idioma === '') {
+    if ($idioma === '' || $idioma === 'no-seleccionado') {
         $errors[] = 'Idioma es obligatorio';
+    }
+
+    if($total <= 10){
+        $errors[] = 'El total no puede ser menor a 10';
+    }
+     if($subtotal <= 10){
+        $errors[] = 'El subtotal no puede ser menor a 10';
     }
 
     if (!isset($_POST['email']) || trim((string)$_POST['email']) === '' || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
@@ -287,8 +304,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 home_address,
                 city,
                 province,
-                postal_code
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                postal_code,
+                total,
+                subtotal
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             $stmt = $mysqli->prepare($sqlReservation);
             if (!$stmt) {
@@ -297,6 +316,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $adults_i           = (int)$adultos;
             $children_i         = (int)$ninos;
+            $total_i         = (float)$total;
+            $subtotal_i         = (float)$subtotal;
             $breakfast_i        = (int)$breakfast;
             $lunch_i            = (int)$lunch;
             $dinner_i           = (int)$dinner;
@@ -305,7 +326,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $photo_package_i    = (int)$photo_package;
 
             // Tipos: sssss i i s i i i i i i ssss (18 en total)
-            $types = 'sssssiisiiiiiissss';
+            $types = 'sssssiisiiiiiissssii';
 
             $stmt->bind_param(
                 $types,
@@ -326,7 +347,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $direccion,
                 $ciudad,
                 $provincia,
-                $codigoPostal
+                $codigoPostal,
+                $total_i,
+                $subtotal_i
             );
 
             if (!$stmt->execute()) {
