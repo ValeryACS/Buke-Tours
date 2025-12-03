@@ -5,7 +5,18 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+session_start();
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Idioma por defecto español
+}
+
+include '../language/lang_' . $_SESSION['lang'] . '.php'; 
+
+$html_lang = $_SESSION['lang'];
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -26,16 +37,16 @@ error_reporting(E_ALL);
         style="max-width: 768px"
       >
         <!-- Sección principal -->
-        <h1 class="subtitulo">Reseñas</h1>
-        <h2>Sobre los Tours</h2>
+        <h1 class="subtitulo"><?php echo $lang['resenas'] ?? 'Reseñas'; ?></h1>
+        <h2><?php echo $lang['sobre_tours'] ?? 'Sobre los tours'; ?></h2>
 
         <div class="formulario-resena">
-          <h3>⭐Agrega tu reseña</h3>
+          <h3>⭐<?php echo $lang['titulo_resena']; ?></h3>
           <form action="#" method="post">
-            <label for="nombre">Nombre:</label>
+            <label for="nombre"><?php echo $lang['label_nombre'];?></label>
             <input type="text" id="nombre" name="nombre" required />
 
-            <label for="calificacion">Calificación:</label>
+            <label for="calificacion"><?php echo $lang['label_calificacion'];?></label>
             <select id="calificacion" name="calificacion" required>
               <option value="5">⭐⭐⭐⭐⭐</option>
               <option value="4">⭐⭐⭐⭐</option>
@@ -44,7 +55,7 @@ error_reporting(E_ALL);
               <option value="1">⭐</option>
             </select>
 
-            <label for="comentario">Comentario:</label>
+            <label for="comentario"><?php echo $lang['comentario'];?></label>
             <textarea
               id="comentario"
               name="comentario"
@@ -52,7 +63,7 @@ error_reporting(E_ALL);
               required
             ></textarea>
 
-            <button type="submit">Enviar Reseña</button>
+            <button type="submit"><?php echo $lang['boton_enviar'];?></button>
           </form>
         </div>
 

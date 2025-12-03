@@ -1,11 +1,23 @@
 <?php
+
 /**
  * Usado para renderizar el formulario del perfil del usuario
  */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+session_start();
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Idioma por defecto español
+}
+
+include '../language/lang_' . $_SESSION['lang'] . '.php'; 
+
+$html_lang = $_SESSION['lang'];
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -29,21 +41,21 @@ error_reporting(E_ALL);
             <div class="col-12 col-lg-8">
               <div class="card shadow-sm">
                 <div class="card-body p-4">
-                  <h1 class="titulo mb-4">Editar perfil</h1>
+                  <h1 class="titulo mb-4"><?php echo $lang['perfil_titulo_editar'] ?></h1>
 
                   <form action="" novalidate>
                     <div class="row g-3">
                       <!-- Columna izquierda -->
                       <div class="col-12 col-md-6">
                         <label for="fullName" class="form-label"
-                          >Nombre completo</label
+                          ><?php echo $lang['nombre_completo'] ?></label
                         >
                         <input
                           id="fullName"
                           name="fullName"
                           type="text"
                           class="form-control"
-                          placeholder="Nombre Completo"
+                          placeholder="<?php echo $lang['nombre_completo'] ?>"
                           autocomplete="name"
                           required
                         />
@@ -51,14 +63,14 @@ error_reporting(E_ALL);
 
                       <div class="col-12 col-md-6">
                         <label for="email" class="form-label"
-                          >Correo electrónico</label
+                          ><?php echo $lang['correo_electronico'] ?></label
                         >
                         <input
                           id="email"
                           name="email"
                           type="email"
                           class="form-control"
-                          placeholder="Correo Electrónico"
+                          placeholder="<?php echo $lang['correo_electronico'] ?>"
                           autocomplete="email"
                           required
                         />
@@ -66,14 +78,14 @@ error_reporting(E_ALL);
 
                       <div class="col-12 col-md-6">
                         <label for="phone" class="form-label"
-                          >Número de teléfono</label
+                          ><?php echo $lang['numero_telefono'] ?></label
                         >
                         <input
                           id="phone"
                           name="phone"
                           type="tel"
                           class="form-control"
-                          placeholder="Número de Teléfono"
+                          placeholder="<?php echo $lang['numero_telefono'] ?>"
                           autocomplete="tel"
                           inputmode="tel"
                           required
@@ -82,14 +94,14 @@ error_reporting(E_ALL);
 
                       <div class="col-12 col-md-6">
                         <label for="password" class="form-label"
-                          >Contraseña</label
+                          ><?php echo $lang['contrasena'] ?></label
                         >
                         <input
                           id="password"
                           name="password"
                           type="password"
                           class="form-control"
-                          placeholder="Contraseña"
+                          placeholder="<?php echo $lang['contrasena'] ?>"
                           autocomplete="new-password"
                           required
                         />
@@ -98,47 +110,47 @@ error_reporting(E_ALL);
                       <!-- Columna derecha -->
                       <div class="col-12">
                         <label for="address" class="form-label"
-                          >Dirección completa</label
+                          ><?php echo $lang['direccion_completa'] ?></label
                         >
                         <input
                           id="address"
                           name="address"
                           type="text"
                           class="form-control"
-                          placeholder="Dirección Completa"
+                          placeholder="<?php echo $lang['direccion_completa'] ?>"
                           autocomplete="street-address"
                           required
                         />
                       </div>
 
                       <div class="col-12 col-md-6">
-                        <label for="country" class="form-label">País</label>
+                        <label for="country" class="form-label"><?php echo $lang['pais'] ?></label>
                         <input
                           id="country"
                           name="country"
                           type="text"
                           class="form-control"
-                          placeholder="País"
+                          placeholder="<?php echo $lang['pais'] ?>"
                           autocomplete="country-name"
                           required
                         />
                       </div>
 
                       <div class="col-12 col-md-6">
-                        <label for="language" class="form-label">Idioma</label>
+                        <label for="language" class="form-label"><?php echo $lang['idioma'] ?></label>
                         <input
                           id="language"
                           name="language"
                           type="text"
                           class="form-control"
-                          placeholder="Idioma"
+                          placeholder="<?php echo $lang['idioma'] ?>"
                           required
                         />
                       </div>
 
                       <div class="col-12 d-flex justify-content-end pt-2">
                         <button type="submit" class="btn btn-danger px-4">
-                          Guardar
+                          <?php echo $lang['boton_guardar_cambios'] ?>
                         </button>
                       </div>
                     </div>

@@ -5,7 +5,18 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+session_start();
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Idioma por defecto español
+}
+
+include '../language/lang_' . $_SESSION['lang'] . '.php'; 
+
+$html_lang = $_SESSION['lang'];
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -27,7 +38,7 @@ error_reporting(E_ALL);
         class="tours-section"
         style="margin: 1.5rem auto; max-width: 1100px; padding: 0 1rem"
       >
-        <h2 style="margin-bottom: 1rem">Explora nuestros Tours</h2>
+        <h2 style="margin-bottom: 1rem"><?php echo $lang['explora_tours'] ?></h2>
         <div
           id="tours-filters"
           class="tours-filters"
@@ -35,12 +46,12 @@ error_reporting(E_ALL);
         >
           <label style="flex: 1; min-width: 240px">
             <span style="display: block; font-size: 0.9rem; opacity: 0.8"
-              >Buscar (título o ubicación)</span
+              ><?php echo $lang['placeholder_buscar_titulo'] ?></span
             >
             <input
               id="tour-search"
               type="search"
-              placeholder="Ej. Arenal, Manuel Antonio..."
+              placeholder="<?php echo $lang['placeholder_ejemplo_ubicacion'] ?>"
               style="
                 width: 100%;
                 padding: 0.6rem;
@@ -51,7 +62,7 @@ error_reporting(E_ALL);
           </label>
           <label style="width: 200px">
             <span style="display: block; font-size: 0.9rem; opacity: 0.8"
-              >Calificación mínima</span
+              ><?php echo $lang['label_calificacion_minima'] ?></span
             >
             <select
               id="tour-min-rating"
@@ -62,7 +73,7 @@ error_reporting(E_ALL);
                 border-radius: 0.5rem;
               "
             >
-              <option value="0">Todas</option>
+              <option value="0"><?php echo $lang['opcion_todas'] ?></option>
               <option value="4.5">4.5+</option>
               <option value="4.7">4.7+</option>
               <option value="4.8">4.8+</option>
@@ -88,10 +99,10 @@ error_reporting(E_ALL);
               class="tour-imagen"
             />
             <p>
-              <strong>Ubicación:</strong> Monteverde<br /><strong
-                >Duración:</strong
+              <strong><?php echo $lang['label_ubicacion'] ?></strong> Monteverde<br /><strong
+                ><?php echo $lang['label_duracion'] ?></strong
               >
-              3 horas
+             3 <?php echo $lang['opcion_horas'] ?>
             </p>
           </div>
           <div class="tour-card">
@@ -101,10 +112,10 @@ error_reporting(E_ALL);
               class="tour-imagen"
             />
             <p>
-              <strong>Ubicación:</strong> Manuel Antonio<br /><strong
-                >Duración:</strong
+              <strong><?php echo $lang['label_ubicacion'] ?></strong> Manuel Antonio<br /><strong
+                ><?php echo $lang['label_duracion'] ?></strong
               >
-              5 horas
+              5 <?php echo $lang['opcion_horas'] ?>
             </p>
           </div>
           <div class="tour-card">
@@ -114,10 +125,10 @@ error_reporting(E_ALL);
               class="tour-imagen"
             />
             <p>
-              <strong>Ubicación:</strong> La Fortuna<br /><strong
-                >Duración:</strong
+              <strong><?php echo $lang['label_ubicacion'] ?></strong> La Fortuna<br /><strong
+                ><?php echo $lang['label_duracion'] ?></strong
               >
-              4 horas
+              4 <?php echo $lang['opcion_horas'] ?>
             </p>
           </div>
         </div>
