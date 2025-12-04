@@ -8,12 +8,11 @@ import {
   setTourDetailsForm,
   validateCheckoutForm,
   renderFlags,
-  setOnChangeCheckoutEvents,
   calculateExtras,
   calculateAccordionTotal,
 } from "./checkout-module.js";
 
-import { todayLocalISO } from "./utils.module.js";
+import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
 
 (() => {
   document.addEventListener("DOMContentLoaded", async () => {
@@ -70,7 +69,7 @@ import { todayLocalISO } from "./utils.module.js";
       0
     );
 
-    setOnChangeCheckoutEvents({
+    setOnChangeEvents({
       inputTextStrings: [nombreCompleto, ciudad, provincia, nombreDelTitular],
       inputNumbers: [
         telefono,
@@ -317,7 +316,6 @@ import { todayLocalISO } from "./utils.module.js";
 
           return {
             check_in_date: input.value,
-            // Si tu backend espera número, usa parseInt; si espera string, envía rawId
             tour_id: hasNumericId ? parseInt(rawId, 10) : rawId || null,
           };
         });

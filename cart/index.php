@@ -45,7 +45,7 @@ error_reporting(E_ALL);
                 <a href="/Buke-Tours/checkout/" class="btn btn-dark btn-lg"
                   >Finalizar compra</a
                 >
-                <a href="/Buke-Tours/tours/" class="btn btn-danger"
+                <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours"
                   >Seguir comprando</a
                 >
               </div>
@@ -110,7 +110,7 @@ error_reporting(E_ALL);
                     <a href="/Buke-Tours/checkout/" class="btn btn-dark btn-lg"
                       >Finalizar compra</a
                     >
-                    <a href="/Buke-Tours/tours/" class="btn btn-danger"
+                    <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours"
                       >Seguir comprando</a
                     >
                   </div>

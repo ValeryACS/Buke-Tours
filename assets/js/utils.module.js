@@ -95,5 +95,58 @@ export const normalizeString = (value) =>
  */
 export const onClickViewTour = (id) => {
     console.log("Tour Clicked:", id);// TODO redirigir a la pagina del tour
-    window.location.href = "/Buke-Tours/tour/"
+    window.location.href = `/Buke-Tours/tour/index.php?tourId=${id}`
+};
+
+/**
+ * @function - Usada para evitar que el usuario ingrese valores incorrectos
+ * @param {Object} params - Objeto que contiene los inputs que no aceptan numeros y los inputs que solo aceptan letras
+ * @param {HTMLInputElement[]} params.inputTextStrings - Inputs de tipo Texto
+ * @param {HTMLInputElement[]} params.inputNumbers - Inputs de tipo Number
+ * @returns {void}
+ */
+export const setOnChangeEvents = ({
+  inputTextStrings,
+  inputNumbers,
+}) => {
+  // --- Inputs tipo texto: no se permiten números
+  inputTextStrings.forEach((element) => {
+    if (!element) return;
+    element.addEventListener("input", (event) => {
+      const original = event.target.value;
+      const cleaned = removeNumbers(original);
+      if (original !== cleaned) {
+        event.target.value = cleaned;
+      }
+    });
+  });
+
+  // --- Inputs tipo número: no se permiten letras
+  inputNumbers.forEach((element) => {
+    if (!element) return;
+    if (Array.isArray(element)) {
+      element.forEach((elm) => {
+        elm.addEventListener("input", (event) => {
+          const original = event.target.value;
+          const cleaned = removeLetters(original);
+          if (original !== cleaned) {
+            event.target.value = cleaned;
+          }
+          const minValue = Number(elm.getAttribute("min"));
+
+          if(Number(cleaned)<= minValue){
+            event.target.value = minValue;
+          }
+        });
+      });
+    } else {
+      element.addEventListener("input", (event) => {
+        const original = event.target.value;
+        const cleaned = removeLetters(original);
+        if (original !== cleaned) {
+          event.target.value = cleaned;
+        }
+      });
+    }
+  });
 };

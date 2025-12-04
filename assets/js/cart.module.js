@@ -169,7 +169,7 @@ export const updateCartModal = async (cartObj) => {
     document.querySelector("#checkout-form-skeleton")?.classList.add("d-none");
     cartList.innerHTML = `
           <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
-          <a href="/Buke-Tours/tours/" class="btn btn-danger m-auto">Comprar Tours</a>
+          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">Comprar Tours</a>
         `;
     return;
   }
@@ -229,7 +229,7 @@ export const updateCartModal = async (cartObj) => {
                         <div class="col-8 col-md-6">
                           <div class="input-group">
                             <button
-                              class="btn btn-danger btn-qty btn-substract-quantity"
+                              class="btn btn-danger-buke-tours btn-qty btn-substract-quantity"
                               type="button"
                               data-action="minus"
                               data-tour-id="${tour.sku}"
@@ -442,7 +442,7 @@ export const updateBasket = async () => {
   if (ids.length === 0) {
     cartList.innerHTML = `
           <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
-          <a href="/Buke-Tours/tours/" class="btn btn-danger m-auto">Comprar Tours</a>
+          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">Comprar Tours</a>
         `;
     return;
   }
@@ -508,7 +508,7 @@ export const updateBasket = async () => {
                           >
                           <div class="input-group">
                             <button
-                              class="btn btn-danger btn-qty btn-substract-quantity"
+                              class="btn btn-danger-buke-tours btn-qty btn-substract-quantity"
                               type="button"
                               data-action="minus"
                               data-tour-id="${tour.sku}"

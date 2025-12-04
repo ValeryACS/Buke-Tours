@@ -46,7 +46,7 @@ error_reporting(E_ALL);
           </div>
         </div>
         <div class="d-flex gap-2">
-          <a href="/Buke-Tours/checkout/" type="button" class="btn btn-danger">
+          <a href="/Buke-Tours/checkout/" type="button" class="btn btn-danger-buke-tours">
             Pagar
           </a>
           <a href="/Buke-Tours/cart/" class="btn btn-primary">Ir al carrito</a>
