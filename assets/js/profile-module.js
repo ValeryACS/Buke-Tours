@@ -1,3 +1,9 @@
+import {
+  setState,
+  onlyDigits,
+  isOnOrAfterToday,
+  todayLocalISO,
+} from "./utils.module.js";
 
 /**
  * @funcion - Funcion que valida los inputs del formulario de Profile
@@ -38,17 +44,54 @@ export const validateProfileForm =({
         `El campo "${inputElement.labels?.[0]?.innerText || id}" es requerido.`
       );
     }
-
-    if (id === "nombre") {
-      // Valida el nombre
-      if (containNumbers(inputValue)) {
+    if(id === 'password'){
+      const pattern = /^(?=(?:.*[A-Za-z]){4,})(?=(?:.*[AEIOUaeiou]){3,})(?=(?:.*\d){4,})(?=(?:.*[^A-Za-z0-9]){3,}).+$/;
+      if (!pattern.test(inputValue)) {
         return pushErrorMessage(
           inputElement,
-          "El nombre no puede contener números."
+          "La contraseña debe contener al menos 4 letras, 3 vocales, 3 caracteres especiales y 4 números."
+        );
+      }
+      const confirmPassword = stringsRequeridos.find((elemnt)=> elemnt.id ==='confirm-password');
+      if(inputValue && confirmPassword.value && inputValue !== confirmPassword.value){
+        return pushErrorMessage(
+          inputElement,
+          "La contraseña no coincide con la contraseña de confirmacion."
         );
       }
     }
-
+    if(id === 'fullName'){
+      if(inputValue.length <= 5){
+        return pushErrorMessage(
+          inputElement,
+          "El Nombre completo debe contener al menos 5 caracteres."
+        );
+      }
+    }
+    if(id === 'idioma'){
+      if(inputValue === 'no-seleccionado'){
+        return pushErrorMessage(
+          inputElement,
+          "Debes Seleccionar un Idioma."
+        );
+      }
+    }
+    if(id === 'documento'){
+      if(inputValue.length <7){
+        return pushErrorMessage(
+          inputElement,
+          "El Documento debe contener mas de 7 caracteres."
+        );
+      }
+    }
+    if(id=== 'direccion'){
+      if(inputValue.length <10){
+        return pushErrorMessage(
+          inputElement,
+          "La Direccion de recinto debe contener mas de 10 caracteres."
+        );
+      }
+    }
     if (id === "email") {
       // Valida el email
       const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue); // Valida si es un email valido
@@ -70,12 +113,30 @@ export const validateProfileForm =({
         );
     }
 
-    if (id === "pais") {
+    if (id === "country") {
       // Valida el pais
-      if (!inputElement.value || inputElement.value ) {
+      if (!inputElement.value || inputElement.value === 'no-seleccionado' ) {
         return pushErrorMessage(
           inputElement,
-          "Selecciona un país de residencia."
+          "Debes seleccionar un país de residencia."
+        );
+      }
+    }
+
+    if(id === 'ciudad'){
+      if(inputValue.length < 4){
+        return pushErrorMessage(
+          inputElement,
+          "La Ciudad debe contener mas de 4 caracteres."
+        );
+      }
+    }
+
+    if(id === 'provincia'){
+      if(inputValue.length < 4){
+        return pushErrorMessage(
+          inputElement,
+          "La Provincia debe contener mas de 4 caracteres."
         );
       }
     }
@@ -83,222 +144,81 @@ export const validateProfileForm =({
     setState(inputElement, true);
   });
 
-  // ---- 2) Valida los inputs de typo number
-  const now = new Date();
-  const curYY = now.getFullYear() % 100; // dos dígitos
-  const curMM = now.getMonth() + 1;
-
   numerosRequeridos.forEach((inputElement) => {
     if (!inputElement) return;
-    if (Array.isArray(inputElement)) {
-      inputElement.forEach((numb) => {
-        const id = (numb.id || "").toLowerCase();
-        const numberValue = (numb.value ?? "").trim();
-
-        const minAttr = numb.getAttribute("min");
-        const number = Number(onlyDigits(numberValue)) || Number(numberValue);
-
-        if (Number.isNaN(number)) {
-          pushErrorMessage(
-            numb,
-            `El campo "${numb.labels?.[0]?.innerText || id}" debe ser numérico.`
-          );
-          return;
-        }
-
-        if (minAttr !== null && !Number.isNaN(Number(minAttr))) {
-          const min = Number(minAttr);
-          if (number < min) {
-            pushErrorMessage(
-              numb,
-              `El campo "${
-                numb.labels?.[0]?.innerText || id
-              }" debe ser mayor o igual a ${min}.`
-            );
-            return;
-          }
-        }
-      });
-    } else {
-      const id = (inputElement.id || "").toLowerCase();
-      const numberValue = (inputElement.value ?? "").trim();
-
-      // Input del numero vacio
-      if (!numberValue) {
-        pushErrorMessage(
-          inputElement,
-          `El campo "${
-            inputElement.labels?.[0]?.innerText || id
-          }" es requerido.`
-        );
-        return;
-      }
-
-      // por defecto: comprobar número y min (si existe)
-      const minAttr = inputElement.getAttribute("min");
-      const number = Number(onlyDigits(numberValue)) || Number(numberValue);
-
-      if (Number.isNaN(number)) {
-        pushErrorMessage(
-          inputElement,
-          `El campo "${
-            inputElement.labels?.[0]?.innerText || id
-          }" debe ser numérico.`
-        );
-        return;
-      }
-
-      if (minAttr !== null && !Number.isNaN(Number(minAttr))) {
-        const min = Number(minAttr);
-        if (number < min) {
-          pushErrorMessage(
-            inputElement,
-            `El campo "${
-              inputElement.labels?.[0]?.innerText || id
-            }" debe ser mayor o igual a ${min}.`
-          );
-          return;
-        }
-      }
-
-      // Reglas específicas de tarjeta
-      if (id === "cardnumber") {
+    const id = (inputElement.id || "").toLowerCase();
+    if (id === "zip") {
+      const numberValue = Number(inputElement.value ?? 0);
         const digits = onlyDigits(numberValue);
-        if (digits.length < 13 || digits.length > 19) {
+        if (digits.length <  4) {
           return pushErrorMessage(
             inputElement,
-            "El número de tarjeta debe tener entre 13 y 19 dígitos."
+            "El Codigo Postal debe tener minimo 4 caracteres."
           );
         }
-      }
-
-      if (id === "cardmonth") {
-        const mm = Number(onlyDigits(numberValue));
-        if (mm < 1 || mm > 12) {
-          return pushErrorMessage(
-            inputElement,
-            "El mes de expiración debe estar entre 01 y 12."
-          );
-        }
-      }
-
-      if (id === "cardyear") {
-        // Representa el año
-        let year = onlyDigits(numberValue);
-        if (!(year.length === 2)) {
-          return pushErrorMessage(
-            inputElement,
-            "El año de expiración debe tener 2 dígitos."
-          );
-        }
-        const year2 = Number(year);
-
-        // si tenemos el mes, comprobamos no expirada
-        const monthEl = document.getElementById("cardMonth");
-        if (monthEl && monthEl.value) {
-          const mm = Number(onlyDigits(monthEl.value));
-          // tarjeta expirada: año menor, o año igual y mes menor
-          if (year2 < curYY || (year2 === curYY && mm < curMM)) {
-            return pushErrorMessage(inputElement, "La tarjeta está expirada.");
-          }
-        } else if (year2 < curYY) {
-          // si no hay mes, al menos año no menor al actual (mejor que nada)
-          return pushErrorMessage(
-            inputElement,
-            "La tarjeta podría estar expirada (verifica mes y año)."
-          );
-        }
-      }
-
-      if (id === "cardcvv") {
-        const digits = onlyDigits(numberValue);
-        if (digits.length < 3 || digits.length > 4) {
-          return pushErrorMessage(
-            inputElement,
-            "El CVV debe ser de 3 o 4 dígitos."
-          );
-        }
-      }
-
-      setState(inputElement, true);
     }
+
+    setState(inputElement, true);
+  }); 
+
+  Array.from(fechasRequeridas).forEach((inputDate) => {
+    if (!inputDate) return;
+
+    let hasDateErrors = false;
+    const labelText =
+      inputDate.labels?.[0]?.innerText?.trim() ||
+      inputDate.placeholder ||
+      inputDate.id ||
+      "La fecha";
+
+    if (!inputDate.value) {
+      pushErrorMessage(inputDate, `El campo "${labelText}" es requerido.`);
+      hasDateErrors = true;
+    }
+
+    const parsedDate = inputDate.value ? new Date(inputDate.value) : null;
+    if (!parsedDate || Number.isNaN(parsedDate.getTime())) {
+      pushErrorMessage(inputDate, `${labelText} no es válida.`);
+      hasDateErrors = true;
+    }
+
+    const inputId = (inputDate.id || "").toLowerCase();
+    const isBirthdateField =inputId.includes("birthdate");
+
+    if (!hasDateErrors && isBirthdateField) {
+      if (inputDate.value > todayLocalISO()) {
+        pushErrorMessage(
+          inputDate,
+          "La fecha de nacimiento no puede ser posterior a hoy."
+        );
+        hasDateErrors = true;
+      }
+
+      const hoy = new Date();
+      let edad = hoy.getFullYear() - parsedDate.getFullYear();
+      const mesDiff = hoy.getMonth() - parsedDate.getMonth();
+      if (mesDiff < 0 || (mesDiff === 0 && hoy.getDate() < parsedDate.getDate())) {
+        edad--;
+      }
+      if (edad < 18) {
+        pushErrorMessage(
+          inputDate,
+          "Debes ser mayor de 18 años para reservar Tours."
+        );
+        hasDateErrors = true;
+      }
+    }
+
+    if (!hasDateErrors && !isBirthdateField && !isOnOrAfterToday(inputDate.value)) {
+      pushErrorMessage(
+        inputDate,
+        `${labelText} no puede ser anterior a hoy.`
+      );
+      hasDateErrors = true;
+    }
+
+    setState(inputDate, !hasDateErrors);
   });
-
-  // ---- 3) Valida las fechas de los Tours
-  const [fechasDeIngreso, fechasDeSalida] = fechasRequeridas; // Se espera un array con 2 NodeList: [ingresos, salidas]
-
-  if (fechasDeIngreso && fechasDeSalida) {
-    const ingresos = Array.from(fechasDeIngreso);
-    const salidas = Array.from(fechasDeSalida);
-
-    const cantidadTotalDeFechas = Math.max(ingresos.length, salidas.length);
-    for (let i = 0; i < cantidadTotalDeFechas; i++) {
-      const inputFechasDeIngreso = ingresos[i];
-      const inputFechasDeSalida = salidas[i];
-
-      // Validando la fecha de ingreso como requerida
-      if (!inputFechasDeIngreso || !inputFechasDeIngreso.value) {
-        pushErrorMessage(
-          inputFechasDeIngreso || salidas[i],
-          "La fecha de ingreso es requerida."
-        );
-        continue;
-      }
-      // Validando la fecha de salida como requerida
-      if (!inputFechasDeSalida || !inputFechasDeSalida.value) {
-        pushErrorMessage(
-          inputFechasDeSalida || ingresos[i],
-          "La fecha de salida es requerida."
-        );
-        continue;
-      }
-
-      // Pareseando las fechas para poder validar si la fecha de llegada es mayor a la fecha de salida
-      const initialDate = new Date(inputFechasDeIngreso.value);
-      const outDate = new Date(inputFechasDeSalida.value);
-      if (Number.isNaN(initialDate.getTime())) {
-        pushErrorMessage(
-          inputFechasDeIngreso,
-          "La fecha de ingreso no es válida."
-        );
-        continue;
-      }
-      if (Number.isNaN(outDate.getTime())) {
-        pushErrorMessage(
-          inputFechasDeSalida,
-          "La fecha de salida no es válida."
-        );
-        continue;
-      }
-      if (outDate < initialDate) {
-        pushErrorMessage(
-          inputFechasDeSalida,
-          "La fecha de salida no puede ser anterior a la de ingreso."
-        );
-        setState(inputFechasDeIngreso, false); // marca también la de ingreso
-        continue;
-      }
-      if (!isOnOrAfterToday(inputFechasDeIngreso.value)) {
-        pushErrorMessage(
-          inputFechasDeIngreso,
-          "La fecha de ingreso no puede ser anterior a hoy."
-        );
-        setState(inputFechasDeSalida, false);
-        continue;
-      }
-      if (!isOnOrAfterToday(inputFechasDeSalida.value)) {
-        pushErrorMessage(
-          inputFechasDeSalida,
-          "La fecha de salida no puede ser anterior a hoy."
-        );
-        setState(inputFechasDeIngreso, false);
-        continue;
-      }
-
-      setState(inputFechasDeIngreso, true);
-      setState(inputFechasDeSalida, true);
-    }
-  }
 
   // ---- 4) Imprimiendo los errores en el DOM
   if (errors.length) {

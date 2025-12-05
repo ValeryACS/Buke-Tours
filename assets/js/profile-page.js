@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
         const ciudad = document.getElementById("ciudad");
         const provincia = document.getElementById("provincia");
         const codigoPostal = document.getElementById("zip");
+        const genres = Array.from(document.querySelectorAll(".genre-radio-button"));
 
         setOnChangeEvents({
             inputTextStrings: [nombreCompleto, ciudad, provincia],
@@ -48,5 +49,27 @@ document.addEventListener("DOMContentLoaded", ()=> {
                 numerosRequeridos: [codigoPostal],
                 fechasRequeridas: [fechaDeNacimiento],
         });
+
+        if(isValidProfileForm){
+            const formData = new FormData();
+
+            const generoSeleccionado = genres.find((genre)=> genre.checked);
+
+            formData.append("nombre", nombreCompleto.value);
+            formData.append("email", email.value);
+            formData.append("telefono", telefono.value);
+            formData.append("pais", pais.value);
+            formData.append("password", password.value);
+            formData.append("confirmPassword", confirmPassword.value);
+            formData.append("idioma", idioma.value);
+            formData.append("pasaporteOdocumento", pasaporteOdocumento.value);
+            formData.append("direccion", direccion.value);
+            formData.append("ciudad", ciudad.value);
+            formData.append("provincia", provincia.value);
+            formData.append("codigoPostal", codigoPostal.value);
+            formData.append("genero", generoSeleccionado.value);
+
+            //TODO enviar al api la data
+        }
     })
 })

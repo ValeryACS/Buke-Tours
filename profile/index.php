@@ -120,17 +120,17 @@ $html_lang = $_SESSION['lang'];
                         />
                       </div>
                       <div class="col-12 col-md-6 form-group text-start mb-3">
-                        <label for="fecha" class="form-label">Fecha de nacimiento</label>
-                        <input type="date" class="form-control" id="fecha">
+                        <label for="birthdate" class="form-label">Fecha de nacimiento</label>
+                        <input type="date" class="form-control" id="birthdate" name="birthdate" />
                       </div>
                       <div class="col-12 col-md-6 form-group text-start mb-3">
                         <label class="form-label d-block">Género</label>
                         <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="genero" id="masculino" value="Masculino">
+                          <input class="form-check-input genre-radio-button" type="radio" name="genero" id="masculino" value="Masculino" checked>
                           <label class="form-check-label" for="masculino">Masculino</label>
                         </div>
                         <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="genero" id="femenino" value="Femenino">
+                          <input class="form-check-input genre-radio-button" type="radio" name="genero" id="femenino" value="Femenino">
                           <label class="form-check-label" for="femenino">Femenino</label>
                         </div>
                       </div>
@@ -168,7 +168,7 @@ $html_lang = $_SESSION['lang'];
                           placeholder="<?php echo $lang['pais'] ?>"
                           required
                         >
-                          <option value="" selected disabled>
+                          <option value="no-seleccionado" selected>
                             Selecciona un país
                           </option>
                           <option value="AF">Afganistán</option>
@@ -447,5 +447,6 @@ $html_lang = $_SESSION['lang'];
       include '../php/components/cart-modal.php';
       include '../php/scripts/common-scripts.php';
     ?>
+    <script type="module" src="/Buke-Tours/assets/js/profile-page.js" defer></script>
   </body>
 </html>
