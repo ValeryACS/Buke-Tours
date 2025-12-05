@@ -47,7 +47,9 @@ error_reporting(E_ALL);
               <div class="text-center text-muted p-4">
                 Tu carrito está vacío.
               </div>
-              <a href="/Buke-Tours/tours/" class="btn btn-danger m-auto"
+              <a
+                href="/Buke-Tours/tours/"
+                class="btn btn-danger-buke-tours m-auto"
                 >Comprar Tours</a
               >
             </article>
@@ -517,12 +519,15 @@ error_reporting(E_ALL);
                               <label for="idioma" class="form-label"
                                 >Idioma</label
                               >
-                              <select id="idioma"
-                                name="idioma" 
-                                class="form-select" 
+                              <select
+                                id="idioma"
+                                name="idioma"
+                                class="form-select"
                                 aria-label="Idioma Seleccionado"
                               >
-                                <option selected value="no-seleccionado">Seleccione un Idioma</option>
+                                <option selected value="no-seleccionado">
+                                  Seleccione un Idioma
+                                </option>
                                 <option value="en">Ingles</option>
                                 <option value="es">Español</option>
                               </select>
@@ -584,7 +589,7 @@ error_reporting(E_ALL);
                         data-bs-parent="#accordionCheckout"
                       >
                         <div class="accordion-body">
-                          <h6 class="mb-2">Costo por persona: </h6>
+                          <h6 class="mb-2">Costo por persona:</h6>
                           <div class="row g-3">
                             <div class="col-12 col-md-6">
                               <div class="form-check text-start">

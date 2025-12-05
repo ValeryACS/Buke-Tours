@@ -64,8 +64,8 @@ session_start();
         </li>
           <li class="nav-item barra-navegadora-li d-flex align-items-center">
             <select id="language-switcher" class="form-select form-select-sm">
-                <option value="es" <?php if ($_SESSION['lang'] == 'es') echo 'selected'; ?>>Español</option>
-                <option value="en" <?php if ($_SESSION['lang'] == 'en') echo 'selected'; ?>>English</option>
+                <option value="es" <?php if (isset($_SESSION['lang']) && $_SESSION['lang'] == 'es') echo 'selected'; ?>>Español</option>
+                <option value="en" <?php if (isset($_SESSION['lang']) && $_SESSION['lang'] == 'en') echo 'selected'; ?>>English</option>
             </select>
         </li>
       </ul>

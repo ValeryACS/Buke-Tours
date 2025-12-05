@@ -532,60 +532,9 @@ export const renderFlags = () => {
 };
 
 /**
- * @function - Usada para evitar que el usuario ingrese valores incorrectos
- * @param {Object} params - Objeto que contiene los inputs que no aceptan numeros y los inputs que solo aceptan letras
- * @param {HTMLInputElement[]} params.inputTextStrings - Inputs de tipo Texto
- * @param {HTMLInputElement[]} params.inputNumbers - Inputs de tipo Number
- * @returns {void}
- */
-export const setOnChangeCheckoutEvents = ({
-  inputTextStrings,
-  inputNumbers,
-}) => {
-  // --- Inputs tipo texto: no se permiten números
-  inputTextStrings.forEach((element) => {
-    if (!element) return;
-    element.addEventListener("input", (event) => {
-      const original = event.target.value;
-      const cleaned = removeNumbers(original);
-      if (original !== cleaned) {
-        event.target.value = cleaned;
-      }
-    });
-  });
-
-  // --- Inputs tipo número: no se permiten letras
-  inputNumbers.forEach((element) => {
-    if (!element) return;
-    if (Array.isArray(element)) {
-      element.forEach((elm) => {
-        elm.addEventListener("input", (event) => {
-          const original = event.target.value;
-          const cleaned = removeLetters(original);
-          if (original !== cleaned) {
-            event.target.value = cleaned;
-          }
-          const minValue = Number(elm.getAttribute("min"));
-
-          if(Number(cleaned)<= minValue){
-            event.target.value = minValue;
-          }
-        });
-      });
-    } else {
-      element.addEventListener("input", (event) => {
-        const original = event.target.value;
-        const cleaned = removeLetters(original);
-        if (original !== cleaned) {
-          event.target.value = cleaned;
-        }
-      });
-    }
-  });
-};
-
-/**
- * @function - Usada para calcular el monto extra dependiendo de si el usuario selecciona o no alguno de los checkobox opcionales
+ * @function - 
+ * Usada para calcular el monto extra dependiendo de si el usuario selecciona o no alguno 
+ * de los checkobox opcionales.
  * @param {Object} params - Un Objeto el cual contiene todos los extras
  * @param {Number} params.children - La cantidad de niños
  * @param {Number} params.adultos - La cantidad de adultos

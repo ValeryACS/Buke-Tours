@@ -48,11 +48,16 @@ html,
 body {
   position: relative;
   height: 100%;
+  overflow-x: hidden;
 }
 
 body {
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
+}
+
+.bg-yellow-light{
+  background: #ffd89c !important;
 }
 
 .swiper-button-next,
@@ -62,7 +67,7 @@ body {
 }
 .bg-buke-tours,
 .swiper-pagination-bullet-active,
-.btn-danger {
+.btn-danger-buke-tours {
   background: #ffd89c !important;
   border: #e0b678 !important;
   color: #000 !important;
