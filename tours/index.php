@@ -1,10 +1,10 @@
 <?php
-/**
- * Usado para renderizar los Tours disponibles
- */
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+session_start();
 
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'es'; // Idioma por defecto español
@@ -29,7 +29,7 @@ $html_lang = $_SESSION['lang'];
   </head>
   <body>
     <?php 
-    include '../php/components/navbar.php';
+    require_once '../config.php';
     ?>
     <main class="container py-4 cards-wrapper">
       <div class="form-group mt-5 mb-5 container-md">

@@ -1,4 +1,22 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+session_start();
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Idioma por defecto español
+}
+
+include '../language/lang_' . $_SESSION['lang'] . '.php'; 
+
+$html_lang = $_SESSION['lang'];
+
+?>
+
+<?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -25,7 +43,7 @@ error_reporting(E_ALL);
   </head>
   <body>
     <?php
-    include '../php/components/navbar.php';
+    require_once '../config.php';
     ?>
     <main>
       <section id="checkout" class="py-5">

@@ -26,7 +26,7 @@ $html_lang = $_SESSION['lang'];
   </head>
   <body>
     <?php
-    include '../../php/components/navbar.php';
+   require_once '../../config.php';
     ?>
 
     <section

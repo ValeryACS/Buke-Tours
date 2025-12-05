@@ -27,7 +27,7 @@ $html_lang = $_SESSION['lang'];
 
 <body>
     <?php
-    include '../php/components/navbar.php';
+    require_once '../config.php';
     ?>
 
     <div class="container py-4">

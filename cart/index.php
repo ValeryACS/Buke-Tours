@@ -1,8 +1,22 @@
+
 <?php
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+session_start();
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Idioma por defecto español
+}
+
+include '../language/lang_' . $_SESSION['lang'] . '.php'; 
+
+$html_lang = $_SESSION['lang'];
+
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -20,7 +34,7 @@ error_reporting(E_ALL);
   </head>
   <body>
     <?php
-    include '../php/components/navbar.php';
+    require_once '../config.php';
     ?>
     <main>
       <section id="cart" class="py-5">

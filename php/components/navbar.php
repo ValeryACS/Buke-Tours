@@ -6,7 +6,14 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-session_start();
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Idioma por defecto español
+}
+
+include ROOT_PATH . 'language/lang_' . $_SESSION['lang'] . '.php'; 
+
+$html_lang = $_SESSION['lang'];
 ?>
 <nav class="barra-navegadora navbar navbar-expand-lg">
   <div class="container-fluid">
