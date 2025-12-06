@@ -75,6 +75,9 @@ $html_lang = $_SESSION['lang'];
                 <option value="en" <?php if (isset($_SESSION['lang']) && $_SESSION['lang'] == 'en') echo 'selected'; ?>>English</option>
             </select>
         </li>
+        <li class="nav-item barra-navegadora-li">
+         <a href="/Buke-Tours/logout/" class="nav-link" title="Cerrar Session"> <i class="display-6 bi bi-box-arrow-right"></i></a>
+        </li>
       </ul>
     </div>
 

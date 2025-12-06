@@ -1,3 +1,5 @@
+CREATE DATABASE buke_tours_db;
+
 USE buke_tours_db;
 
 DROP TABLE IF EXISTS tour;
@@ -27,6 +29,31 @@ CREATE TABLE tour (
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
 
+  DROP TABLE IF EXISTS customer;
+
+  CREATE TABLE customer (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    full_name VARCHAR(200) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    phone VARCHAR(120) NOT NULL,
+    country VARCHAR(120) NOT NULL,
+    passport VARCHAR(220) NOT NULL,
+    lang VARCHAR(120) NOT NULL,
+    genre ENUM('Masculino','Femenino') NOT NULL,
+    home_addres VARCHAR(220) NOT NULL,
+    city VARCHAR(220) NOT NULL,
+    province VARCHAR(230) NOT NULL,
+    zip_code VARCHAR(100) NOT NULL,
+    birth_date DATE NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_customer_email (email),
+    UNIQUE KEY uq_customer_passport (passport),
+    PRIMARY KEY (id)
+  ) ENGINE=InnoDB
+    DEFAULT CHARSET=utf8mb4
+    COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS reservation;
 
@@ -53,14 +80,18 @@ CREATE TABLE IF NOT EXISTS  reservation(
   postal_code VARCHAR(100) NOT NULL,
   total DECIMAL(10,2) NOT NULL,
   subtotal DECIMAL(10,2) NOT NULL,
+  userId INT UNSIGNED NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  CONSTRAINT fk_reservation_customer
+      FOREIGN KEY (userId)
+      REFERENCES customer(id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
-
--- 3. Insertar en la Tabla los tours
 
 
 INSERT INTO tour (

@@ -1,4 +1,3 @@
-
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -13,7 +12,6 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
 $html_lang = $_SESSION['lang'];
 ?>
 
-
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -23,41 +21,54 @@ $html_lang = $_SESSION['lang'];
     <?php 
       include '../../php/styles/common-styles.php';
     ?>
+    <link rel="stylesheet" href="/Buke-Tours/assets/css/profile.css" />
   </head>
   <body>
     <?php
-   require_once '../../config.php';
+      require_once '../../config.php';
     ?>
-
     <section
-      class="container bg-warning-subtle mx-auto p-4 mt-5 bg-buke-tours"
-      style="max-width: 500px"
+      class="container bg-warning-subtle mx-auto p-4 mt-5 bg-buke-tours profile-form-section"
+      style="max-width: 600px"
     >
-      <h1><?php echo $lang['iniciar_sesion'];?></h1>
-      <form>
+      <h1 class="titulo mb-4"><?php echo $lang['iniciar_sesion'];?></h1>
+      <form id="login-form" class="mb-2" novalidate>
+        <label
+          for="email"
+          class="form-label d-flex text-start d-flex text-start"
+          ><?php echo $lang['correo_electronico_ph'] ?></label
+        >
         <input
-          required
           type="email"
-          class="login-textinput"
+          id="email"
+          name="email"
+          class="form-control"
           placeholder="<?php echo $lang['correo_electronico_ph'];?>"
         />
         <br />
+        <label
+          for="password"
+          class="form-label d-flex text-start d-flex text-start"
+          ><?php echo $lang['contrasena_ph'] ?></label
+        >
         <input
-          required
           type="password"
-          class="login-textinput"
+          id="password"
+          name="password"
+          class="form-control"
           placeholder="<?php echo $lang['contrasena_ph'];?>"
         />
         <br />
-        <button class="login-boton btn"><?php echo $lang['iniciar_sesion'];?></button>
+        <button type="submit" id="btn-login" class="login-boton btn w-100">
+          <?php echo $lang['iniciar_sesion'];?>
+        </button>
       </form>
-      <br />
-      <br />
-      <br />
       <div class="login-no-tienes-una-cuenta">
-        <h2><?php echo $lang['no_tienes_cuenta_msg'];?></h2>
+        <h2 class="subtitulo"><?php echo $lang['no_tienes_cuenta_msg'];?></h2>
         <a href="/Buke-Tours/auth/signup/"
-          ><button class="login-boton btn"><?php echo $lang['registrarme'];?></button></a
+          ><button class="login-boton btn w-100">
+            <?php echo $lang['registrarme'];?>
+          </button></a
         >
       </div>
     </section>
@@ -66,5 +77,7 @@ $html_lang = $_SESSION['lang'];
       include '../../php/components/cart-modal.php';
       include '../../php/scripts/common-scripts.php';
     ?>
+    <script type="module" src="/Buke-Tours/assets/js/login-page.js"  defer></script>
+    
   </body>
 </html>

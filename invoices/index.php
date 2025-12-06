@@ -5,13 +5,21 @@ error_reporting(E_ALL);
 
 include '../php/config/db.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$userID = isset($_SESSION['id'])? (int)$_SESSION['id']: 0;
+
+
 $mysqli = openConnection();
 
-$sql = 'SELECT id, full_name, email, telephone, country, passport, adults, children, idioma, breakfast, lunch, dinner, transport, travel_insurance, photo_package, home_address, city, province, postal_code, total, subtotal, created_at, updated_at FROM reservation ORDER BY created_at DESC';
+$sql = 'SELECT id, full_name, email, telephone, country, passport, adults, children, idioma, breakfast, lunch, dinner, transport, travel_insurance, photo_package, home_address, city, province, postal_code, total, subtotal, created_at, updated_at FROM reservation WHERE userId = ? ORDER BY created_at DESC ';
 
 $invoices= $mysqli->prepare($sql);
 
-// $invoices->bind_param("i", $_SESSION['UserId']);
+
+$invoices->bind_param("i", $userID);
 $invoices->execute();
 $result = $invoices->get_result();
 $rows = [];
@@ -42,7 +50,7 @@ if ($result) {
   </head>
   <body>
     <?php
-    include '../php/components/navbar.php';
+    include '../config.php';
     ?>
     <main>
       <section id="invoices" class="py-5">
@@ -72,7 +80,18 @@ if ($result) {
                             <button title="Imprimir en PDF" id="print-invoices-to-pdf"  type="button" class="btn btn-danger"><i class="bi bi-file-earmark-pdf mx-1 display-6"></i></button>
                         </div>
                     </header>
-                    <div class="table-responsive shadow-sm" id="invoices_table">
+                    <?php 
+                    
+    if($userID === 0){
+    ?>
+    <p class="d-flex text-center">Necesitas iniciar sesion para ver tus facturas.</p>
+    <a href="/Buke-Tours/auth/login/index.php" class="btn btn-success ">Ir al Formulario de Login</a>
+    <?php
+    }
+
+    else{
+        ?>
+        <div class="table-responsive shadow-sm" id="invoices_table">
                         <table id="table-invoices-data" class="table table-hover table-dark table-striped table-responsive align-middle">
                             <thead class="table-light">
                                 <tr>
@@ -204,6 +223,10 @@ if ($result) {
                         <?php
                         endif; ?>
                     </div>
+        <?php
+    }
+                    ?>
+                    
                 </section>
             </div>
         </div>

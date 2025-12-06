@@ -67,10 +67,13 @@ document.addEventListener("DOMContentLoaded", () => {
       formData.append("fechaDeNacimiento", fechaDeNacimiento.value);
 
       try {
-        const response = await fetch("/Buke-Tours/api/profile/update/profile.php", {
-          method: "POST",
-          body: formData,
-        });
+        const response = await fetch(
+          "/Buke-Tours/api/profile/create/profile.php",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
 
         if (!response.ok) {
           const text = await response.text();
@@ -96,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
               : result?.message || "No se pudo crear el usuario.";
           Swal.fire({
             icon: "error",
-            title: "El Usuario no pudo ser creado",
+            title: msg ||"El Usuario no pudo ser creado",
             text: msg,
             toast: true,
             position: "top-end",
@@ -117,8 +120,9 @@ document.addEventListener("DOMContentLoaded", () => {
           timer: 5000,
           timerProgressBar: true,
         });
+
         setTimeout(() => {
-          window.location.href = '/Buke-Tours/';
+          window.location.href = "/Buke-Tours/invoices/";
         }, 3000);
       } catch (err) {
         Swal.fire({

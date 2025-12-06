@@ -452,10 +452,8 @@ Estilos para reseñas
 }
 .perfil-formulario {
   display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  border-radius: 10px;
-  width: 80%;
+  justify-content: space-between; 
+  border-radius: 10px; 
 }
 .columna {
   display: flex;

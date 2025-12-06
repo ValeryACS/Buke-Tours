@@ -7,8 +7,6 @@ import {
   onlyDigits,
   containNumbers,
   setState,
-  removeNumbers,
-  removeLetters,
   isOnOrAfterToday,
 } from "./utils.module.js";
 /**
@@ -710,11 +708,16 @@ export const calculateAccordionTotal = (data) => {
    
     if(diffDays >= 1){
       totalDescuento += diffDays * tourDiscount
+      
     }
     else{
       totalDescuento += tourDiscount
     }
+    
   });
+  if(totalDescuento > 30 ){
+    totalDescuento = 30;
+  }
   itemDiscountDollars = Number((subtotal * totalDescuento ) / 100);
   
   // Aplicar cupones válidos (solo si su tour está en el carrito)
@@ -724,6 +727,9 @@ export const calculateAccordionTotal = (data) => {
     itemDiscountDollars,
     totalCouponsPct,
   });
+  if(totalDescuento >=30){
+    totalDescuento = 30;
+  }
 
   document.getElementById("subtotal-cart").textContent = `$${subtotal.toFixed(
     2

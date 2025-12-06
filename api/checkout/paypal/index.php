@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include("../../php/config/db.php");
+include("../../../php/config/db.php");
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -248,26 +248,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($codigoPostal === '' || !preg_match('/^[A-Za-z0-9\-]{3,10}$/', $codigoPostal)) {
         $errors[] = 'Codigo postal invalido';
-    }
-
-    if ($nombreDelTitular === '') {
-        $errors[] = 'Nombre del titular es obligatorio';
-    }
-
-    if ($numeroDeLaTarjeta === '') {
-        $errors[] = 'Numero de tarjeta invalido';
-    }
-
-    if (!ctype_digit($mes) || (int)$mes < 1 || (int)$mes > 12) {
-        $errors[] = 'Mes de expiracion invalido';
-    }
-
-    if (!ctype_digit($year)) {
-        $errors[] = 'Año de expiracion invalido';
-    }
-
-    if ($cvv === '' || !preg_match('/^\d{3,4}$/', $cvv)) {
-        $errors[] = 'CVV invalido';
     }
 
     // Si no hay errores, procesar DB

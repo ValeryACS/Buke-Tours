@@ -62,10 +62,13 @@ export const updateCartTotal = async () => {
       subTotalSidebarElement.textContent = subtotalFmt;
     }
     
-    const itemDiscountPctEffective = totalOfDiscounts.reduce(
+    let itemDiscountPctEffective = totalOfDiscounts.reduce(
         (prevValue, currentValue) => prevValue + currentValue,
         0
       )
+    if(itemDiscountPctEffective >= 30){
+      itemDiscountPctEffective = 30;
+    }
     if (discountSidebarElement) {
       discountSidebarElement.textContent = `-${itemDiscountPctEffective}%`;
     }
@@ -772,7 +775,7 @@ export const getTotal = ({
     couponsDiscountDollars = totalAfterItemDiscount * (totalCouponsPct / 100);
   }
   // Total final numerico
-  let finalTotal = totalAfterItemDiscount - couponsDiscountDollars;
+  let finalTotal = Number(totalAfterItemDiscount - couponsDiscountDollars);
 
   // Total final con signo de dolar
   const finalFmt = `$${finalTotal}`;

@@ -15,12 +15,6 @@ include '../language/lang_' . $_SESSION['lang'] . '.php';
 $html_lang = $_SESSION['lang'];
 
 ?>
-
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -276,6 +270,11 @@ error_reporting(E_ALL);
                                 placeholder="Ej: Ana Rodríguez"
                                 autocomplete="name"
                                 maxlength="50"
+                                value="<?php 
+                                if(isset($_SESSION['nombre'])){
+                                  echo $_SESSION['nombre'];
+                                }
+                                ?>"
                               />
                             </div>
                             <div class="col-12 col-md-6 form-group">
@@ -290,6 +289,11 @@ error_reporting(E_ALL);
                                 placeholder="ejemplo@correo.com"
                                 autocomplete="email"
                                 maxlength="90"
+                                value="<?php 
+                                if(isset($_SESSION['email'])){
+                                  echo $_SESSION['email'];
+                                }
+                                ?>"
                               />
                             </div>
                             <div class="col-12 col-md-6 form-group">
@@ -304,6 +308,11 @@ error_reporting(E_ALL);
                                 placeholder="8888-8888"
                                 autocomplete="tel"
                                 maxlength="15"
+                                value="<?php 
+                                if(isset($_SESSION['telefono'])){
+                                  echo $_SESSION['telefono'];
+                                }
+                                ?>"
                               />
                             </div>
                             <div class="col-12 col-md-6 form-group">
@@ -315,6 +324,11 @@ error_reporting(E_ALL);
                               <label for="pais" class="form-label"
                                 >País de residencia</label
                               >
+                              <input type="hidden" name="country-value" readonly value="<?php 
+                                if(isset($_SESSION['pais'])){
+                                  echo $_SESSION['pais'];
+                                }
+                                ?>"/>
                               <select
                                 id="pais"
                                 name="pais"
@@ -531,6 +545,11 @@ error_reporting(E_ALL);
                                 class="form-control"
                                 placeholder="Número de Cédula"
                                 maxlength="20"
+                                value="<?php 
+                                if(isset($_SESSION['passport'])){
+                                  echo $_SESSION['passport'];
+                                }
+                                ?>"
                               />
                             </div>
                             <div class="col-12 col-md-6 form-group text-start">
@@ -546,8 +565,16 @@ error_reporting(E_ALL);
                                 <option selected value="no-seleccionado">
                                   Seleccione un Idioma
                                 </option>
-                                <option value="en">Ingles</option>
-                                <option value="es">Español</option>
+                                <option value="en" <?php 
+                                if(isset($_SESSION['idioma']) && $_SESSION['idioma'] ==='en'){
+                                  echo "selected";
+                                }
+                                ?> >Ingles</option>
+                                <option value="es" <?php 
+                                if(isset($_SESSION['idioma']) && $_SESSION['idioma'] ==='es'){
+                                  echo "selected";
+                                }
+                                ?>>Español</option>
                               </select>
                             </div>
                           </div>
@@ -718,6 +745,11 @@ error_reporting(E_ALL);
                                 placeholder="Calle, número, apartamento"
                                 autocomplete="street-address"
                                 maxlength="200"
+                                value="<?php 
+                                if(isset($_SESSION['direccion'])){
+                                  echo $_SESSION['direccion'];
+                                }
+                                ?>"
                               />
                             </div>
                             <div class="col-12 col-md-6">
@@ -730,6 +762,11 @@ error_reporting(E_ALL);
                                 type="text"
                                 class="form-control"
                                 maxlength="50"
+                                value="<?php 
+                                if(isset($_SESSION['ciudad'])){
+                                  echo $_SESSION['ciudad'];
+                                }
+                                ?>"
                               />
                             </div>
                             <div class="col-6 col-md-3">
@@ -742,6 +779,11 @@ error_reporting(E_ALL);
                                 type="text"
                                 class="form-control"
                                 maxlength="60"
+                                value="<?php 
+                                if(isset($_SESSION['provincia'])){
+                                  echo $_SESSION['provincia'];
+                                }
+                                ?>"
                               />
                             </div>
                             <div class="col-6 col-md-3">
@@ -755,6 +797,11 @@ error_reporting(E_ALL);
                                 class="form-control"
                                 autocomplete="postal-code"
                                 maxlength="30"
+                                value="<?php 
+                                if(isset($_SESSION['codigo_postal'])){
+                                  echo $_SESSION['codigo_postal'];
+                                }
+                                ?>"
                               />
                             </div>
                           </div>
