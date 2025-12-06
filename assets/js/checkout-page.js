@@ -270,7 +270,7 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
         formData.append("total", total.value);
 
         try {
-          const response = await fetch("/Buke-Tours/api/checkout/", {
+          const response = await fetch("/Buke-Tours/api/checkout/paypal/", {
             method: "POST",
             body: formData,
           });
@@ -320,6 +320,9 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
             timer: 5000,
             timerProgressBar: true,
           });
+          setTimeout(() => {
+            window.location.href = "/Buke-Tours/invoices/";
+          }, 3000);
         } catch (err) {
           Swal.fire({
             icon: "error",
@@ -489,6 +492,10 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
             timer: 5000,
             timerProgressBar: true,
           });
+
+          setTimeout(() => {
+            window.location.href = "/Buke-Tours/invoices/";
+          }, 3000);
         } catch (err) {
           Swal.fire({
             icon: "error",
