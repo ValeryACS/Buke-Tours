@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 function openConnection(){
     $host = "localhost";
     $user = "root";
-    $password = "Jrcx1540";
+    $password = "";
     $db="buke_tours_db";
     $port= 3306;
 

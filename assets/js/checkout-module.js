@@ -7,8 +7,6 @@ import {
   onlyDigits,
   containNumbers,
   setState,
-  removeNumbers,
-  removeLetters,
   isOnOrAfterToday,
 } from "./utils.module.js";
 /**
@@ -710,10 +708,12 @@ export const calculateAccordionTotal = (data) => {
    
     if(diffDays >= 1){
       totalDescuento += diffDays * tourDiscount
+      
     }
     else{
       totalDescuento += tourDiscount
     }
+    
   });
   itemDiscountDollars = Number((subtotal * totalDescuento ) / 100);
   
@@ -724,6 +724,9 @@ export const calculateAccordionTotal = (data) => {
     itemDiscountDollars,
     totalCouponsPct,
   });
+  if(totalDescuento >=30){
+    totalDescuento = 30;
+  }
 
   document.getElementById("subtotal-cart").textContent = `$${subtotal.toFixed(
     2

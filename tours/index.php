@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 session_start();
 
 if (!isset($_SESSION['lang'])) {
-    $_SESSION['lang'] = 'es'; // Idioma por defecto español
+    $_SESSION['lang'] = 'es';
 }
 
 include '../language/lang_' . $_SESSION['lang'] . '.php'; 

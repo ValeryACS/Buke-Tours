@@ -8,12 +8,35 @@ error_reporting(E_ALL);
 
 include("../../php/config/db.php");
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $mysqli = openConnection();
 
 $errors = [];
 $success = false;
 
+$usuarioId = isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : null;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if ($usuarioId === null || $usuarioId <= 0) {
+        $errors[] = 'Debe iniciar sesión antes de hacer una reservación.';
+    } else {
+        $stmtUserCheck = $mysqli->prepare("SELECT id FROM customer WHERE id = ? LIMIT 1");
+        if ($stmtUserCheck) {
+            $stmtUserCheck->bind_param("i", $usuarioId);
+            $stmtUserCheck->execute();
+            $resultadoUsuario = $stmtUserCheck->get_result();
+            if (!$resultadoUsuario || $resultadoUsuario->num_rows === 0) {
+                $errors[] = 'El usuario asociado a la sesión no existe. Inicie sesión nuevamente.';
+            }
+            $stmtUserCheck->close();
+        } else {
+            $errors[] = 'No se pudo validar la sesión del usuario.';
+        }
+    }
 
     $nombre = isset($_POST['nombre']) ? trim((string)$_POST['nombre']) : '';
     $telefono = isset($_POST['telefono']) ? trim((string)$_POST['telefono']) : '';
@@ -308,8 +331,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 province,
                 postal_code,
                 total,
-                subtotal
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                subtotal,
+                userId
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             $stmt = $mysqli->prepare($sqlReservation);
             if (!$stmt) {
@@ -326,9 +350,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $transport_i        = (int)$transport;
             $travel_insurance_i = (int)$travel_insurance;
             $photo_package_i    = (int)$photo_package;
+            $usuarioIdParam     = $usuarioId;
 
-            // Tipos: sssss i i s i i i i i i ssss (18 en total)
-            $types = 'sssssiisiiiiiissssii';
+            // Tipos: sssss i i s i i i i i i ssss dd i
+            $types = 'sssssiisiiiiiissssddi';
 
             $stmt->bind_param(
                 $types,
@@ -351,7 +376,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $provincia,
                 $codigoPostal,
                 $total_i,
-                $subtotal_i
+                $subtotal_i,
+                $usuarioIdParam
             );
 
             if (!$stmt->execute()) {
@@ -423,7 +449,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'success' => $success && empty($errors),
         'message' => ($success && empty($errors))
             ? 'Tour reservado exitosamente'
-            : 'Error al procesar pago.',
+            : (string)$errors[0],
         'error'   => empty($errors) ? null : $errors,
     ];
 
