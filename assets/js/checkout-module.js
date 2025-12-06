@@ -715,6 +715,9 @@ export const calculateAccordionTotal = (data) => {
     }
     
   });
+  if(totalDescuento > 30 ){
+    totalDescuento = 30;
+  }
   itemDiscountDollars = Number((subtotal * totalDescuento ) / 100);
   
   // Aplicar cupones válidos (solo si su tour está en el carrito)

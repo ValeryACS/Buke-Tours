@@ -270,7 +270,7 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
         formData.append("total", total.value);
 
         try {
-          const response = await fetch("/Buke-Tours/api/checkout/", {
+          const response = await fetch("/Buke-Tours/api/checkout/paypal/", {
             method: "POST",
             body: formData,
           });
