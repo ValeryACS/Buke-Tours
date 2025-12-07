@@ -32,7 +32,6 @@ function getTourReservationDates($reservationId){
 
             if ($resultTourDates) {
                 while ($row = $resultTourDates->fetch_assoc()) {
-                    $tourDatesHTML .= "<p>Nombre del Tour.</p>";
                     $tourDatesHTML .= "<p class='w-100'>Check In: " . htmlspecialchars($row['check_in_date']) . "</p>";
                     $tourDatesHTML .= "<p class='w-100'>Check Out: " . htmlspecialchars($row['check_out_date']) . "</p>";
                 }
