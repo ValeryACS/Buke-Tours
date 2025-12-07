@@ -8,6 +8,32 @@ session_start();
 
 include "../../../php/config/db.php";
 
+if (!function_exists('clearUserSession')) {
+    function clearUserSession(): void
+    {
+        $keys = [
+            'id',
+            'userId',
+            'nombre',
+            'email',
+            'telefono',
+            'pais',
+            'passport',
+            'idioma',
+            'genero',
+            'direccion',
+            'ciudad',
+            'provincia',
+            'codigo_postal',
+            'fecha_nacimiento',
+        ];
+
+        foreach ($keys as $key) {
+            unset($_SESSION[$key]);
+        }
+    }
+}
+
 $response = [
     'mensaje'=> 'Error inesperado',
     'debug'=> 'inicio',
@@ -19,6 +45,7 @@ $success = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        clearUserSession();
         $rawInput = file_get_contents('php://input');
         $decodedJson = json_decode($rawInput ?? '', true);
         $hasJsonPayload = json_last_error() === JSON_ERROR_NONE && is_array($decodedJson);
@@ -77,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fila= $resultado->fetch_assoc();
 
                 if(password_verify($password, $fila['password_hash'])){
+                    session_regenerate_id(true);
                     $_SESSION['id'] = (int)$fila['id'];
                     $_SESSION['userId'] = (int)$fila['id'];
                     $_SESSION['nombre'] = $fila['full_name'];
@@ -94,28 +122,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $response = [
                         'status'=> 'ok',
                         'name'=> $fila['full_name'],
-                        'debug'=> 'El usuario del correo'. $fila['email']. ' ha hecho un login exitoso.',
+                        'mensaje' => 'Login exitoso',
+                        'debug'=> 'El usuario del correo '. $fila['email']. ' ha hecho un login exitoso.',
                     ];
                 }
                 else{
                     $response['mensaje'] = 'Contraseña incorrecta';
                     $response['debug'] = 'Fallo de contraseña';
+                    clearUserSession();
                 }    
             }else{
                 $response['mensaje'] = 'Usuario no encontrado';
                 $response['debug'] = 'Usuario no existe';
+                clearUserSession();
             }
         }
         else{
             $response['mensaje'] = 'Error al Consultar Usuario.';
             $response['debug'] = 'Usuario no encontrado';
+            clearUserSession();
         }
 
-        
+
     } 
     catch (\Throwable $th) {
         $response['mensaje'] = 'Sucedio un error al realizar login';
         $response['debug'] = 'Catch exception: '. $th->getMessage();
+        clearUserSession();
     }
     finally{
         closeConnection($mysqli);

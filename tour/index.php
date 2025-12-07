@@ -6,6 +6,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'es'; // Idioma por defecto español
 }
@@ -24,7 +28,7 @@ $html_lang = $_SESSION['lang'];
     <?php 
       include '../php/styles/common-styles.php';
     ?>
-    <title>Tour <?php echo $_GET['tourId'];?></title>
+    <title>Tour</title>
   </head>
   <body>
     <?php 

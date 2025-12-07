@@ -4,6 +4,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$userID = isset($_SESSION['id'])? (int)$_SESSION['id']: 0;
+
+
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'es'; // Idioma por defecto español
 }

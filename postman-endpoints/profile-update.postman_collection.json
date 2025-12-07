@@ -1,0 +1,42 @@
+{
+  "info": {
+    "name": "Buke Tours - Perfil - Actualizar",
+    "description": "Actualiza al usuario autenticado mediante POST a /api/profile/update/profile.php (requiere sesión activa).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "POST Actualizar Perfil",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "nombre", "value": "María López", "type": "text" },
+            { "key": "telefono", "value": "+50688887777", "type": "text" },
+            { "key": "pais", "value": "CR", "type": "text" },
+            { "key": "email", "value": "maria.lopez@example.com", "type": "text" },
+            { "key": "password", "value": "NuevoPass123", "type": "text" },
+            { "key": "confirmPassword", "value": "NuevoPass123", "type": "text" },
+            { "key": "direccion", "value": "Residencial Las Flores, Casa 4", "type": "text" },
+            { "key": "ciudad", "value": "Alajuela", "type": "text" },
+            { "key": "provincia", "value": "Alajuela", "type": "text" },
+            { "key": "codigoPostal", "value": "20102", "type": "text" },
+            { "key": "genero", "value": "Femenino", "type": "text" },
+            { "key": "idioma", "value": "es", "type": "text" },
+            { "key": "fechaDeNacimiento", "value": "1988-03-15", "type": "text" },
+            { "key": "pasaporteOdocumento", "value": "P9988776", "type": "text" }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/Buke-Tours/api/profile/update/profile.php",
+          "host": ["{{baseUrl}}"],
+          "path": ["Buke-Tours", "api", "profile", "update", "profile.php"]
+        }
+      }
+    }
+  ]
+}

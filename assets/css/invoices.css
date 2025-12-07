@@ -6,3 +6,6 @@
     margin: 0 auto;
     background: #282d85;
 }
+.dataTables_length, .dataTables_filter{
+    display: none;
+}

@@ -1,0 +1,27 @@
+{
+  "info": {
+    "name": "Buke Tours - Auth - Login",
+    "description": "Realiza login vía POST (puede enviar JSON o x-www-form-urlencoded). Este request usa JSON.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "POST Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"juan.perez@example.com\",\n  \"password\": \"Secreto123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/Buke-Tours/api/auth/login/login.php",
+          "host": ["{{baseUrl}}"],
+          "path": ["Buke-Tours", "api", "auth", "login", "login.php"]
+        }
+      }
+    }
+  ]
+}

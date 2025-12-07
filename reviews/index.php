@@ -6,8 +6,19 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'es'; // Idioma por defecto español
+}
+
+$userID = isset($_SESSION['id'])? (int)$_SESSION['id']: 0;
+
+if($userID<= 0){
+    header("Location: ../auth/login/");
+    exit();
 }
 
 include '../language/lang_' . $_SESSION['lang'] . '.php'; 
@@ -35,8 +46,8 @@ $html_lang = $_SESSION['lang'];
         style="max-width: 768px"
       >
         <!-- Sección principal -->
-        <h1 class="subtitulo"><?php echo $lang['resenas'] ?? 'Reseñas'; ?></h1>
-        <h2><?php echo $lang['sobre_tours'] ?? 'Sobre los tours'; ?></h2>
+        <h1 class="titulo"><?php echo $lang['resenas'] ?? 'Reseñas'; ?></h1>
+        <h2 class="subtitulo  w-100"><?php echo $lang['sobre_tours'] ?? 'Sobre los tours'; ?></h2>
 
         <div class="formulario-resena">
           <h3>⭐<?php echo $lang['titulo_resena']; ?></h3>
