@@ -8,9 +8,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$userID = isset($_SESSION['id'])? (int)$_SESSION['id']: 0;
-
-
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'es'; // Idioma por defecto español
 }
