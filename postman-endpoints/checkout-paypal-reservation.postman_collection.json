@@ -1,0 +1,55 @@
+{
+  "info": {
+    "name": "Buke Tours - Checkout - PayPal",
+    "description": "Reserva usando el flujo PayPal en /api/checkout/paypal/index.php (requiere sesión).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "POST Reservación PayPal",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "nombre", "value": "Ana Torres", "type": "text" },
+            { "key": "telefono", "value": "+50670001111", "type": "text" },
+            { "key": "email", "value": "ana.torres@example.com", "type": "text" },
+            { "key": "pais", "value": "CR", "type": "text" },
+            { "key": "adultos", "value": "2", "type": "text" },
+            { "key": "ninos", "value": "1", "type": "text" },
+            { "key": "subtotal", "value": "650.00", "type": "text" },
+            { "key": "total", "value": "690.00", "type": "text" },
+            { "key": "idioma", "value": "es", "type": "text" },
+            { "key": "pasaporteOdocumento", "value": "P7654321", "type": "text" },
+            { "key": "fechasDeingresos", "value": "[{\"tour_id\":2,\"check_in_date\":\"2023-12-24\"}]", "type": "text" },
+            { "key": "fechasDeSalidas", "value": "[{\"tour_id\":2,\"check_out_date\":\"2023-12-27\"}]", "type": "text" },
+            { "key": "seguro", "value": "1", "type": "text" },
+            { "key": "transporte", "value": "0", "type": "text" },
+            { "key": "fotos", "value": "1", "type": "text" },
+            { "key": "desayuno", "value": "1", "type": "text" },
+            { "key": "almuerzo", "value": "1", "type": "text" },
+            { "key": "cena", "value": "0", "type": "text" },
+            { "key": "direccion", "value": "Barrio Las Rosas, casa 8", "type": "text" },
+            { "key": "ciudad", "value": "Cartago", "type": "text" },
+            { "key": "provincia", "value": "Cartago", "type": "text" },
+            { "key": "codigoPostal", "value": "30101", "type": "text" },
+            { "key": "nombreDelTitular", "value": "Ana Torres", "type": "text" },
+            { "key": "numeroDeLaTarjeta", "value": "4111111111111111", "type": "text" },
+            { "key": "mes", "value": "08", "type": "text" },
+            { "key": "year", "value": "2026", "type": "text" },
+            { "key": "cvv", "value": "456", "type": "text" }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/Buke-Tours/api/checkout/paypal/index.php",
+          "host": ["{{baseUrl}}"],
+          "path": ["Buke-Tours", "api", "checkout", "paypal", "index.php"]
+        }
+      }
+    }
+  ]
+}

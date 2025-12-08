@@ -4,6 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include '../php/config/db.php';
+include '../helpers/get-tours-reservation-dates.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -11,10 +12,15 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $userID = isset($_SESSION['id'])? (int)$_SESSION['id']: 0;
 
+if($userID<= 0){
+    header("Location: ../auth/login/");
+    exit();
+}
+
 
 $mysqli = openConnection();
 
-$sql = 'SELECT id, full_name, email, telephone, country, passport, adults, children, idioma, breakfast, lunch, dinner, transport, travel_insurance, photo_package, home_address, city, province, postal_code, total, subtotal, created_at, updated_at FROM reservation WHERE userId = ? ORDER BY created_at DESC ';
+$sql = 'SELECT reservation_tour.*, tour.*, reservation.* FROM reservation_tour INNER JOIN tour ON reservation_tour.tour_id = tour.id INNER JOIN reservation ON reservation_tour.reservation_id = reservation.id WHERE reservation.userId = ? ';
 
 $invoices= $mysqli->prepare($sql);
 
@@ -84,73 +90,67 @@ if ($result) {
                     
     if($userID === 0){
     ?>
-    <p class="d-flex text-center">Necesitas iniciar sesion para ver tus facturas.</p>
-    <a href="/Buke-Tours/auth/login/index.php" class="btn btn-success ">Ir al Formulario de Login</a>
+        <p class="d-flex text-center w-100">Necesitas iniciar sesion para ver tus facturas.</p>
+        <a href="/Buke-Tours/auth/login/index.php" class="btn btn-success ">Ir al Formulario de Login</a>
     <?php
     }
-
     else{
         ?>
+        <?php if (!empty($rows)) : ?>
         <div class="table-responsive shadow-sm" id="invoices_table">
-                        <table id="table-invoices-data" class="table table-hover table-dark table-striped table-responsive align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Contacto</th>
-                                    <th>Dirección</th>
-                                    <th>Detalles</th>
-                                    <th>Total</th>
-                                    <th>Creada</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                if ($result) :
-                                    foreach ($rows as $filaDesktop):
-                                        $extras = [];
-                                        if ($filaDesktop['breakfast']) $extras[] = 'Desayuno';
-                                        if ($filaDesktop['lunch']) $extras[] = 'Almuerzo';
-                                        if ($filaDesktop['dinner']) $extras[] = 'Cena';
-                                        if ($filaDesktop['transport']) $extras[] = 'Transporte';
-                                        if ($filaDesktop['travel_insurance']) $extras[] = 'Seguro';
-                                        if ($filaDesktop['photo_package']) $extras[] = 'Fotos';
+            <table id="table-invoices-data" class="table-invoices-data table table-hover table-dark table-striped align-middle w-100">
+                <thead class="table-light">
+                    <tr>
+                        <th>Contacto</th>
+                        <th>Detalles</th>
+                        <th>Total</th>
+                        <th>Ingresos</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $counterTables =  0;
+                    foreach ($rows as $filaDesktop):
+                        $counterTables++;
+                        $extras = [];
+                        if ($filaDesktop['breakfast']) $extras[] = 'Desayuno';
+                        if ($filaDesktop['lunch']) $extras[] = 'Almuerzo';
+                        if ($filaDesktop['dinner']) $extras[] = 'Cena';
+                        if ($filaDesktop['transport']) $extras[] = 'Transporte';
+                        if ($filaDesktop['travel_insurance']) $extras[] = 'Seguro';
+                        if ($filaDesktop['photo_package']) $extras[] = 'Fotos';
 
-                                        $details = "Adultos: {$filaDesktop['adults']}";
-                                        $details .= is_null($filaDesktop['children']) ? '' : " | Niños: {$filaDesktop['children']}";
-                                        
-                                        if (!empty($extras)) $details .= " | Extras: " . implode(', ', $extras);
-                                ?>
-                                <tr>
-                                    <td>
-                                        <div><?= htmlspecialchars($filaDesktop['email']) ?></div>
-                                        <small class="text-muted"><?= htmlspecialchars($filaDesktop['telephone']) ?></small>
-                                    </td>
-                                    <td>
-                                        <div><?= htmlspecialchars($filaDesktop['home_address']) ?></div>
-                                        <small class="text-muted">
-                                            <?= htmlspecialchars($filaDesktop['city']) ?>, <?= htmlspecialchars($filaDesktop['province']) ?>, <?= htmlspecialchars($filaDesktop['country']) ?> <?= htmlspecialchars($filaDesktop['postal_code']) ?>
-                                        </small>
-                                    </td>
-                                    <td><?= htmlspecialchars($details) ?></td>
-                                    
-                                    <td class="fw-bold">$<?= number_format((float)$filaDesktop['total'], 2) ?></td>
-                                    <td>
-                                        <time datetime="<?= htmlspecialchars($filaDesktop['created_at']) ?>">
-                                            <?= htmlspecialchars(date('Y-m-d H:i', strtotime($filaDesktop['created_at']))) ?>
-                                        </time>
-                                    </td>
-                                </tr>
-                                <?php 
-                                    endforeach;
-                                endif;
-                                ?>
-                                <?php if (empty($invoices)) { ?>
-                                <tr>
-                                    <td colspan="8" class="text-center text-muted py-5">No hay facturas disponibles.</td>
-                                </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
+                        $details = "Adultos: {$filaDesktop['adults']}";
+                        $details .= is_null($filaDesktop['children']) ? '' : " | Niños: {$filaDesktop['children']}";
+                        if (!empty($extras)) {
+                            $details .= " | Extras: " . implode(', ', $extras);
+                        }
+                    ?>
+                    <tr>
+                        <td>
+                            <h4 class="subtitulo mb-2">Factura #<?= $counterTables ?></h4>
+                            <p class="fw-semibold mb-1">Tour <?= htmlspecialchars($filaDesktop['title'] ?? '') ?></p>
+                            <p class="mb-0"><?= htmlspecialchars($filaDesktop['email']) ?></p>
+                            <small><?= htmlspecialchars($filaDesktop['telephone']) ?></small>
+                        </td>
+                        <td><?= htmlspecialchars($details) ?></td>
+                        <td class="fw-bold">$<?= number_format((float)$filaDesktop['total'], 2) ?></td>
+                        <td><?= getTourReservationDates($filaDesktop['id']);?></td>
+                        <td>
+                            <time datetime="<?= htmlspecialchars($filaDesktop['created_at']) ?>">
+                                <?= htmlspecialchars(date('Y-m-d H:i', strtotime($filaDesktop['created_at']))) ?>
+                            </time>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php else : ?>
+            <div class="alert alert-info">No hay facturas disponibles.</div>
+            <a href="/Buke-Tours/tours/" class="btn btn-success" title="Comprar Tours">Comprar Tours</a>
+        <?php endif; ?>
                     <style>
                     /* Hide table on small screens, show on lg and up */
                     @media (max-width: 1024px) {
@@ -164,11 +164,11 @@ if ($result) {
                     <div id="mobile-invoices" class="mt-3">
                         <?php
                         $hasResults = false;
-
+                        (int)$counter = 0;
                         if ($result) :
                         $hasResults = true;
-                                    foreach ($rows as $filaMobile):
-
+                            foreach ($rows as $filaMobile):
+                                $counter++;
                                 $extras = [];
                                 if (!empty($filaMobile['breakfast'])) $extras[] = 'Desayuno';
                                 if (!empty($filaMobile['lunch'])) $extras[] = 'Almuerzo';
@@ -183,7 +183,9 @@ if ($result) {
                                 if (!empty($extras)) $details .= " | Extras: " . implode(', ', $extras);
                         ?>
                         <div class="card shadow-sm mb-3">
+                            <h3 class="subtitulo">Factura #<?php echo $counter;?></h3>
                             <div class="card-body">
+                                <h4 class="subtitle-invoice w-100">Contacto</h4>
                                 <div class="d-flex justify-content-between align-items-start">
                                     <hr class="my-2">
                                     <div class="me-2">
@@ -239,7 +241,7 @@ if ($result) {
     ?>
     <script defer async>
         $(document).ready(() => {
-            $('#table-invoices-data').dataTable({
+            $('.table-invoices-data').dataTable({
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                 }

@@ -9,7 +9,6 @@ error_reporting(E_ALL);
 
 session_start();
 
-
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'es'; // Idioma por defecto español
 }
@@ -17,6 +16,24 @@ if (!isset($_SESSION['lang'])) {
 include 'language/lang_' . $_SESSION['lang'] . '.php'; 
 
 $html_lang = $_SESSION['lang'];
+
+
+
+
+include 'php/config/db.php';
+
+
+$mysqli = openConnection();
+
+$sqlTours = 'SELECT * FROM tour';
+
+$toursDisponibles= $mysqli->prepare($sqlTours);
+$toursDisponibles->execute();
+$toursResult = $toursDisponibles->get_result();
+
+closeConnection($mysqli);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $html_lang; ?>">
@@ -60,156 +77,41 @@ $html_lang = $_SESSION['lang'];
           class="swiper slider-tours"
         >
           <article class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img
-                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/93/b4/50/monteverde-cloud-forest.jpg?w=600&h=-1&s=1"
-                loading="lazy"
-                class="tour-imagen"
-              />
-              <div class="overlay-effect position-absolute">
-                <h1>
-                  Monteverde
-                  <i
-                    class="bi bi-cart-plus-fill display-4 add-to-cart"
-                    data-bs-toggle="modal"
-                    data-bs-target="#cartModal"
-                    data-tour-id="cr-monteverde-hanging-bridges"
-                  ></i>
-                  <i
-                    class="bi bi-cursor-fill view-tour-page"
-                    data-tour-id="cr-monteverde-hanging-bridges"
-                  ></i>
-                </h1>
-              </div>
-              <div
-                class="swiper-lazy-preloader swiper-lazy-preloader-white"
-              ></div>
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/5a/2f/50/photo0jpg.jpg?w=1000&h=-1&s=1"
-                loading="lazy"
-                class="tour-imagen"
-              />
-              <div class="overlay-effect position-absolute">
-                <h1>
-                  Manuel Antonio
-                  <i
-                    class="bi bi-cart-plus-fill display-4 add-to-cart"
-                    data-bs-toggle="modal"
-                    data-bs-target="#cartModal"
-                    data-tour-id="cr-manuel-antonio-park"
-                  ></i>
-                  <i
-                    class="bi bi-cursor-fill view-tour-page"
-                    data-tour-id="cr-manuel-antonio-park"
-                  ></i>
-                </h1>
-              </div>
-              <div
-                class="swiper-lazy-preloader swiper-lazy-preloader-white"
-              ></div>
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="https://cdn.pixabay.com/photo/2017/06/13/19/22/tyrolean-2399759_1280.jpg"
-                loading="lazy"
-                class="tour-imagen"
-              />
-              <div class="overlay-effect position-absolute">
-                <h1>
-                  La Fortuna
-                  <i
-                    class="bi bi-cart-plus-fill display-4 add-to-cart"
-                    data-bs-toggle="modal"
-                    data-bs-target="#cartModal"
-                    data-tour-id="cr-arenal-zipline"
-                  ></i>
-                  <i
-                    class="bi bi-cursor-fill view-tour-page"
-                    data-tour-id="cr-arenal-zipline"
-                  ></i>
-                </h1>
-              </div>
-              <div
-                class="swiper-lazy-preloader swiper-lazy-preloader-white"
-              ></div>
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/02/67/45/0f/waterfall.jpg?w=900&h=-1&s=1"
-                loading="lazy"
-                class="tour-imagen"
-              />
-              <div class="overlay-effect position-absolute">
-                <h1>
-                  R&iacute;o Celeste
-                  <i
-                    class="bi bi-cart-plus-fill display-4 add-to-cart"
-                    data-bs-toggle="modal"
-                    data-bs-target="#cartModal"
-                    data-tour-id="cr-rio-celeste"
-                  ></i>
-                  <i
-                    class="bi bi-cursor-fill view-tour-page"
-                    data-tour-id="cr-rio-celeste"
-                  ></i>
-                </h1>
-              </div>
-              <div
-                class="swiper-lazy-preloader swiper-lazy-preloader-white"
-              ></div>
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/15/d7/9d/img-20180217-133510-largejpg.jpg?w=1000&h=-1&s=1"
-                loading="lazy"
-                class="tour-imagen"
-              />
-              <div class="overlay-effect position-absolute">
-                <h1>
-                  Nauyaca
-                  <i
-                    class="bi bi-cart-plus-fill display-4 add-to-cart"
-                    data-bs-toggle="modal"
-                    data-bs-target="#cartModal"
-                    data-tour-id="cr-nauyaca-falls"
-                  ></i>
-                  <i
-                    class="bi bi-cursor-fill view-tour-page"
-                    data-tour-id="cr-nauyaca-falls"
-                  ></i>
-                </h1>
-              </div>
-              <div
-                class="swiper-lazy-preloader swiper-lazy-preloader-white"
-              ></div>
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="https://mytanfeet.com/wp-content/uploads/2018/01/Things-to-do-in-Puerto-Viejo-beach-hop.jpg"
-                loading="lazy"
-                class="tour-imagen"
-              />
-              <div class="overlay-effect position-absolute">
-                <h1>
-                  Puerto Viejo
-                  <i
-                    class="bi bi-cart-plus-fill display-4 add-to-cart"
-                    data-bs-toggle="modal"
-                    data-bs-target="#cartModal"
-                    data-tour-id="cr-puerto-viejo"
-                  ></i>
-                  <i
-                    class="bi bi-cursor-fill view-tour-page"
-                    data-tour-id="cr-puerto-viejo"
-                  ></i>
-                </h1>
-              </div>
-              <div
-                class="swiper-lazy-preloader swiper-lazy-preloader-white"
-              ></div>
-            </div>
+            <?php
+                    if ($toursResult) {
+                        while ($fila = $toursResult->fetch_assoc()):
+                        ?>
+                        <div class="swiper-slide">
+                            <img
+                              src="<?php echo $fila['img']; ?>"
+                              loading="lazy"
+                              class="tour-imagen"
+                            />
+                            <div class="overlay-effect position-absolute">
+                              <h1>
+                                <?php echo $fila['title']; ?>
+                                <i
+                                  class="bi bi-cart-plus-fill display-4 add-to-cart"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#cartModal"
+                                  data-tour-id="<?php echo $fila['sku']; ?>"
+                                ></i>
+                                <i
+                                  class="bi bi-cursor-fill view-tour-page"
+                                  data-tour-id="<?php echo $fila['sku']; ?>"
+                                ></i>
+                              </h1>
+                            </div>
+                            <div
+                              class="swiper-lazy-preloader swiper-lazy-preloader-white"
+                            ></div>
+                          </div>
+                        <?php 
+                        endwhile;
+                      }
+                        ?>
+            
+           
           </article>
           <div class="swiper-button-next"></div>
           <div class="swiper-button-prev"></div>

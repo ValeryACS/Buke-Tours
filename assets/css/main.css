@@ -234,7 +234,6 @@ body {
   font-size: 48px;
   font-weight: bold;
   width: 100%;
-  max-width: 400px;
   margin: 0 auto;
   background: #2a2238;
 }
@@ -271,6 +270,11 @@ body {
   justify-content: center;
   font-size: 40px;
   margin-right: 15px;
+}
+h4.subtitulo{
+    background: #1c6c6e;
+    color: #ffd89c;
+    margin: 0 auto !important;
 }
 
 .estrellas {
@@ -467,6 +471,9 @@ Estilos para reseñas
 
 .subtitulo {
   background: antiquewhite;
+  margin: 0 auto !important;
+  text-align: center;
+  width: 100%;
 }
 
 /** Modal */

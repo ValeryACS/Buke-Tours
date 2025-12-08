@@ -36,11 +36,23 @@ $html_lang = $_SESSION['lang'];
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav m-auto">
-        <li class="nav-item barra-navegadora-li">
+        <?php
+        if(isset($_SESSION['userId'])){
+          ?>
+          <li class="nav-item barra-navegadora-li">
+          <a href="/Buke-Tours/invoices/" class="nav-link" title="<?php echo $lang['invoices'] ?? 'Facturas'; ?>"
+            >
+          <i class="bi bi-receipt display-6"></i>
+</a>
+        </li>
+         <li class="nav-item barra-navegadora-li">
           <a href="/Buke-Tours/profile/" class="nav-link" title="<?php echo $lang['editar_perfil']; ?>"
             ><i class="bi bi-person-bounding-box display-6"></i
           ></a>
         </li>
+          <?php
+        }
+        ?>
         <li class="nav-item barra-navegadora-li">
           <a href="/Buke-Tours/" class="nav-link"><?php echo $lang['inicio'] ?? 'Inicio'; ?></a>
         </li>
@@ -55,29 +67,45 @@ $html_lang = $_SESSION['lang'];
             <img class="logo" src="/Buke-Tours/assets/img/logo.png" alt="Buke Tours Logo" title="Buke Tours Logo" />
         </a>
         </li>
+        <?php
+        if(isset($_SESSION['userId'])){
+          ?>
         <li class="nav-item barra-navegadora-li">
           <a href="/Buke-Tours/reviews/" class="nav-link"><?php echo $lang['reseñas'] ?? 'Reseñas'; ?></a>
         </li>
+        <?php } ?>
         <li class="nav-item barra-navegadora-li">
           <a href="/Buke-Tours/about-us/" class="nav-link"><?php echo $lang['sobre_nosotros'] ?? 'Sobre Nosotros'; ?></a>
         </li>
+        <?php
+        if(!isset($_SESSION['userId'])){
+          ?>
         <li class="nav-item barra-navegadora-li">
           <a href="/Buke-Tours/auth/login/" class="nav-link" title="<?php echo $lang['iniciar_sesion']; ?>"
             ><i class="bi bi-person-circle display-6"></i
           ></a>
         </li>
+        <?php 
+        } ?>
         <li class="nav-item barra-navegadora-li">
           <a href="/Buke-Tours/contact/" class="nav-link" title="<?php echo $lang['contacto']; ?>"><i class="display-6 bi bi-person-lines-fill"></i></a>
         </li>
           <li class="nav-item barra-navegadora-li d-flex align-items-center">
             <select id="language-switcher" class="form-select form-select-sm">
-                <option value="es" <?php if (isset($_SESSION['lang']) && $_SESSION['lang'] == 'es') echo 'selected'; ?>>Español</option>
-                <option value="en" <?php if (isset($_SESSION['lang']) && $_SESSION['lang'] == 'en') echo 'selected'; ?>>English</option>
+                <option value="es" <?php if (isset($_SESSION['lang']) && $_SESSION['lang'] == 'es') echo 'selected'; ?>>🇪🇸 Español</option>
+                <option value="en" <?php if (isset($_SESSION['lang']) && $_SESSION['lang'] == 'en') echo 'selected'; ?>>🇺🇸 English</option>
             </select>
         </li>
-        <li class="nav-item barra-navegadora-li">
-         <a href="/Buke-Tours/logout/" class="nav-link" title="Cerrar Session"> <i class="display-6 bi bi-box-arrow-right"></i></a>
-        </li>
+        <?php
+        if(isset($_SESSION['userId'])){
+          ?>
+          <li class="nav-item barra-navegadora-li">
+            <a href="/Buke-Tours/logout/" class="nav-link" title="Cerrar Session"> <i class="display-6 bi bi-box-arrow-right"></i></a>
+          </li>
+          <?php
+        }
+        ?>
+        
       </ul>
     </div>
 

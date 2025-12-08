@@ -56,7 +56,8 @@ $lang = array(
     'detalle' => 'Write your message here',
     'ejemplo' => 'Ex: Inquiry about Guanacaste Tour',
     'mensaje' => 'Message',
-    'enviar mensaje' => 'Send message'
+    'enviar mensaje' => 'Send message',
+    'invoices'=> 'Invoices'
 );
 
 

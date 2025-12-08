@@ -1,0 +1,55 @@
+{
+  "info": {
+    "name": "Buke Tours - Checkout - Reservación",
+    "description": "Realiza una reservación con pago con tarjeta vía /api/checkout/index.php (requiere sesión).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "POST Crear Reservación",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "nombre", "value": "Juan Pérez", "type": "text" },
+            { "key": "telefono", "value": "+50671264597", "type": "text" },
+            { "key": "email", "value": "juan.perez@example.com", "type": "text" },
+            { "key": "pais", "value": "CR", "type": "text" },
+            { "key": "adultos", "value": "2", "type": "text" },
+            { "key": "ninos", "value": "0", "type": "text" },
+            { "key": "subtotal", "value": "450.00", "type": "text" },
+            { "key": "total", "value": "500.00", "type": "text" },
+            { "key": "idioma", "value": "es", "type": "text" },
+            { "key": "pasaporteOdocumento", "value": "P1234567", "type": "text" },
+            { "key": "fechasDeingresos", "value": "[{\"tour_id\":1,\"check_in_date\":\"2023-12-20\"}]", "type": "text" },
+            { "key": "fechasDeSalidas", "value": "[{\"tour_id\":1,\"check_out_date\":\"2023-12-23\"}]", "type": "text" },
+            { "key": "seguro", "value": "1", "type": "text" },
+            { "key": "transporte", "value": "1", "type": "text" },
+            { "key": "fotos", "value": "0", "type": "text" },
+            { "key": "desayuno", "value": "1", "type": "text" },
+            { "key": "almuerzo", "value": "0", "type": "text" },
+            { "key": "cena", "value": "1", "type": "text" },
+            { "key": "direccion", "value": "Colonia Centro #123", "type": "text" },
+            { "key": "ciudad", "value": "San José", "type": "text" },
+            { "key": "provincia", "value": "San José", "type": "text" },
+            { "key": "codigoPostal", "value": "10101", "type": "text" },
+            { "key": "nombreDelTitular", "value": "Juan Pérez", "type": "text" },
+            { "key": "numeroDeLaTarjeta", "value": "4111111111111111", "type": "text" },
+            { "key": "mes", "value": "12", "type": "text" },
+            { "key": "year", "value": "2025", "type": "text" },
+            { "key": "cvv", "value": "123", "type": "text" }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/Buke-Tours/api/checkout/index.php",
+          "host": ["{{baseUrl}}"],
+          "path": ["Buke-Tours", "api", "checkout", "index.php"]
+        }
+      }
+    }
+  ]
+}
