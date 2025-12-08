@@ -25,6 +25,12 @@ error_reporting(E_ALL);
         <li class="nav-item">
           <a class="nav-link" href="/Buke-Tours/admin/customers/">Clientes</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Buke-Tours/admin/admins/">Administradores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Buke-Tours/admin/customers/">Reseñas</a>
+        </li>
       </ul>
     </div>
   </div>

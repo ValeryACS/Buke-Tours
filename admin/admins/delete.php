@@ -24,13 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Eliminar Cliente</title>
+  <title>Eliminar Administrador</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
 <div class="container py-4">
-  <h1>Eliminar Cliente #<?= $id ?></h1>
-  <p>Esta seguro que desea eliminar este cliente?</p>
+  <h1>Eliminar Administrador #<?= $id ?></h1>
+  <p>Esta seguro que desea eliminar este administrador?</p>
 
   <form method="POST">
     <button type="submit" class="btn btn-danger">Sí, eliminar</button>

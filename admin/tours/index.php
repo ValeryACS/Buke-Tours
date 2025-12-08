@@ -15,7 +15,7 @@ header("Content-Type: text/html; charset=UTF-8");
   <div class="row g-3 align-items-end mb-3">
     <div class="col-12 col-md-6">
       <label for="tours-search" class="form-label">Buscar Tours</label>
-      <input id="tours-search" type="search" class="form-control" placeholder="Playa, Río, Lugar…" autocomplete="off">
+      <input id="tours-search" type="search" class="form-control" placeholder="Playa, Rï¿½o, Lugarï¿½" autocomplete="off">
     </div>
 
     <div class="col-12 col-md-3">
@@ -40,17 +40,17 @@ header("Content-Type: text/html; charset=UTF-8");
           <div class="card-body d-flex flex-column">
             <h5 class="card-title">Nombre del Tour <?= $i ?></h5>
             <p class="card-text text-muted mb-3">
-              Descripción breve del tour. Ideal para lugares como Playa, Montaña, Río, etc.
+              Descripciï¿½n breve del tour. Ideal para lugares como Playa, Montaï¿½a, Rï¿½o, etc.
             </p>
             <div class="mt-auto">
               <div class="d-flex justify-content-between align-items-center">
                
                 <div class="btn-group">
-                  <!-- Botón Editar -->
+                  <!-- Botï¿½n Editar -->
                   <a href="edit.php?id=<?= $i ?>" class="btn btn-sm btn-primary">Editar</a>
 
-                  <!-- Botón Eliminar -->
-<a href="delete.php?id=<?= $i ?>" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que deseas eliminar el Tour <?= $i ?>?');">Eliminar</a>
+                  <!-- Botï¿½n Eliminar -->
+<a href="delete.php?id=<?= $i ?>" class="btn btn-sm btn-danger" onclick="return confirm('ï¿½Seguro que deseas eliminar el Tour <?= $i ?>?');">Eliminar</a>
                 </div>
               </div>
             </div>

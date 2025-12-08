@@ -7,12 +7,12 @@ header("Content-Type: text/html; charset=UTF-8");
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Agregar Cliente</title>
+  <title>Agregar Administrador</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
 <div class="container py-4">
-  <h1>Agregar Cliente</h1>
+  <h1>Agregar Administrador</h1>
   <form action="store.php" method="POST">
     <div class="mb-3">
       <label for="nombre" class="form-label">Nombre</label>

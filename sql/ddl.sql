@@ -55,6 +55,32 @@ CREATE TABLE tour (
     DEFAULT CHARSET=utf8mb4
     COLLATE=utf8mb4_unicode_ci;
 
+DROP TABLE IF EXISTS admins;
+
+ CREATE TABLE admins (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    full_name VARCHAR(200) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    phone VARCHAR(120) NOT NULL,
+    country VARCHAR(120) NOT NULL,
+    passport VARCHAR(220) NOT NULL,
+    lang VARCHAR(120) NOT NULL,
+    genre ENUM('Masculino','Femenino') NOT NULL,
+    home_addres VARCHAR(220) NOT NULL,
+    city VARCHAR(220) NOT NULL,
+    province VARCHAR(230) NOT NULL,
+    zip_code VARCHAR(100) NOT NULL,
+    birth_date DATE NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_admin_email (email),
+    UNIQUE KEY uq_admin_passport (passport),
+    PRIMARY KEY (id)
+  ) ENGINE=InnoDB
+    DEFAULT CHARSET=utf8mb4
+    COLLATE=utf8mb4_unicode_ci;
+
 DROP TABLE IF EXISTS reservation;
 
 -- 2. Crear la tabla reservation
