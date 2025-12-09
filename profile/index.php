@@ -72,7 +72,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
             <div class="col-12">
               <label
                 for="fullName"
-                class="form-label d-flex text-start d-flex text-start"
+                class="form-label d-flex text-start"
                 ><?php echo $lang['nombre_completo']; ?></label
               >
               <input

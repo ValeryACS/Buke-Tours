@@ -433,3 +433,26 @@ CREATE TABLE reservation_tour (
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
 
+DROP TABLE IF EXISTS feedback;
+
+CREATE TABLE feedback (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  score INT NOT NULL DEFAULT 1,
+  tour_id INT UNSIGNED NOT NULL,
+  customer_id INT UNSIGNED NOT NULL,
+  full_name VARCHAR(200) NOT NULL,
+  comment VARCHAR(200) NOT NULL,
+  PRIMARY KEY (id),
+   CONSTRAINT fk_feedback_customer_id
+    FOREIGN KEY (customer_id)
+    REFERENCES customer(id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT fk_feedback_tour_id
+    FOREIGN KEY (tour_id)
+    REFERENCES tour(id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;

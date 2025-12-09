@@ -24,6 +24,19 @@ if($userID<= 0){
 include '../language/lang_' . $_SESSION['lang'] . '.php'; 
 
 $html_lang = $_SESSION['lang'];
+
+include '../php/config/db.php';
+
+
+$mysqli = openConnection();
+
+$sqlTours = 'SELECT `id`, `title` FROM tour';
+
+$toursDisponibles= $mysqli->prepare($sqlTours);
+$toursDisponibles->execute();
+$toursResult = $toursDisponibles->get_result();
+
+closeConnection($mysqli);
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +48,7 @@ $html_lang = $_SESSION['lang'];
     <?php 
       include '../php/styles/common-styles.php';
     ?>
+    <link rel="stylesheet" href="/Buke-Tours/assets/css/profile.css" />
   </head>
   <body>
    <?php
@@ -42,7 +56,7 @@ $html_lang = $_SESSION['lang'];
     ?>
     <main>
       <section
-        class="main-content bg-buke-tours mx-auto my-5"
+        class="main-content bg-buke-tours mx-auto my-5 profile-form-section"
         style="max-width: 768px"
       >
         <!-- Sección principal -->
@@ -54,10 +68,21 @@ $html_lang = $_SESSION['lang'];
           <form action="#" method="post">
             <label for="nombre"><?php echo $lang['label_nombre'];?></label>
             <input type="text" id="nombre" name="nombre" required />
+            <label for="tour-id">Nombre del Tour</label>
+            <select id="tour-id" name="tour-id" required>
+              <option value="no-seleccionado" selected>Seleccione un Tour</option>
+              <?php
+              if ($toursResult) {
+                        while ($fila = $toursResult->fetch_assoc()):
+                          echo  "<option value='". $fila['id']."'>". $fila['title']."</option>";
 
+                        endwhile;
+              }
+              ?>
+            </select>
             <label for="calificacion"><?php echo $lang['label_calificacion'];?></label>
             <select id="calificacion" name="calificacion" required>
-              <option value="5">⭐⭐⭐⭐⭐</option>
+              <option value="5" selected>⭐⭐⭐⭐⭐</option>
               <option value="4">⭐⭐⭐⭐</option>
               <option value="3">⭐⭐⭐</option>
               <option value="2">⭐⭐</option>
@@ -72,7 +97,7 @@ $html_lang = $_SESSION['lang'];
               required
             ></textarea>
 
-            <button type="submit"><?php echo $lang['boton_enviar'];?></button>
+            <button type="button" id="btn-save-review"><?php echo $lang['boton_enviar'];?></button>
           </form>
         </div>
 
@@ -112,5 +137,6 @@ $html_lang = $_SESSION['lang'];
       include '../php/components/cart-modal.php';
       include '../php/scripts/common-scripts.php';
     ?>
+    <script src="/Buke-Tours/assets/js/reviews.pge.js"  type="module" defer></script>
   </body>
 </html>

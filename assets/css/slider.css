@@ -12,6 +12,9 @@
   text-align: center;
   font-size: 18px;
 }
+.swiper-slide h1{
+    font-size: 1.3rem !important;
+}
 .swiper-pagination-bullet {
   width: 30px;
   height: 30px;

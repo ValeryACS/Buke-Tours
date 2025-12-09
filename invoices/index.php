@@ -60,10 +60,6 @@ if ($result) {
     ?>
     <main>
       <section id="invoices" class="py-5">
-        
-        <script defer>
-            
-        </script>
         <div class="container-lg bg-yellow-light  py-5">
             <div class="row">
                 <aside class="col-12 col-lg-2 mb-4">
@@ -234,10 +230,11 @@ if ($result) {
         </div>
       </section>
     </main>
-    <script type="module" src="/Buke-Tours/assets/js/invoices-page.js" defer></script>
+    
     <?php 
       include '../php/components/footer.php';
       include '../php/components/cart-modal.php';
+      include '../php/scripts/invoices-scripts.php';
     ?>
     <script defer async>
         $(document).ready(() => {
