@@ -6,6 +6,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+$tourId = 1;
+
+if(isset($_GET['tourID'])){
+  $tourId = (int)$_GET['tourID'];
+}
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -17,6 +23,59 @@ if (!isset($_SESSION['lang'])) {
 include '../language/lang_' . $_SESSION['lang'] . '.php'; 
 
 $html_lang = $_SESSION['lang'];
+
+include '../php/config/db.php';
+
+$mysqli = openConnection();
+
+$sqlTour = 'SELECT * FROM tour WHERE id=? LIMIT 1';
+
+$tour= $mysqli->prepare($sqlTour);
+$tour->bind_param("i", $tourId);
+$tour->execute();
+$tourResult = $tour->get_result();
+
+$rows = [];
+
+if ($tourResult) {
+    while ($row = $tourResult->fetch_assoc()) {
+        $rows[] = $row;
+    }
+}
+
+closeConnection($mysqli);
+
+/**
+ * Valida que un iframe provenga de Google Maps embed.
+ */
+function getSafeMapIframe(?string $iframeUrl): ?string {
+    if ($iframeUrl === null) {
+        return null;
+    }
+
+    $iframeUrl = trim($iframeUrl);
+
+    if ($iframeUrl === '' || !filter_var($iframeUrl, FILTER_VALIDATE_URL)) {
+        return null;
+    }
+
+    $parts = parse_url($iframeUrl);
+
+    if (!is_array($parts)) {
+        return null;
+    }
+
+    $scheme = $parts['scheme'] ?? '';
+    $host   = $parts['host'] ?? '';
+    $path   = $parts['path'] ?? '';
+
+    if ($scheme !== 'https' || $host !== 'www.google.com' || strpos($path, '/maps/embed') !== 0) {
+        return null;
+    }
+
+    return $iframeUrl;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -37,17 +96,46 @@ $html_lang = $_SESSION['lang'];
     <main class="content bg-buke-tours">
       <section
   class="py-5">
-  <div class="container">
+  <div class="container bg-white ">
+    <h1 class="titulo">
+      <?php 
+      if(isset($rows[0]['title'])){
+        echo $rows[0]['title'];
+      }
+      ?>
+    </h1>
+    
     <div class="row g-4">
 
       <!-- MAP -->
       <div class="col-lg-7">
         <div class="ratio ratio-4x3 rounded shadow-sm">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d16846.755301994162!2d-84.82101270477017!3d10.30521943638019!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa01978f5f77c49%3A0x990decc8173f24d4!2sProvincia%20de%20Puntarenas%2C%20Monteverde!5e1!3m2!1ses-419!2scr!4v1743633737842!5m2!1ses-419!2scr"
-            allowfullscreen=""
-            loading="lazy">
-          </iframe>
+          <?php foreach ($rows as $filaTour): 
+            $iframeSrc = getSafeMapIframe($filaTour['iframe'] ?? null);
+            $fallback  = 'https://www.google.com/maps?q=' . urlencode(($filaTour['location'].",". $filaTour['title'])?? '') . '&output=embed';
+          ?>
+            <?php if ($iframeSrc): ?>
+              <iframe
+                src="<?php echo htmlspecialchars($iframeSrc, ENT_QUOTES, 'UTF-8'); ?>"
+                width="600"
+                height="450"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            <?php else: ?>
+              <iframe
+                src="<?php echo htmlspecialchars($fallback, ENT_QUOTES, 'UTF-8'); ?>"
+                width="600"
+                height="450"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            <?php endif; ?>
+          <?php endforeach; ?>
         </div>
       </div>
 
@@ -96,10 +184,31 @@ $html_lang = $_SESSION['lang'];
 
         </div>
       </div>
-
+      <div class="col-lg-12">
+        <h1 class="titulo">
+        <?php 
+        if(isset($rows[0]['location'])){
+          echo $rows[0]['location']. "-". $rows[0]['title'];
+        }
+        ?>
+      </h1>
+      </div>
+      <div class="col-lg-7 p-4">
+        
+        <p>
+          <?php 
+          if(isset($rows[0]['description'])){
+            echo $rows[0]['description'];
+          }
+          ?>
+        </p>
+      </div> 
+      <div class="col-lg-5">
+        <img class="float-right img-thumbnail" src="<?php echo $rows[0]['img']; ?>" alt="<?php echo $rows[0]['title']; ?>">
+      </div>
     </div>
-
-    <!-- SIMILAR EXPERIENCES-->
+           
+  <!-- SIMILAR EXPERIENCES-->
   <h4 class="mt-5 mb-3 titulo">Similar Experiences</h4>
 
 

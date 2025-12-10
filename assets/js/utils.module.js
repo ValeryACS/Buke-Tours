@@ -94,8 +94,7 @@ export const normalizeString = (value) =>
  * @param {string} id - ID del tour
  */
 export const onClickViewTour = (id) => {
-    console.log("Tour Clicked:", id);// TODO redirigir a la pagina del tour
-    window.location.href = "/Buke-Tours/tour/"
+    window.location.href = `/Buke-Tours/tour/index.php?tourID=${id}`;
 };
 
 /**

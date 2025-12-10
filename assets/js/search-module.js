@@ -95,7 +95,7 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
                   data-bs-target="#cartModal"
                   data-tour-id="${tour.sku}"
                 ></i>
-                <i class="bi bi-cursor-fill view-tour-page" data-tour-id="${tour.sku}"></i>
+                <i class="bi bi-cursor-fill view-tour-page" data-tour-id="${tour.id}"></i>
               </h1>
               <p>${tour.description}</p>
             </div>

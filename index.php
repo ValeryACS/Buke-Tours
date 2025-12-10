@@ -95,7 +95,7 @@ closeConnection($mysqli);
                                 ></i>
                                 <i
                                   class="bi bi-cursor-fill view-tour-page"
-                                  data-tour-id="<?php echo $fila['sku']; ?>"
+                                  data-tour-id="<?php echo $fila['id']; ?>"
                                 ></i>
                               </h1>
                             </div>
@@ -148,13 +148,12 @@ closeConnection($mysqli);
         <!-- Sección principal -->
         <h1 class="titulo"><?php echo $lang['resenas'] ?? 'Reseñas'; ?></h1>
         <h2 class="subtitulo  w-100"><?php echo $lang['sobre_tours'] ?? 'Sobre los tours'; ?></h2>
-        <div class="formulario-resena">
+        
           <?php 
             if (isset($_SESSION['id'])) {
               include './php/components/reviews-form.php';
             }
           ?>
-        </div>
         <?php 
          include './php/components/reviews-list.php';
         ?>
