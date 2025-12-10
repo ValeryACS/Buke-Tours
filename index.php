@@ -122,19 +122,22 @@ closeConnection($mysqli);
                               class="tour-imagen"
                             />
                             <div class="overlay-effect position-absolute">
-                              <h1>
-                                <?php echo $fila['title']; ?>
-                                <i
-                                  class="bi bi-cart-plus-fill display-4 add-to-cart"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#cartModal"
-                                  data-tour-id="<?php echo $fila['sku']; ?>"
-                                ></i>
-                                <i
-                                  class="bi bi-cursor-fill view-tour-page"
-                                  data-tour-id="<?php echo $fila['id']; ?>"
-                                ></i>
-                              </h1>
+                            <h1 style="color: #ffd89c;background: #2a2238;">
+                                <?php echo strlen($fila['title']) <= 23 ? $fila['title'] : substr($fila['title'], 0, 23) . "..."; ?>
+                            </h1>  
+                            <h3>
+                                <?php echo strlen($fila['location']) <= 23 ? $fila['location'] : substr($fila['location'], 0, 23) . "..."; ?>
+                            </h3>
+                            <i
+                              class="bi bi-cart-plus-fill display-4 add-to-cart"
+                              data-bs-toggle="modal"
+                              data-bs-target="#cartModal"
+                              data-tour-id="<?php echo $fila['sku']; ?>"
+                            ></i>
+                            <i
+                              class="bi bi-cursor-fill view-tour-page display-4 "
+                              data-tour-id="<?php echo $fila['id']; ?>"
+                            ></i>
                             </div>
                             <div
                               class="swiper-lazy-preloader swiper-lazy-preloader-white"
