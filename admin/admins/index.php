@@ -1,3 +1,42 @@
+<?php
+header("Content-Type: text/html; charset=UTF-8");
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Idioma por defecto español
+}
+
+$adminID = isset($_SESSION['admin_id'])? (int)$_SESSION['admin_id']: 0;
+
+if($adminID<= 0){
+    header("Location: ../auth/login/");
+    exit();
+}
+
+include '../../language/lang_' . $_SESSION['lang'] . '.php'; 
+include '../../helpers/get-country.php';
+
+include '../../php/config/db.php';
+
+
+$mysqli = openConnection();
+
+$sqlAdmins = 'SELECT * FROM admins';
+
+$adminsDisponibles= $mysqli->prepare($sqlAdmins);
+$adminsDisponibles->execute();
+$adminsResult = $adminsDisponibles->get_result();
+
+closeConnection($mysqli);
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -24,39 +63,37 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Apellido</th>
                     <th>Teléfono</th>
                     <th>Correo</th>
-                    <th>Tour</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
+                <?php
+                    if ($adminsResult) {
+                        while ($fila = $adminsResult->fetch_assoc()):
+
+                        ?>
+                        
                 <!-- Fila de ejemplo 1 -->
                 <tr>
-                    <td>1</td>
-                    <td>Ejemplo</td>
-                    <td>Uno</td>
-                    <td>8888-0001</td>
-                    <td>uno@mail.com</td>
-                    <td>Tour Aventura</td>
+                    <td><?php echo $fila["id"];?></td>
+                    <td><?php echo $fila["full_name"];?></td>
+                    <td><?php echo $fila["phone"];?></td>
+                    <td><?php echo $fila["email"];?></td>
                     <td>
-                        <a href="edit.php?id=1" class="btn btn-sm btn-warning">Editar</a>
-                        <a href="delete.php?id=1" class="btn btn-sm btn-danger" onclick="return confirm('�Est� seguro de eliminar este cliente?')">Eliminar</a>
+                        <a href="edit.php?id=<?php echo $fila["id"];?>" class="btn btn-sm btn-warning">Editar</a>
+                        <a 
+                        href="#" 
+                        data-task-id="<?= htmlspecialchars($fila['id']); ?>" 
+                        class="btn btn-danger btn-eliminar-admin">
+                        Eliminar
+                    </a>              
                     </td>
                 </tr>
-                <!-- Fila de ejemplo 2 -->
-                <tr>
-                    <td>2</td>
-                    <td>Ejemplo</td>
-                    <td>Dos</td>
-                    <td>8888-0002</td>
-                    <td>dos@mail.com</td>
-                    <td>Tour Cultural</td>
-                    <td>
-                        <a href="edit.php?id=2" class="btn btn-sm btn-warning">Editar</a>
-                        <a href="delete.php?id=2" class="btn btn-sm btn-danger" onclick="return confirm('�Est� seguro de eliminar este cliente?')">Eliminar</a>
-                    </td>
+                    <?php endwhile;
+                    }?>
+              
                 </tr>
             </tbody>
         </table>
@@ -64,5 +101,9 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module" src="/Buke-Tours/assets/js/admins/delete-profile-page.js" defer></script>
+
+
 </body>
 </html>

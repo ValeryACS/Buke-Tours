@@ -179,32 +179,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $resultado = $stmtUserData->get_result();
             if ($resultado && $resultado->num_rows > 0) {
                 $fila = $resultado->fetch_assoc();
+                $success = true;
 
-                if (session_status() === PHP_SESSION_NONE) {
-                    session_start();
-                }
 
-                $_SESSION['admin_id'] = (int)$fila['id'];
-                $_SESSION['admin_userId'] = (int)$fila['id'];
-                $_SESSION['admin_nombre'] = $fila['full_name'];
-                $_SESSION['admin_email'] = $fila['email'];
-                $_SESSION['admin_telefono'] = $fila['phone'];
-                $_SESSION['admin_pais'] = $fila['country'];
-                $_SESSION['admin_passport'] = $fila['passport'];
-                $_SESSION['admin_idioma'] = $fila['lang'];
-                $_SESSION['admin_genero'] = $fila['genre'];
-                $_SESSION['admin_direccion'] = $fila['home_addres'];
-                $_SESSION['admin_ciudad'] = $fila['city'];
-                $_SESSION['admin_provincia'] = $fila['province'];
-                $_SESSION['admin_codigo_postal'] = $fila['zip_code'];
-                $_SESSION['admin_fecha_nacimiento'] = $fila['birth_date'];
+                
             } else {
                 throw new Exception("El administrador no esta disponible. Favor intentar mas tarde.");
             }
 
             $stmtUserData->close();
             $mysqli->commit();
-            $success = true;
         } catch (Exception $e) {
             $mysqli->rollback();
             $errors[] = $e->getMessage() ?? 'Error Inesperado en el Servidor al crear un nuevo administrador.';

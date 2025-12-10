@@ -1,4 +1,4 @@
-import { validateLoginForm } from "./login-module.js";
+import { validateLoginForm } from "../login-module.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const btnLoginForm = document.getElementById("btn-login");
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
               timerProgressBar: true,
             });
             setTimeout(() => {
-              window.location.href = "/Buke-Tours/admin/invoices/index.php";
+              window.location.href = "/Buke-Tours/admin/invoices/";
             }, 3000);
           }
         }

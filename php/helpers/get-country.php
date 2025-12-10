@@ -13,10 +13,10 @@ if (!isset($_SESSION['lang'])) {
 
 $userID = isset($_SESSION['id'])? (int)$_SESSION['id']: 0;
 
-if($userID<= 0){
-    header("Location: ../");
-    exit();
-}
+// if($userID<= 0){
+//     header("Location: ../");
+//     exit();
+// }
 
 function getCountrySelected($country)
 {

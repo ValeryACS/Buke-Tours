@@ -7,7 +7,7 @@ if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'es'; // Idioma por defecto español
 }
 
-include '../../../../language/lang_' . $_SESSION['lang'] . '.php'; 
+include '../../../language/lang_' . $_SESSION['lang'] . '.php'; 
 
 $html_lang = $_SESSION['lang'];
 ?>
@@ -19,13 +19,13 @@ $html_lang = $_SESSION['lang'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inicio</title>
     <?php 
-include '../../../../php/components/admin/styles/admin-common-styles.php';    ?>
+include '../../../php/components/admin/styles/admin-common-styles.php';    ?>
     
     <link rel="stylesheet" href="/Buke-Tours/assets/css/profile.css" />
   </head>
   <body>
     <?php
-include '../../../../php/components/admin/nav-bar-admin.php'; ?>
+include '../../../php/components/admin/nav-bar-admin.php'; ?>
 
     <section
       class="container bg-warning-subtle mx-auto p-4 mt-5 bg-buke-tours profile-form-section"
@@ -63,19 +63,19 @@ include '../../../../php/components/admin/nav-bar-admin.php'; ?>
           <?php echo $lang['iniciar_sesion'];?>
         </button>
       </form>
-      <div class="login-no-tienes-una-cuenta">
+      <!-- <div class="login-no-tienes-una-cuenta">
         <h2 class="subtitulo"><?php echo $lang['no_tienes_cuenta_msg'];?></h2>
         <a href="/Buke-Tours/auth/signup/"
           ><button class="login-boton btn w-100">
             <?php echo $lang['registrarme'];?>
           </button></a
         >
-      </div>
+      </div> -->
     </section>
     <?php 
-      include '../../../../php/components/footer.php';
-      include '../../../../php/components/cart-modal.php';
-      include '../../../../php/scripts/common-scripts.php';
+      include '../../../php/components/footer.php';
+      include '../../../php/components/cart-modal.php';
+      include '../../../php/scripts/common-scripts.php';
     ?>
     <script type="module" src="/Buke-Tours/assets/js/login-page-admin.js"  defer></script>
     

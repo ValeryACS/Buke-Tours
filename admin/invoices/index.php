@@ -1,23 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Facturas de Clientes</title>
-    <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
-       <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Buke-Tours - Facturas de clientes</title>
-   
-    <link rel="stylesheet" href="/Buke-Tours/assets/css/invoices.css" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-</head>
-<?php include '../../php/components/admin/nav-bar-admin.php'; ?>
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -29,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$userID = isset($_SESSION['id']) ? (int)$_SESSION['id'] : 0;
+$adminID = isset($_SESSION['admin_id']) ? (int)$_SESSION['admin_id'] : 0;
 $mysqli = openConnection();
 
 $sql = 'SELECT id, full_name, email, telephone, country, passport, adults, children, idioma, breakfast, lunch, dinner, transport, travel_insurance, photo_package, home_address, city, province, postal_code, total, subtotal, created_at, updated_at FROM reservation ORDER BY created_at DESC ';
@@ -47,17 +27,27 @@ if ($result) {
         $rows[] = $row;
     }
 }
-
 ?>
-
-  <body>
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Facturas de Clientes</title>
+    <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+       <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buke-Tours - Facturas de clientes</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+</head>
+<body>
+<?php include '../../php/components/admin/nav-bar-admin.php'; ?>
     <main>
       <section id="invoices" class="py-5">
-        
-        <script defer>
-            
-        </script>
         <div class="container-lg bg-yellow-light  py-5">
             <div class="row">
                 <aside class="col-12 col-lg-2 mb-4">
@@ -70,7 +60,6 @@ if ($result) {
                         </div>
                     </nav>
                 </aside>
-
                 <section class="col-12 col-lg-10">
                     <header class="d-flex align-items-center justify-content-between mb-3">
                         <div>
@@ -82,12 +71,11 @@ if ($result) {
                     </header>
                     <?php 
                     
-if($userID > 0){  ?>
-    <p class="d-flex text-center">Necesitas iniciar sesion para ver las facturas.</p>
-    <a href="/Buke-Tours/api/admin/auth/login/login.php" class="btn btn-success ">Ir al Formulario de Login</a>
-    <?php
+    if($adminID <= 0){  ?>
+        <p class="d-flex text-center">Necesitas iniciar sesion para ver las facturas.</p>
+        <a href="/Buke-Tours/admin/auth/login/" class="btn btn-success ">Ir al Formulario de Login</a>
+        <?php
     }
-
     else{
         ?>
         <div class="table-responsive shadow-sm" id="invoices_table">

@@ -2,7 +2,11 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-?>
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$adminID = isset($_SESSION['admin_id'])? (int)$_SESSION['admin_id']: 0;
+if($adminID > 0){?>
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
   <div class="container">
     <a class="navbar-brand fw-semibold" href="/Buke-Tours/">Buke Tours</a>
@@ -31,7 +35,17 @@ error_reporting(E_ALL);
         <li class="nav-item">
           <a class="nav-link" href="/Buke-Tours/admin/customers/">Reseñas</a>
         </li>
+       
+         
+        <li class="nav-item">
+          <a class="nav-link" href="/Buke-Tours/admin/logout/">Cerrar Sesión</a>
+        </li>
+        
       </ul>
     </div>
   </div>
 </nav>
+
+<?php
+}
+?>
