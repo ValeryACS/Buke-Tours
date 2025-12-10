@@ -37,39 +37,41 @@ $toursResult = $toursDisponibles->get_result();
 closeConnection($mysqli);
 
 ?>
-<form id="formulario-resena">
-    <input value="<?php echo $userID; ?>" type="hidden" name="customerId" id="customerId" readonly class="d-none" />
-    <label for="full_name"><?php echo $lang['label_nombre'];?></label>
-    <input type="text" id="full_name" name="full_name" class="form-control" value="<?php echo $_SESSION['nombre'] ?? ''; ?>"/>
-    <label for="tour-id">Nombre del Tour</label>
-    <select id="tour-id" name="tour-id" class="form-select">
-        <option value="no-seleccionado" selected>Seleccione un Tour</option>
-        <?php
-        if ($toursResult) {
-                while ($fila = $toursResult->fetch_assoc()):
-                    echo  "<option value='". $fila['tour_id']."'>". $fila['tour_title']."</option>";
+<div class="formulario-resena">
+        <form id="formulario-resena">
+            <input value="<?php echo $userID; ?>" type="hidden" name="customerId" id="customerId" readonly class="d-none" />
+            <label for="full_name"><?php echo $lang['label_nombre'];?></label>
+            <input type="text" id="full_name" name="full_name" class="form-control" value="<?php echo $_SESSION['nombre'] ?? ''; ?>"/>
+            <label for="tour-id">Nombre del Tour</label>
+            <select id="tour-id" name="tour-id" class="form-select">
+                <option value="no-seleccionado" selected>Seleccione un Tour</option>
+                <?php
+                if ($toursResult) {
+                        while ($fila = $toursResult->fetch_assoc()):
+                            echo  "<option value='". $fila['tour_id']."'>". $fila['tour_title']."</option>";
 
-                endwhile;
-        }
-        ?>
-    </select>
-    <label for="calificacion"><?php echo $lang['label_calificacion'];?></label>
-    <select id="calificacion" name="calificacion"  class="form-select">
-        <option value="5" selected>⭐⭐⭐⭐⭐</option>
-        <option value="4">⭐⭐⭐⭐</option>
-        <option value="3">⭐⭐⭐</option>
-        <option value="2">⭐⭐</option>
-        <option value="1">⭐</option>
-    </select>
+                        endwhile;
+                }
+                ?>
+            </select>
+            <label for="calificacion"><?php echo $lang['label_calificacion'];?></label>
+            <select id="calificacion" name="calificacion"  class="form-select">
+                <option value="5" selected>⭐⭐⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="1">⭐</option>
+            </select>
 
-    <label for="comentario"><?php echo $lang['comentario'];?></label>
-    <textarea
-        id="comentario"
-        name="comentario"
-        rows="4"
-        class="form-control"
-    ></textarea>
+            <label for="comentario"><?php echo $lang['comentario'];?></label>
+            <textarea
+                id="comentario"
+                name="comentario"
+                rows="4"
+                class="form-control"
+            ></textarea>
 
-    <button type="submit" id="btn-save-review"><?php echo $lang['boton_enviar'];?></button>
-</form>
+            <button type="submit" id="btn-save-review"><?php echo $lang['boton_enviar'];?></button>
+        </form>
+</div>
 <script src="/Buke-Tours/assets/js/reviews-page.js"  type="module" defer></script>

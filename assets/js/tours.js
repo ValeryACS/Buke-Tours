@@ -33,7 +33,7 @@ import { onClickViewTour } from "./utils.module.js";
                 <button 
                   type="button" 
                   class="btn btn-dark w-50 py-3 read-more rounded-2" 
-                  data-id="${tour.sku}">
+                  data-id="${tour.id}">
                   <i class="bi bi-cursor-fill display-6"></i>
                 </button>
               </div>
