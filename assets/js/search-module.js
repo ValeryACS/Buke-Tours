@@ -17,16 +17,19 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
       "search-tours-results"
     );
     const btnSearchTours = document.getElementById("btn-search-tours");
+    const checkInInput = document.getElementById("check-in-date");
+    const checkOutInput = document.getElementById("check-out-date");
 
-    const tours = await fetch("/Buke-Tours/api/tours/")
-      .then((res) => {
-        if (!res.ok) throw new Error("Error al cargar el JSON");
-        return res.json();
-      })
-      .catch((err) => {
-        console.error("Error Fetching Tours", err);
-        return [];
-      });
+    let tours = [];
+    try {
+      const response = await fetch("/Buke-Tours/api/tours/");
+      if (!response.ok) throw new Error("Error al cargar el JSON");
+      const payload = await response.json();
+      tours = Array.isArray(payload) ? payload : payload.data ?? [];
+    } catch (err) {
+      console.error("Error Fetching Tours", err);
+      tours = [];
+    }
     /**
      * @function - Busca tours y los renderiza en el Home Page
      * @param {string} inputValue - El Input Search
@@ -42,7 +45,7 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
           return;
         }
 
-        const toursFiltered = tours?.data?.filter((tour) => {
+        const toursFiltered = tours.filter((tour) => {
           const t = normalizeString(tour.title);
           const l = normalizeString(tour.location);
           const d = normalizeString(tour.description);
@@ -61,7 +64,7 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
           Swal.fire({
             icon: "error",
             title: "Tour no encontrado",
-            text: `No se encontró ningún tour relacionado a "${event.currentTarget.value.trim()}".`,
+            text: "No se encontró ningún tour relacionado con tu búsqueda.",
             toast: true,
             position: "top-end",
             showConfirmButton: false,
@@ -111,35 +114,102 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
             onAddToCart(id);
           });
         });
-        document.querySelectorAll('.view-tour-page')?.forEach((btn)=> {
-              btn.addEventListener('click', (event)=> {
-                  console.log('Tour Clciked')
-                  event.preventDefault();
-                    const id = event.currentTarget.getAttribute("data-tour-id");
-                  onClickViewTour(id);    
-              })
-          })
+        document.querySelectorAll(".view-tour-page")?.forEach((btn) => {
+          btn.addEventListener("click", (event) => {
+            console.log("Tour Clciked");
+            event.preventDefault();
+            const id = event.currentTarget.getAttribute("data-tour-id");
+            onClickViewTour(id);
+          });
+        });
       } catch (error) {
         console.error(error);
       }
     };
+    /**
+     * @function - Usada para definir los parametros de busqueda de los tours en base al valor de los inputs
+     * @returns {object}
+     */
+    const getTourSearchFilters = () => ({
+      term: normalizeString((searchInputTour?.value ?? "").trim()),
+      checkIn: checkInInput?.value ?? "",
+      checkOut: checkOutInput?.value ?? "",
+    });
 
     /**
      * @function - Busca tours y los renderiza en la pagina de Tours
      * @param {string} inputValue - El Input Search
+     * @param {string} checkInDate - Fecha de check in
+     * @param {string} checkOutDate - Fecha de check out
      * @returns {void}
      */
-    const renderSearchTour = (inputValue) => {
+    const renderSearchTour = async (
+      inputValue,
+      checkInDate = "",
+      checkOutDate = ""
+    ) => {
       try {
-        // Si está vacío: mostrar slider, ocultar resultados y limpiar HTML.
-        if (!inputValue) {
+        const hasSearchTerm = Boolean(inputValue);
+        const hasDateFilters = Boolean(checkInDate || checkOutDate);
+
+        if ((checkInDate && !checkOutDate) || (!checkInDate && checkOutDate)) {
+          Swal.fire({
+            icon: "warning",
+            title: "Faltan fechas",
+            text: "Selecciona la fecha de entrada y salida para filtrar por disponibilidad.",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+          });
+          return;
+        }
+
+        if (
+          checkInDate &&
+          checkOutDate &&
+          new Date(checkInDate) > new Date(checkOutDate)
+        ) {
+          Swal.fire({
+            icon: "warning",
+            title: "Rango inválido",
+            text: "La fecha de salida debe ser mayor o igual a la fecha de entrada.",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+          });
+          return;
+        }
+
+        if (!hasSearchTerm && !hasDateFilters) {
           showElement(toursContainer, "d-flex");
           hideElement(searchResultsContainer, "d-flex");
           searchResultsContainer && (searchResultsContainer.innerHTML = "");
           return;
         }
 
-        const toursFiltered = tours.filter((tour) => {
+        const params = new URLSearchParams();
+        if (checkInDate) params.append("check_in_date", checkInDate);
+        if (checkOutDate) params.append("check_out_date", checkOutDate);
+        const endpoint = params.toString()
+          ? `/Buke-Tours/api/tours/?${params.toString()}`
+          : "/Buke-Tours/api/tours/";
+
+        let toursData = [];
+        try {
+          const response = await fetch(endpoint);
+          if (!response.ok) throw new Error("Error al cargar el JSON");
+          const payload = await response.json();
+          toursData = Array.isArray(payload) ? payload : payload.data ?? [];
+        } catch (err) {
+          console.error("Error Fetching Tours", err);
+          toursData = [];
+        }
+
+        const toursFiltered = toursData.filter((tour) => {
           const t = normalizeString(tour.title);
           const l = normalizeString(tour.location);
           const d = normalizeString(tour.description);
@@ -158,7 +228,7 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
           Swal.fire({
             icon: "error",
             title: "Tour no encontrado",
-            text: `No se encontró ningún tour relacionado a "${event.currentTarget.value.trim()}".`,
+            text: "No se encontró ningún tour con los criterios seleccionados.",
             toast: true,
             position: "top-end",
             showConfirmButton: false,
@@ -212,17 +282,22 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
             onAddToCart(id);
           });
         });
-        document.querySelectorAll('.view-tour-page')?.forEach((btn)=> {
-              btn.addEventListener('click', (event)=> {
-                  console.log('Tour Clciked')
-                  event.preventDefault();
-                    const id = event.currentTarget.getAttribute("data-tour-id");
-                  onClickViewTour(id);    
-              })
-          })
+        document.querySelectorAll(".view-tour-page")?.forEach((btn) => {
+          btn.addEventListener("click", (event) => {
+            console.log("Tour Clciked");
+            event.preventDefault();
+            const id = event.currentTarget.getAttribute("data-tour-id");
+            onClickViewTour(id);
+          });
+        });
       } catch (error) {
         console.error("error", error);
       }
+    };
+
+    const handleTourSearch = async () => {
+      const { term, checkIn, checkOut } = getTourSearchFilters();
+      await renderSearchTour(term, checkIn, checkOut);
     };
 
     searchBtn?.addEventListener("click", (event) => {
@@ -236,15 +311,16 @@ import { hideElement, normalizeString, onClickViewTour, showElement } from "./ut
       renderSearch(inputValue);
     });
 
-    searchInputTour?.addEventListener("blur", (event) => {
-      const inputValue = normalizeString(event.currentTarget.value);
-      renderSearchTour(inputValue);
+    searchInputTour?.addEventListener("blur", async () => {
+      await handleTourSearch();
     });
 
-    btnSearchTours?.addEventListener("click", (event) => {
+    btnSearchTours?.addEventListener("click", async (event) => {
       event.preventDefault();
-      const inputValue = normalizeString(searchInputTour.value);
-      renderSearchTour(inputValue);
+      await handleTourSearch();
     });
+
+    checkInInput?.addEventListener("change", handleTourSearch);
+    checkOutInput?.addEventListener("change", handleTourSearch);
   });
 })();

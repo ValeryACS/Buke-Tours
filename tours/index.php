@@ -33,16 +33,43 @@ $html_lang = $_SESSION['lang'];
     ?>
     <main class="container py-4 cards-wrapper">
       <div class="form-group mt-5 mb-5 container-md">
-        <form id="search-form-tours" class="d-flex justify-content-center flex-row">
-          <input
-            class="barra-busqueda m-auto form-control"
-            placeholder="<?php echo $lang['Buscar_Tour'];?>"
-            type="text"
-            id="search-input-tour"
-          />
-          <button type="button" id="btn-search-tours" class="btn btn-success">
-            <i class="bi bi-search"></i>
-          </button>
+        <form
+          id="search-form-tours"
+          class="row g-3 align-items-center justify-content-center"
+        >
+          <div class="col-12 col-md-4">
+            <input
+              class="barra-busqueda form-control"
+              placeholder="<?php echo $lang['Buscar_Tour'];?>"
+              type="text"
+              id="search-input-tour"
+            />
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <input
+              type="date"
+              class="form-control"
+              id="check-in-date"
+              name="check_in_date"
+              min="<?php echo date('Y-m-d'); ?>"
+              placeholder="Check in"
+            />
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <input
+              type="date"
+              class="form-control"
+              id="check-out-date"
+              name="check_out_date"
+              min="<?php echo date('Y-m-d'); ?>"
+              placeholder="Check out"
+            />
+          </div>
+          <div class="col-12 col-md-2 d-grid">
+            <button type="button" id="btn-search-tours" class="btn btn-success">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
         </form>
       </div>
       <div
