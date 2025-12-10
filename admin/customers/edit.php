@@ -2,12 +2,12 @@
 header("Content-Type: text/html; charset=UTF-8");
 
 if (!isset($_GET['id'])) {
-    die("Error: No se proporcionó el ID del cliente.");
+    die("Error: No se proporcionï¿½ el ID del cliente.");
 }
 
 $id = intval($_GET['id']);
 
-// Aquí deberías cargar los datos reales del cliente desde base de datos según $id.
+// Aquï¿½ deberï¿½as cargar los datos reales del cliente desde base de datos segï¿½n $id.
 // Por ahora, vamos a simular datos:
 
 $cliente = [
@@ -44,7 +44,7 @@ $cliente = [
     </div>
 
     <div class="mb-3">
-      <label for="telefono" class="form-label">Teléfono</label>
+      <label for="telefono" class="form-label">TelÃ©fono</label>
       <input type="tel" name="telefono" id="telefono" class="form-control" value="<?= htmlspecialchars($cliente['telefono']) ?>" required />
     </div>
 

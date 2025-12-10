@@ -23,7 +23,7 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
-                    <th>Teléfono</th>
+                    <th>TelÃ©fono</th>
                     <th>Correo</th>
                     <th>Tour</th>
                     <th>Acciones</th>
@@ -40,7 +40,7 @@
                     <td>Tour Aventura</td>
                     <td>
                         <a href="edit.php?id=1" class="btn btn-sm btn-warning">Editar</a>
-                        <a href="delete.php?id=1" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de eliminar este cliente?')">Eliminar</a>
+                        <a href="delete.php?id=1" class="btn btn-sm btn-danger" onclick="return confirm('ï¿½Estï¿½ seguro de eliminar este cliente?')">Eliminar</a>
                     </td>
                 </tr>
                 <!-- Fila de ejemplo 2 -->
@@ -53,7 +53,7 @@
                     <td>Tour Cultural</td>
                     <td>
                         <a href="edit.php?id=2" class="btn btn-sm btn-warning">Editar</a>
-                        <a href="delete.php?id=2" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de eliminar este cliente?')">Eliminar</a>
+                        <a href="delete.php?id=2" class="btn btn-sm btn-danger" onclick="return confirm('EstÃ¡ seguro de eliminar este cliente?')">Eliminar</a>
                     </td>
                 </tr>
             </tbody>

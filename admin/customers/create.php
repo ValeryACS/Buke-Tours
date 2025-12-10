@@ -25,7 +25,7 @@ header("Content-Type: text/html; charset=UTF-8");
     </div>
 
     <div class="mb-3">
-      <label for="telefono" class="form-label">Teléfono</label>
+      <label for="telefono" class="form-label">TelÃ©fono</label>
       <input type="tel" name="telefono" id="telefono" class="form-control" required />
     </div>
 

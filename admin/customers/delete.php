@@ -2,18 +2,18 @@
 header("Content-Type: text/html; charset=UTF-8");
 
 if (!isset($_GET['id'])) {
-    die("Error: No se proporcionó el ID del cliente.");
+    die("Error: No se proporcionï¿½ el ID del cliente.");
 }
 
 $id = intval($_GET['id']);
 
-// Aquí deberías eliminar el cliente de la base de datos según $id.
-// Por ahora mostramos solo mensaje y redirección.
+// Aquï¿½ deberï¿½as eliminar el cliente de la base de datos segï¿½n $id.
+// Por ahora mostramos solo mensaje y redirecciï¿½n.
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Aquí va la lógica para eliminar el cliente en base de datos
+    // Aquï¿½ va la lï¿½gica para eliminar el cliente en base de datos
 
-    // Después redirige a lista de clientes
+    // Despuï¿½s redirige a lista de clientes
     header("Location: index.php");
     exit;
 }
@@ -30,10 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="container py-4">
   <h1>Eliminar Cliente #<?= $id ?></h1>
-  <p>¿Está seguro que desea eliminar este cliente?</p>
+  <p>Esta seguro que desea eliminar este cliente?</p>
 
   <form method="POST">
-    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <button type="submit" class="btn btn-danger">SÃ­, eliminar</button>
     <a href="index.php" class="btn btn-secondary">Cancelar</a>
   </form>
 </div>
