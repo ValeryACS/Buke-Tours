@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include '../php/config/db.php';
-include '../helpers/get-tours-reservation-dates.php';
+include '../php/helpers/get-tours-reservation-dates.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -20,7 +20,7 @@ if($userID<= 0){
 
 $mysqli = openConnection();
 
-$sql = 'SELECT reservation_tour.*, tour.*, reservation.* FROM reservation_tour INNER JOIN tour ON reservation_tour.tour_id = tour.id INNER JOIN reservation ON reservation_tour.reservation_id = reservation.id WHERE reservation.userId = ? ';
+$sql = 'SELECT reservation_tour.*, tour.*, reservation.* FROM reservation_tour INNER JOIN tour ON reservation_tour.tour_id = tour.id INNER JOIN reservation ON reservation_tour.reservation_id = reservation.id WHERE reservation.userId = ? GROUP BY tour.id;';
 
 $invoices= $mysqli->prepare($sql);
 
@@ -60,10 +60,6 @@ if ($result) {
     ?>
     <main>
       <section id="invoices" class="py-5">
-        
-        <script defer>
-            
-        </script>
         <div class="container-lg bg-yellow-light  py-5">
             <div class="row">
                 <aside class="col-12 col-lg-2 mb-4">
@@ -110,9 +106,7 @@ if ($result) {
                 </thead>
                 <tbody>
                     <?php
-                    $counterTables =  0;
                     foreach ($rows as $filaDesktop):
-                        $counterTables++;
                         $extras = [];
                         if ($filaDesktop['breakfast']) $extras[] = 'Desayuno';
                         if ($filaDesktop['lunch']) $extras[] = 'Almuerzo';
@@ -129,14 +123,14 @@ if ($result) {
                     ?>
                     <tr>
                         <td>
-                            <h4 class="subtitulo mb-2">Factura #<?= $counterTables ?></h4>
+                            <h4 class="subtitulo mb-2">Factura #<?php echo $filaDesktop['id']; ?></h4>
                             <p class="fw-semibold mb-1">Tour <?= htmlspecialchars($filaDesktop['title'] ?? '') ?></p>
                             <p class="mb-0"><?= htmlspecialchars($filaDesktop['email']) ?></p>
                             <small><?= htmlspecialchars($filaDesktop['telephone']) ?></small>
                         </td>
                         <td><?= htmlspecialchars($details) ?></td>
                         <td class="fw-bold">$<?= number_format((float)$filaDesktop['total'], 2) ?></td>
-                        <td><?= getTourReservationDates($filaDesktop['id']);?></td>
+                        <td><?= getTourReservationDates($filaDesktop['id'] , $filaDesktop['tour_id']);?></td>
                         <td>
                             <time datetime="<?= htmlspecialchars($filaDesktop['created_at']) ?>">
                                 <?= htmlspecialchars(date('Y-m-d H:i', strtotime($filaDesktop['created_at']))) ?>
@@ -234,10 +228,11 @@ if ($result) {
         </div>
       </section>
     </main>
-    <script type="module" src="/Buke-Tours/assets/js/invoices-page.js" defer></script>
+    
     <?php 
       include '../php/components/footer.php';
       include '../php/components/cart-modal.php';
+      include '../php/scripts/invoices-scripts.php';
     ?>
     <script defer async>
         $(document).ready(() => {

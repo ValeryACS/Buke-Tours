@@ -1,6 +1,7 @@
 .profile-form-section label{
     background: #9b4047;
-    color: #ffd89c;
+    color: #ffd89c !important;
     padding: 10px 30px;
-    max-width: 1200px;
+    max-width: none;
+    text-align: start;
 }

@@ -1,4 +1,4 @@
-CREATE DATABASE buke_tours_db;
+CREATE DATABASE IF NOT EXISTS buke_tours_db;
 
 USE buke_tours_db;
 
@@ -93,6 +93,78 @@ CREATE TABLE IF NOT EXISTS  reservation(
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
 
+
+
+
+DROP TABLE IF EXISTS reservation_tour;
+
+CREATE TABLE reservation_tour (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+
+  reservation_id INT UNSIGNED NOT NULL,
+  tour_id        INT UNSIGNED NOT NULL,
+
+  check_in_date  DATE NOT NULL,
+  check_out_date DATE NOT NULL,
+
+  adults   INT UNSIGNED NOT NULL DEFAULT 0, -- cantidad reservada
+  children INT UNSIGNED NOT NULL DEFAULT 0, -- cantidad reservada
+
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (id),
+
+  CONSTRAINT fk_reservation_tour_reservation
+    FOREIGN KEY (reservation_id)
+    REFERENCES reservation(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+  CONSTRAINT fk_reservation_tour_tour
+    FOREIGN KEY (tour_id)
+    REFERENCES tour(id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS feedback;
+
+CREATE TABLE feedback (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  score INT NOT NULL DEFAULT 1,
+  tour_id INT UNSIGNED NOT NULL,
+  customer_id INT UNSIGNED NOT NULL,
+  full_name VARCHAR(200) NOT NULL,
+  comment VARCHAR(200) NOT NULL,
+  status ENUM('Aprobada','Denegada', 'Pendiente') NOT NULL,
+  PRIMARY KEY (id),
+   CONSTRAINT fk_feedback_customer_id
+    FOREIGN KEY (customer_id)
+    REFERENCES customer(id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT fk_feedback_tour_id
+    FOREIGN KEY (tour_id)
+    REFERENCES tour(id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+DROP VIEW IF EXISTS customer_purchased_tours;
+
+CREATE VIEW customer_purchased_tours AS
+SELECT DISTINCT
+  r.userId     AS customer_id,
+  t.id         AS tour_id,
+  t.title      AS tour_title
+FROM reservation r
+JOIN reservation_tour rt ON rt.reservation_id = r.id
+JOIN tour t              ON t.id = rt.tour_id;
 
 INSERT INTO tour (
   sku,
@@ -399,37 +471,91 @@ INSERT INTO tour (
   10
 );
 
-DROP TABLE IF EXISTS reservation_tour;
+INSERT INTO customer (
+  full_name,
+  email,
+  password_hash,
+  phone,
+  country,
+  passport,
+  lang,
+  genre,
+  home_addres,
+  city,
+  province,
+  zip_code,
+  birth_date
+) VALUES
+('Juan Pérez', 'juan.perez@email.com', 'hash1', '8888-1111', 'Costa Rica', 'A1234567', 'es', 'Masculino', 'Calle 1', 'San José', 'San José', '10101', '1990-01-01'),
+('María Rodríguez', 'maria.rodriguez@email.com', 'hash2', '8888-2222', 'Costa Rica', 'B2345678', 'es', 'Femenino', 'Calle 2', 'Alajuela', 'Alajuela', '20101', '1985-02-02'),
+('Carlos Jiménez', 'carlos.jimenez@email.com', 'hash3', '8888-3333', 'Costa Rica', 'C3456789', 'es', 'Masculino', 'Calle 3', 'Cartago', 'Cartago', '30101', '1988-03-03'),
+('Ana Morales', 'ana.morales@email.com', 'hash4', '8888-4444', 'Costa Rica', 'D4567890', 'es', 'Femenino', 'Calle 4', 'Heredia', 'Heredia', '40101', '1992-04-04'),
+('Luis Fernández', 'luis.fernandez@email.com', 'hash5', '8888-5555', 'Costa Rica', 'E5678901', 'es', 'Masculino', 'Calle 5', 'Puntarenas', 'Puntarenas', '50101', '1987-05-05');
 
-CREATE TABLE reservation_tour (
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
-  reservation_id INT UNSIGNED NOT NULL,
-  tour_id        INT UNSIGNED NOT NULL,
 
-  check_in_date  DATE NOT NULL,
-  check_out_date DATE NOT NULL,
+INSERT INTO reservation (
+  full_name,
+  email,
+  telephone,
+  country,
+  passport,
+  adults,
+  children,
+  idioma,
+  breakfast,
+  lunch,
+  dinner,
+  transport,
+  travel_insurance,
+  photo_package,
+  home_address,
+  city,
+  province,
+  postal_code,
+  total,
+  subtotal,
+  userId
+) VALUES
+('Juan Pérez', 'juan.perez@email.com', '8888-1111', 'Costa Rica', 'A1234567', 2, 0, 'es', TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, 'Calle 1', 'San José', 'San José', '10101', 150.00, 140.00, 1),
+('María Rodríguez', 'maria.rodriguez@email.com', '8888-2222', 'Costa Rica', 'B2345678', 1, 1, 'es', FALSE, TRUE, FALSE, FALSE, TRUE, FALSE, 'Calle 2', 'Alajuela', 'Alajuela', '20101', 130.00, 120.00, 2),
+('Carlos Jiménez', 'carlos.jimenez@email.com', '8888-3333', 'Costa Rica', 'C3456789', 2, 2, 'es', FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, 'Calle 3', 'Cartago', 'Cartago', '30101', 200.00, 180.00, 3),
+('Ana Morales', 'ana.morales@email.com', '8888-4444', 'Costa Rica', 'D4567890', 1, 0, 'es', TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, 'Calle 4', 'Heredia', 'Heredia', '40101', 90.00, 85.00, 4),
+('Luis Fernández', 'luis.fernandez@email.com', '8888-5555', 'Costa Rica', 'E5678901', 3, 1, 'es', FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, 'Calle 5', 'Puntarenas', 'Puntarenas', '50101', 250.00, 230.00, 5);
 
-  adults   INT UNSIGNED NOT NULL DEFAULT 0, -- cantidad reservada
-  children INT UNSIGNED NOT NULL DEFAULT 0, -- cantidad reservada
+INSERT INTO reservation_tour (
+  reservation_id,
+  tour_id,
+  check_in_date,
+  check_out_date,
+  adults,
+  children
+) VALUES
+(1, 1, '2024-07-01', '2024-07-02', 2, 0),
+(2, 2, '2024-07-03', '2024-07-03', 1, 1),
+(3, 3, '2024-07-04', '2024-07-05', 2, 2),
+(4, 4, '2024-07-06', '2024-07-06', 1, 0),
+(5, 5, '2024-07-07', '2024-07-08', 3, 1),
+(1, 6, '2024-07-09', '2024-07-09', 2, 0),
+(2, 7, '2024-07-10', '2024-07-10', 1, 1),
+(3, 8, '2024-07-11', '2024-07-12', 2, 2),
+(4, 9, '2024-07-13', '2024-07-13', 1, 0),
+(5, 10, '2024-07-14', '2024-07-15', 3, 1),
+(1, 11, '2024-07-16', '2024-07-16', 2, 0),
+(2, 12, '2024-07-17', '2024-07-17', 1, 1),
+(3, 13, '2024-07-18', '2024-07-19', 2, 2);
 
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-  PRIMARY KEY (id),
-
-  CONSTRAINT fk_reservation_tour_reservation
-    FOREIGN KEY (reservation_id)
-    REFERENCES reservation(id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-
-  CONSTRAINT fk_reservation_tour_tour
-    FOREIGN KEY (tour_id)
-    REFERENCES tour(id)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE
-) ENGINE=InnoDB
-  DEFAULT CHARSET=utf8mb4
-  COLLATE=utf8mb4_unicode_ci;
-
+INSERT INTO feedback (score, tour_id, customer_id, full_name, comment , status) VALUES
+(5, 1, 1, 'Juan Pérez', '¡Excelente tour, muy recomendado!', 'Aprobada'),
+(4, 2, 2, 'María Rodríguez', 'Muy bonito el parque, pero había mucha gente.', 'Aprobada'),
+(5, 3, 3, 'Carlos Jiménez', 'La experiencia en bote fue increíble.', 'Aprobada'),
+(3, 4, 4, 'Ana Morales', 'Esperaba más adrenalina en el canopy.', 'Aprobada'),
+(5, 5, 5, 'Luis Fernández', 'Hermoso lugar y guías muy atentos.', 'Aprobada'),
+(4, 6, 1, 'Sofía Vargas', 'El bosque nuboso es mágico, pero llovió mucho.', 'Aprobada'),
+(5, 7, 2, 'Pedro Castillo', 'El volcán es impresionante, volvería.', 'Aprobada'),
+(4, 8, 3, 'Gabriela Soto', 'Rafting divertido, pero el agua estaba fría.', 'Aprobada'),
+(5, 9, 4, 'Ricardo Salazar', 'La catarata es un espectáculo natural.', 'Aprobada'),
+(5, 10, 5, 'Daniela Méndez', 'Playa Sámara es perfecta para familias.', 'Aprobada'),
+(4, 11, 1, 'Esteban Rojas', 'Corcovado es único, pero el acceso es difícil.', 'Aprobada'),
+(5, 12, 2, 'Valeria Quesada', 'Las cataratas Nauyaca son impresionantes.', 'Aprobada'),
+(5, 13, 3, 'Jorge Navarro', 'Aprendí a surfear en Tamarindo, excelente clase.', 'Aprobada');

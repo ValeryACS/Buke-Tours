@@ -35,7 +35,7 @@ $html_lang = $_SESSION['lang'];
       <form id="login-form" class="mb-2" novalidate>
         <label
           for="email"
-          class="form-label d-flex text-start d-flex text-start"
+          class="form-label d-flex text-start"
           ><?php echo $lang['correo_electronico_ph'] ?></label
         >
         <input
@@ -48,7 +48,7 @@ $html_lang = $_SESSION['lang'];
         <br />
         <label
           for="password"
-          class="form-label d-flex text-start d-flex text-start"
+          class="form-label d-flex text-start"
           ><?php echo $lang['contrasena_ph'] ?></label
         >
         <input
