@@ -45,7 +45,7 @@ $html_lang = $_SESSION['lang'];
               id="search-input-tour"
             />
           </div>
-          <div class="col-12 col-sm-6 col-md-3">
+          <div class="col-12 col-sm-6 col-md-2">
             <input
               type="date"
               class="form-control"
@@ -55,7 +55,7 @@ $html_lang = $_SESSION['lang'];
               placeholder="Check in"
             />
           </div>
-          <div class="col-12 col-sm-6 col-md-3">
+          <div class="col-12 col-sm-6 col-md-2">
             <input
               type="date"
               class="form-control"
@@ -68,6 +68,15 @@ $html_lang = $_SESSION['lang'];
           <div class="col-12 col-md-2 d-grid">
             <button type="button" id="btn-search-tours" class="btn btn-success">
               <i class="bi bi-search"></i>
+            </button>
+          </div>
+          <div class="col-12 col-md-2 d-grid">
+            <button
+              type="button"
+              id="btn-clear-tours-search"
+              class="btn btn-danger"
+            >
+              <i class="bi bi-arrow-counterclockwise me-1"></i>
             </button>
           </div>
         </form>
