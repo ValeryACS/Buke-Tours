@@ -235,6 +235,8 @@ if($userID > 0){  ?>
     <?php 
       include '../../php/components/footer.php';
       include '../../php/components/cart-modal.php';
+      include '../../php/scripts/common-scripts.php';
+
     ?>
     <script defer async>
         $(document).ready(() => {
