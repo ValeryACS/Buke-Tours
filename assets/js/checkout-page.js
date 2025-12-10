@@ -104,39 +104,22 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
         el.setAttribute("min", minDate);
       });
 
-    Array.from([seguro, transporte, fotos, desayuno, almuerzo, cena, adultos, ninos, Array.from(fechasDeIngreso), Array.from(fechasDeSalida)]).forEach(
-      (element) => {
-        if (Array.isArray(element)) {
-          element.forEach((elmnt) => {
-            elmnt.addEventListener("change", (e) => {
-              e.preventDefault();
-              totalOfAdults = adultos.reduce(
-                (acc, input) => acc + Number(input.value),
-                0
-              );
-              totalOfChildren = ninos.reduce(
-                (acc, input) => acc + Number(input.value),
-                0
-              );
-              
-              calculateAccordionTotal(data);
-              calculateExtras({
-                children: totalOfChildren,
-                adultos: totalOfAdults,
-                hasBreakfast: desayuno.checked,
-                hasLunch: almuerzo.checked,
-                hasDinner: cena.checked,
-                hasSecurity: seguro.checked,
-                hasPhotos: fotos.checked,
-                hasTransport: transporte.checked,
-                subtotal: subtotal.value,
-                total: total.value,
-              });
-            });
-          });
-        } else {
-          element.addEventListener("change", (_) => {
-            // Recalcular totales en cada cambio antes de llamar a calculateExtras
+    Array.from([
+      seguro,
+      transporte,
+      fotos,
+      desayuno,
+      almuerzo,
+      cena,
+      adultos,
+      ninos,
+      Array.from(fechasDeIngreso),
+      Array.from(fechasDeSalida),
+    ]).forEach((element) => {
+      if (Array.isArray(element)) {
+        element.forEach((elmnt) => {
+          elmnt.addEventListener("change", (e) => {
+            e.preventDefault();
             totalOfAdults = adultos.reduce(
               (acc, input) => acc + Number(input.value),
               0
@@ -146,6 +129,7 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
               0
             );
 
+            calculateAccordionTotal(data);
             calculateExtras({
               children: totalOfChildren,
               adultos: totalOfAdults,
@@ -159,9 +143,34 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
               total: total.value,
             });
           });
-        }
+        });
+      } else {
+        element.addEventListener("change", (_) => {
+          // Recalcular totales en cada cambio antes de llamar a calculateExtras
+          totalOfAdults = adultos.reduce(
+            (acc, input) => acc + Number(input.value),
+            0
+          );
+          totalOfChildren = ninos.reduce(
+            (acc, input) => acc + Number(input.value),
+            0
+          );
+
+          calculateExtras({
+            children: totalOfChildren,
+            adultos: totalOfAdults,
+            hasBreakfast: desayuno.checked,
+            hasLunch: almuerzo.checked,
+            hasDinner: cena.checked,
+            hasSecurity: seguro.checked,
+            hasPhotos: fotos.checked,
+            hasTransport: transporte.checked,
+            subtotal: subtotal.value,
+            total: total.value,
+          });
+        });
       }
-    );
+    });
 
     btnCoupon.addEventListener("click", async () => {
       if (!inputCoupon.value.length) {
@@ -217,23 +226,31 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
       if (isValidCheckout) {
         const formData = new FormData();
 
-        const ingresos = Array.from(fechasDeIngreso).map((input)=>{
-         const rawId = input.dataset.tourId; // viene de data-tour-id="${sku}"
-          const hasNumericId = rawId !== undefined && rawId !== null && rawId !== "" && !Number.isNaN(Number(rawId));
+        const ingresos = Array.from(fechasDeIngreso).map((input) => {
+          const rawId = input.dataset.tourId; // viene de data-tour-id="${sku}"
+          const hasNumericId =
+            rawId !== undefined &&
+            rawId !== null &&
+            rawId !== "" &&
+            !Number.isNaN(Number(rawId));
 
           return {
             check_in_date: input.value,
             tour_id: hasNumericId ? parseInt(rawId, 10) : rawId || null,
           };
         });
-        const salidas = Array.from(fechasDeSalida).map((input)=>{
+        const salidas = Array.from(fechasDeSalida).map((input) => {
           const rawId = input.dataset.tourId; // viene de data-tour-id="${sku}"
-          const hasNumericId = rawId !== undefined && rawId !== null && rawId !== "" && !Number.isNaN(Number(rawId));
+          const hasNumericId =
+            rawId !== undefined &&
+            rawId !== null &&
+            rawId !== "" &&
+            !Number.isNaN(Number(rawId));
 
           return {
             check_out_date: input.value,
             tour_id: hasNumericId ? parseInt(rawId, 10) : rawId || null,
-          }
+          };
         });
 
         totalOfAdults = adultos.reduce(
@@ -244,7 +261,6 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
           (acc, input) => acc + Number(input.value),
           0
         );
-        
 
         formData.append("nombre", nombreCompleto.value);
         formData.append("email", email.value);
@@ -337,7 +353,6 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
           return;
         }
 
-        
         localStorage.removeItem("cart");
         await updateBasket();
         await updateCartTotal();
@@ -384,23 +399,31 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
       if (isValidCheckout) {
         const formData = new FormData();
 
-        const ingresos = Array.from(fechasDeIngreso).map((input)=>{
-         const rawId = input.dataset.tourId; // viene de data-tour-id="${sku}"
-          const hasNumericId = rawId !== undefined && rawId !== null && rawId !== "" && !Number.isNaN(Number(rawId));
+        const ingresos = Array.from(fechasDeIngreso).map((input) => {
+          const rawId = input.dataset.tourId; // viene de data-tour-id="${sku}"
+          const hasNumericId =
+            rawId !== undefined &&
+            rawId !== null &&
+            rawId !== "" &&
+            !Number.isNaN(Number(rawId));
 
           return {
             check_in_date: input.value,
             tour_id: hasNumericId ? parseInt(rawId, 10) : rawId || null,
           };
         });
-        const salidas = Array.from(fechasDeSalida).map((input)=>{
+        const salidas = Array.from(fechasDeSalida).map((input) => {
           const rawId = input.dataset.tourId; // viene de data-tour-id="${sku}"
-          const hasNumericId = rawId !== undefined && rawId !== null && rawId !== "" && !Number.isNaN(Number(rawId));
+          const hasNumericId =
+            rawId !== undefined &&
+            rawId !== null &&
+            rawId !== "" &&
+            !Number.isNaN(Number(rawId));
 
           return {
             check_out_date: input.value,
             tour_id: hasNumericId ? parseInt(rawId, 10) : rawId || null,
-          }
+          };
         });
 
         totalOfAdults = adultos.reduce(
@@ -411,7 +434,6 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
           (acc, input) => acc + Number(input.value),
           0
         );
-        
 
         formData.append("nombre", nombreCompleto.value);
         formData.append("email", email.value);
@@ -510,7 +532,6 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
           return;
         }
 
-        
         localStorage.removeItem("cart");
         await updateBasket();
         await updateCartTotal();

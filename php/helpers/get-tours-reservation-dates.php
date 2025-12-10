@@ -10,13 +10,13 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 
-function getTourReservationDates($reservationId){
+function getTourReservationDates($reservationId, $tourId){
     $userID = isset($_SESSION['id'])? (int)$_SESSION['id']: 0;
     if($userID<= 0){
         echo "Usuario inválido.";
     }
     else{
-        $sqlReservationTour = "SELECT `id`,`reservation_id`,`tour_id`,`check_in_date`,`check_out_date` FROM `reservation_tour` WHERE reservation_id = ?";
+        $sqlReservationTour = "SELECT `id`,`reservation_id`,`tour_id`,`check_in_date`,`check_out_date` FROM `reservation_tour` WHERE reservation_id = ? AND tour_id = ?";
 
         $mysqli = openConnection();
         $tourDates = $mysqli->prepare($sqlReservationTour);
@@ -25,7 +25,7 @@ function getTourReservationDates($reservationId){
             throw new RuntimeException('No se pudo preparar la consulta: ' . $mysqli->error);
         }
 
-        $tourDates->bind_param("i", $reservationId);
+        $tourDates->bind_param("ii", $reservationId,  $tourId);
         if($tourDates->execute()){
             $resultTourDates = $tourDates->get_result();
             $tourDatesHTML = "";

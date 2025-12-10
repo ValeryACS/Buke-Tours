@@ -25,18 +25,7 @@ include '../language/lang_' . $_SESSION['lang'] . '.php';
 
 $html_lang = $_SESSION['lang'];
 
-include '../php/config/db.php';
 
-
-$mysqli = openConnection();
-
-$sqlTours = 'SELECT `id`, `title` FROM tour';
-
-$toursDisponibles= $mysqli->prepare($sqlTours);
-$toursDisponibles->execute();
-$toursResult = $toursDisponibles->get_result();
-
-closeConnection($mysqli);
 ?>
 
 <!DOCTYPE html>
@@ -65,71 +54,10 @@ closeConnection($mysqli);
 
         <div class="formulario-resena">
           <h3>⭐<?php echo $lang['titulo_resena']; ?></h3>
-          <form action="#" method="post">
-            <label for="nombre"><?php echo $lang['label_nombre'];?></label>
-            <input type="text" id="nombre" name="nombre" required />
-            <label for="tour-id">Nombre del Tour</label>
-            <select id="tour-id" name="tour-id" required>
-              <option value="no-seleccionado" selected>Seleccione un Tour</option>
-              <?php
-              if ($toursResult) {
-                        while ($fila = $toursResult->fetch_assoc()):
-                          echo  "<option value='". $fila['id']."'>". $fila['title']."</option>";
-
-                        endwhile;
-              }
-              ?>
-            </select>
-            <label for="calificacion"><?php echo $lang['label_calificacion'];?></label>
-            <select id="calificacion" name="calificacion" required>
-              <option value="5" selected>⭐⭐⭐⭐⭐</option>
-              <option value="4">⭐⭐⭐⭐</option>
-              <option value="3">⭐⭐⭐</option>
-              <option value="2">⭐⭐</option>
-              <option value="1">⭐</option>
-            </select>
-
-            <label for="comentario"><?php echo $lang['comentario'];?></label>
-            <textarea
-              id="comentario"
-              name="comentario"
-              rows="4"
-              required
-            ></textarea>
-
-            <button type="button" id="btn-save-review"><?php echo $lang['boton_enviar'];?></button>
-          </form>
+          <?php include '../php/components/reviews-form.php';?>
         </div>
-
-        <div class="resenas-container">
-          <div class="reseña">
-            <div class="icono">👤</div>
-            <div class="contenido">
-              <div class="fw-bold">
-                Valery Campos <span class="estrellas">⭐⭐⭐⭐⭐</span>
-              </div>
-              <p>Excelente experiencia en el tour de Manglar.</p>
-            </div>
-          </div>
-          <div class="reseña">
-            <div class="icono">👤</div>
-            <div class="contenido">
-              <div class="fw-bold">
-                Maria Villanueva <span class="estrellas">⭐⭐⭐⭐⭐</span>
-              </div>
-              <p>Muy bueno, lo recomiendo.</p>
-            </div>
-          </div>
-          <div class="reseña">
-            <div class="icono">👤</div>
-            <div class="contenido">
-              <div class="fw-bold">
-                Jose Vargas <span class="estrellas">⭐⭐⭐⭐⭐</span>
-              </div>
-              <p>La experiencia fue increíble, logramos ver muchas especies.</p>
-            </div>
-          </div>
-        </div>
+        <?php include '../php/components/reviews-list.php';?>
+        
       </section>
     </main>
     <?php 
@@ -137,6 +65,6 @@ closeConnection($mysqli);
       include '../php/components/cart-modal.php';
       include '../php/scripts/common-scripts.php';
     ?>
-    <script src="/Buke-Tours/assets/js/reviews.pge.js"  type="module" defer></script>
+    
   </body>
 </html>
