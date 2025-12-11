@@ -1,4 +1,4 @@
-<?php
+<?php 
 header("Content-Type: text/html; charset=UTF-8");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -20,9 +20,8 @@ if ($adminID <= 0) {
     exit();
 }
 
-include '../../language/lang_' . $_SESSION['lang'] . '.php';
+include '../../language/lang_' . $_SESSION['lang'] . '.php'; 
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -31,28 +30,16 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
   <title>Crear Tour</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
   <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
-  <link rel="stylesheet" href="/Buke-Tours/assets/css/main.css" />
 </head>
 <body>
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
 
-<div class="container py-4">
-  <h1>Crear Tour</h1>
+<div class="container py-4 mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="h4 m-auto titulo px-5">Crear Tour</h4>
+  </div>
 
-  <?php if (isset($_GET['error'])): ?>
-    <div class="alert alert-danger">
-      <?php echo htmlspecialchars($_GET['error']); ?>
-    </div>
-  <?php endif; ?>
-
-  <form
-    id="tour-form"
-    method="POST"
-    action="/Buke-Tours/api/tours/create.php"
-    novalidate
-  >
-    <input type="hidden" name="from_admin" value="1" />
-
+  <form id="tour-form" novalidate>
     <div class="row g-3">
       <div class="col-12 col-md-6">
         <label for="sku" class="form-label d-flex text-start">SKU</label>
@@ -61,7 +48,7 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           name="sku"
           type="text"
           class="form-control"
-          placeholder="TOUR-MONTEVERDE-01"
+          autocomplete="off"
           required
         />
       </div>
@@ -73,7 +60,7 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           name="title"
           type="text"
           class="form-control"
-          placeholder="Canopy en Monteverde"
+          autocomplete="off"
           required
         />
       </div>
@@ -85,7 +72,7 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           name="location"
           type="text"
           class="form-control"
-          placeholder="Monteverde, Costa Rica"
+          autocomplete="off"
           required
         />
       </div>
@@ -97,7 +84,6 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           name="description"
           rows="4"
           class="form-control"
-          placeholder="Descripción detallada del tour..."
           required
         ></textarea>
       </div>
@@ -111,7 +97,6 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           step="0.01"
           min="0"
           class="form-control"
-          placeholder="99.99"
           required
         />
       </div>
@@ -126,7 +111,6 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           min="1"
           max="5"
           class="form-control"
-          placeholder="4.5"
           required
         />
       </div>
@@ -140,7 +124,6 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           step="0.5"
           min="0"
           class="form-control"
-          placeholder="3.5"
           required
         />
       </div>
@@ -153,7 +136,6 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           type="number"
           min="0"
           class="form-control"
-          placeholder="10"
           required
         />
       </div>
@@ -166,7 +148,6 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           type="number"
           min="0"
           class="form-control"
-          placeholder="5"
           required
         />
       </div>
@@ -180,7 +161,6 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           min="0"
           max="100"
           class="form-control"
-          placeholder="10"
           required
         />
       </div>
@@ -192,7 +172,7 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           name="img"
           type="text"
           class="form-control"
-          placeholder="https://example.com/imagen.jpg"
+          autocomplete="off"
           required
         />
       </div>
@@ -204,7 +184,7 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           name="cupon_code"
           type="text"
           class="form-control"
-          placeholder="BUKE10"
+          autocomplete="off"
         />
       </div>
 
@@ -215,15 +195,14 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
           name="iframe"
           rows="2"
           class="form-control"
-          placeholder="<iframe>...</iframe>"
         ></textarea>
       </div>
 
       <div class="col-12 d-flex justify-content-end pt-2">
         <button
           type="submit"
-          class="btn btn-success w-100 px-4"
-          id="btn-save-tour"
+          class="btn btn-danger w-100 px-4"
+          id="btn-create-tour"
         >
           Guardar Tour
         </button>
@@ -233,6 +212,6 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script type="module" src="/Buke-Tours/assets/js/tours/create-tour-page.js" defer></script>
 </body>
 </html>
-
