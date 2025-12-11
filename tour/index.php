@@ -54,6 +54,7 @@ if (!empty($rows)) {
     $currentLocation = $rows[0]['location'] ?? '';
     $currentTitle    = trim((string)($rows[0]['title'] ?? ''));
     $titlePattern    = '%' . $currentTitle . '%';
+    $locationPattern    = '%' . $currentLocation . '%';
 
     $sqlSimilar = "
         SELECT id, title, location, price_usd, rating, img
@@ -68,7 +69,7 @@ if (!empty($rows)) {
     ";
 
     if ($stmtSimilar = $mysqli->prepare($sqlSimilar)) {
-        $stmtSimilar->bind_param("isss", $tourId, $currentCategory, $titlePattern, $currentLocation);
+        $stmtSimilar->bind_param("isss", $tourId, $currentCategory, $titlePattern, $locationPattern);
         if ($stmtSimilar->execute()) {
             $resultSimilar = $stmtSimilar->get_result();
             while ($tourRow = $resultSimilar->fetch_assoc()) {
