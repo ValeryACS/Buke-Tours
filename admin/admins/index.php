@@ -46,7 +46,6 @@ closeConnection($mysqli);
     <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/Buke-Tours/assets/css/admin/footer.css" />
 
 </head>
 <body>
