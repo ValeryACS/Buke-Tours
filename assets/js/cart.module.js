@@ -1,4 +1,5 @@
 import {setTourDetailsForm} from './checkout-module.js';
+import {getLanguageData} from './language-module.js';
 
 /**
  * @function
@@ -157,6 +158,7 @@ export const saveCart = (cartObj) => {
 export const updateCartModal = async (cartObj) => {
   const cartList = document.getElementById("cartList");
   if (!cartList) return;
+  const language = await getLanguageData();
 
   const ids = Object.keys(cartObj || {});
   if (!ids.length) {
@@ -171,8 +173,8 @@ export const updateCartModal = async (cartObj) => {
       ?.classList?.add("d-none");
     document.querySelector("#checkout-form-skeleton")?.classList.add("d-none");
     cartList.innerHTML = `
-          <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
-          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">Comprar Tours</a>
+          <div class="text-center text-muted p-4">${language['tu_carro_esta_vacio']}</div>
+          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">${language['comprar_tours'] ?? 'Comprar Tours'}</a>
         `;
     return;
   }
@@ -453,11 +455,13 @@ export const updateBasket = async () => {
   const cartList = document.getElementById("cart-list-tours");
   if (!cartList) return;
 
+  const language = await getLanguageData();
+
   const ids = Object.keys(cart || {});
   if (ids.length === 0) {
     cartList.innerHTML = `
-          <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
-          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">Comprar Tours</a>
+          <div class="text-center text-muted p-4">${language['tu_carro_esta_vacio']}</div>
+          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">${language['comprar_tours']}</a>
         `;
     return;
   }
