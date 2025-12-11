@@ -1,79 +1,82 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+header("Content-Type: application/json; charset=UTF-8");
 
-header('Content-Type: application/json; charset=utf-8');
+require_once __DIR__ . "/../../php/config/db.php";
 
-include __DIR__ . "/../../php/config/db.php";
+$response = [
+    "success"   => false,
+    "message"   => "No se pudo eliminar el tour.",
+    "errors"    => [],
+    "deletedId" => null,
+];
 
-$mysqli  = null;
-$errors  = [];
-$success = false;
-$message = '';
 
-try {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        http_response_code(405);
-        throw new Exception('Método no permitido. Usa POST.');
-    }
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    $response["message"] = "Método no permitido. Usa POST.";
+    $response["errors"][] = "Método no permitido. Usa POST.";
+    echo json_encode($response);
+    exit;
+}
 
-    $fromAdmin = isset($_POST['from_admin']) && $_POST['from_admin'] === '1';
 
-    $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+$id = isset($_POST["id"]) ? (int) $_POST["id"] : 0;
+if ($id <= 0) {
+    $response["message"] = "ID de tour inválido.";
+    $response["errors"][] = "ID de tour inválido.";
+    echo json_encode($response);
+    exit;
+}
 
-    if ($id <= 0) {
-        $errors[] = 'ID de tour inválido.';
-        throw new Exception($errors[0]);
-    }
 
-    $mysqli = openConnection();
+$mysqli = openConnection();
+if (!$mysqli || $mysqli->connect_errno) {
+    $response["message"] = "No se pudo conectar a la base de datos.";
+    $response["errors"][] = "Error de conexión: " . $mysqli->connect_error;
+    echo json_encode($response);
+    exit;
+}
 
-    $stmt = $mysqli->prepare("DELETE FROM tour WHERE id = ? LIMIT 1");
-    if (!$stmt) {
-        throw new Exception('Error al preparar DELETE: ' . $mysqli->error);
-    }
 
-    $stmt->bind_param("i", $id);
+$sql = "DELETE FROM tour WHERE id = ? LIMIT 1";
+$stmt = $mysqli->prepare($sql);
 
-    if (!$stmt->execute()) {
-        throw new Exception('Error al ejecutar DELETE: ' . $stmt->error);
-    }
+if (!$stmt) {
+    $response["message"] = "Error al preparar la consulta.";
+    $response["errors"][] = "Prepare failed: " . $mysqli->error;
+    echo json_encode($response);
+    closeConnection($mysqli);
+    exit;
+}
 
-    if ($stmt->affected_rows === 0) {
-        $message = 'No se encontró el tour a eliminar.';
-    } else {
-        $message = 'Tour eliminado correctamente.';
-    }
+$stmt->bind_param("i", $id);
 
-    $success = true;
+if (!$stmt->execute()) {
+    
+    $response["message"] = "Error al ejecutar la eliminación.";
+    $response["errors"][] = "Execute failed: " . $stmt->error;
+    echo json_encode($response);
     $stmt->close();
-
-} catch (Exception $e) {
-    $errors[] = $e->getMessage();
-} finally {
-    if ($mysqli) {
-        closeConnection($mysqli);
-    }
+    closeConnection($mysqli);
+    exit;
 }
 
-$isFromAdmin = isset($fromAdmin) && $fromAdmin;
-
-if ($isFromAdmin) {
-    if ($success) {
-        header("Location: /Buke-Tours/admin/tours/index.php?success=" . urlencode($message));
-        exit;
-    } else {
-        $msg = $errors[0] ?? 'Error al eliminar tour.';
-        header("Location: /Buke-Tours/admin/tours/index.php?error=" . urlencode($msg));
-        exit;
-    }
+if ($stmt->affected_rows <= 0) {
+    $response["message"] = "No se encontró el tour o no se pudo eliminar.";
+    $response["errors"][] = "No rows affected.";
+    echo json_encode($response);
+    $stmt->close();
+    closeConnection($mysqli);
+    exit;
 }
 
 
-echo json_encode([
-    'success' => $success,
-    'message' => $success ? $message : ($errors[0] ?? 'Error al eliminar tour.'),
-    'error'   => $success ? null : $errors
-], JSON_UNESCAPED_UNICODE);
+$response["success"]   = true;
+$response["message"]   = "Tour eliminado correctamente.";
+$response["deletedId"] = $id;
+
+$stmt->close();
+closeConnection($mysqli);
+
+echo json_encode($response);
+

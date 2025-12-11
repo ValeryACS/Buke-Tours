@@ -1,51 +1,33 @@
-<?php 
-header("Content-Type: text/html; charset=UTF-8");
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+<?php
+session_start();
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: /Buke-Tours/admin/auth/login-admin.php");
+    exit;
 }
 
-include("../../php/config/db.php");
-
-if (!isset($_SESSION['lang'])) {
-    $_SESSION['lang'] = 'es';
+if (!isset($_GET['id'])) {
+    die("ID no proporcionado");
 }
 
-$adminID = isset($_SESSION['admin_id']) ? (int)$_SESSION['admin_id'] : 0;
-if ($adminID <= 0) {
-    header("Location: ../auth/login/");
-    exit();
+$tourId = intval($_GET['id']);
+
+
+$apiUrl = "http://localhost/Buke-Tours/api/tours/delete.php?id=" . $tourId;
+
+$ch = curl_init($apiUrl);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+curl_close($ch);
+
+$data = json_decode($response, true);
+
+if ($data["success"]) {
+    header("Location: /Buke-Tours/admin/tours/index.php?deleted=1");
+    exit;
+} else {
+    echo "Error al eliminar: " . ($data["message"] ?? "Error desconocido");
 }
 
-include '../../language/lang_' . $_SESSION['lang'] . '.php';
-?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Eliminar Tour</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
-</head>
-<body>
-<?php include '../../php/components/admin/nav-bar-admin.php'; ?>
-
-<div class="container py-4 mt-4">
-    <div class="alert alert-info text-center">
-        <h4 class="mb-3">Eliminación de Tour</h4>
-        <p>La eliminación de tours ahora se realiza directamente desde la tabla con AJAX.</p>
-        <p class="mb-4">Por favor regrese al panel de administración.</p>
-
-        <a href="/Buke-Tours/admin/tours/index.php" class="btn btn-primary">
-            Volver al listado de tours
-        </a>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>

@@ -1,152 +1,146 @@
 <?php
-// /Buke-Tours/api/tours/update.php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+
+
+header('Content-Type: application/json; charset=UTF-8');
+
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 
-header('Content-Type: application/json; charset=utf-8');
+include '../../php/config/db.php';
 
-include __DIR__ . "/../../php/config/db.php";
-
-$mysqli  = null;
-$errors  = [];
-$success = false;
+$response = [
+    'success'   => false,
+    'message'   => '',
+    'errors'    => [],
+    'updatedId' => null,
+];
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        http_response_code(405);
-        throw new Exception('Método no permitido. Usa POST.');
+        $response['message'] = 'Método no permitido. Usa POST.';
+        $response['errors'][] = 'Método no permitido. Usa POST.';
+        echo json_encode($response);
+        exit;
     }
 
-    $fromAdmin = isset($_POST['from_admin']) && $_POST['from_admin'] === '1';
-
-    $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
-
-    $title       = trim($_POST['nombre']      ?? '');
-    $description = trim($_POST['descripcion'] ?? '');
-    $location    = trim($_POST['ubicacion']   ?? '');
-    $img         = trim($_POST['img']         ?? '');
-
-    $price_usd      = isset($_POST['price_usd'])      ? (float)$_POST['price_usd']      : 0;
-    $rating         = isset($_POST['rating'])         ? (float)$_POST['rating']         : 0;
-    $duration_hours = isset($_POST['duration_hours']) ? (float)$_POST['duration_hours'] : 0;
-    $adults_limit   = isset($_POST['adults_limit'])   ? (int)$_POST['adults_limit']     : 0;
-    $children_limit = isset($_POST['children_limit']) ? (int)$_POST['children_limit']   : 0;
-    $discount       = isset($_POST['discount'])       ? (int)$_POST['discount']         : 0;
-
-    $cupon_code = trim($_POST['cupon_code'] ?? '');
-    $cupon_code = ($cupon_code === '') ? null : $cupon_code;
-
-    $iframe = trim($_POST['iframe'] ?? '');
-    $iframe = ($iframe === '') ? null : $iframe;
-
-    $cupon_discount = 0;
-
+    $id            = isset($_POST['id']) ? (int)$_POST['id'] : 0;
     if ($id <= 0) {
-        $errors[] = 'ID de tour inválido.';
+        $response['message'] = 'ID de tour inválido.';
+        $response['errors'][] = 'ID de tour inválido.';
+        echo json_encode($response);
+        exit;
     }
 
-    $missing_required =
-        $title === '' ||
-        $description === '' ||
-        $location === '' ||
-        $img === '';
+    
+    $sku           = trim($_POST['sku']           ?? '');
+    $title         = trim($_POST['title']         ?? '');
+    $location      = trim($_POST['location']      ?? '');
+    $description   = trim($_POST['description']   ?? '');
+    $price_usd     = trim($_POST['price_usd']     ?? '');
+    $rating        = trim($_POST['rating']        ?? '');
+    $duration      = trim($_POST['duration_hours'] ?? '');
+    $adults_limit  = trim($_POST['adults_limit']  ?? '');
+    $children_limit= trim($_POST['children_limit']?? '');
+    $discount      = trim($_POST['discount']      ?? '');
+    $img           = trim($_POST['img']           ?? '');
+    $cupon_code    = trim($_POST['cupon_code']    ?? '');
+    $iframe        = trim($_POST['iframe']        ?? '');
 
-    $invalid_values =
-        $price_usd <= 0 ||
-        $rating < 1 || $rating > 5 ||
-        $duration_hours <= 0 ||
-        $adults_limit <= 0 ||
-        $discount < 0 || $discount > 100;
+    
+    if ($sku === '')         { $response['errors'][] = 'El SKU es obligatorio.'; }
+    if ($title === '')       { $response['errors'][] = 'El nombre del tour es obligatorio.'; }
+    if ($location === '')    { $response['errors'][] = 'La ubicación es obligatoria.'; }
+    if ($description === '') { $response['errors'][] = 'La descripción es obligatoria.'; }
 
-    if ($missing_required) {
-        $errors[] = 'Faltan campos obligatorios (nombre, descripción, ubicación, img).';
+    if ($price_usd === '' || !is_numeric($price_usd)) {
+        $response['errors'][] = 'El precio debe ser numérico.';
     }
-    if ($invalid_values) {
-        $errors[] = 'Valores inválidos en precio, rating, duración, límite de adultos o descuento.';
+    if ($adults_limit === '' || !ctype_digit($adults_limit)) {
+        $response['errors'][] = 'El límite de adultos debe ser un número entero.';
+    }
+    if ($children_limit === '' || !ctype_digit($children_limit)) {
+        $response['errors'][] = 'El límite de niños debe ser un número entero.';
+    }
+    if ($discount === '' || !ctype_digit($discount)) {
+        $response['errors'][] = 'El descuento debe ser un número entero.';
     }
 
-    if (!empty($errors)) {
-        throw new Exception($errors[0]);
+    if (!empty($response['errors'])) {
+        $response['message'] = 'Errores de validación.';
+        echo json_encode($response);
+        exit;
     }
 
+    
+    $price_usd      = (float)$price_usd;
+    $rating         = $rating === '' ? null : (float)$rating;
+    $duration       = $duration === '' ? null : (float)$duration;
+    $adults_limit   = (int)$adults_limit;
+    $children_limit = (int)$children_limit;
+    $discount       = (int)$discount;
+
+    
     $mysqli = openConnection();
 
     $sql = "UPDATE tour
-            SET title = ?,
+            SET sku = ?,
+                title = ?,
                 location = ?,
+                description = ?,
                 price_usd = ?,
-                cupon_code = ?,
-                cupon_discount = ?,
                 rating = ?,
                 duration_hours = ?,
+                adults_limit = ?,
+                children_limit = ?,
                 discount = ?,
                 img = ?,
-                description = ?,
-                iframe = ?,
-                adults_limit = ?,
-                children_limit = ?
+                cupon_code = ?,
+                iframe = ?
             WHERE id = ?";
 
     $stmt = $mysqli->prepare($sql);
     if (!$stmt) {
-        throw new Exception('Error al preparar UPDATE: ' . $mysqli->error);
+        throw new Exception('Error al preparar el statement: ' . $mysqli->error);
     }
 
-    // Tipos: s s d s i d d i s s s i i i
-    $types = "ssdsiddisssiii";
-
+   
     $stmt->bind_param(
-        $types,
+        "ssssdddiiisssi",
+        $sku,
         $title,
         $location,
-        $price_usd,
-        $cupon_code,
-        $cupon_discount,
-        $rating,
-        $duration_hours,
-        $discount,
-        $img,
         $description,
-        $iframe,
+        $price_usd,
+        $rating,
+        $duration,
         $adults_limit,
         $children_limit,
+        $discount,
+        $img,
+        $cupon_code,
+        $iframe,
         $id
     );
 
     if (!$stmt->execute()) {
-        throw new Exception('Error al ejecutar UPDATE: ' . $stmt->error);
+        throw new Exception('Error al ejecutar el UPDATE: ' . $stmt->error);
     }
 
-    $success = true;
     $stmt->close();
+    closeConnection($mysqli);
 
-} catch (Exception $e) {
-    $errors[] = $e->getMessage();
-} finally {
-    if ($mysqli) {
-        closeConnection($mysqli);
-    }
+    $response['success']   = true;
+    $response['message']   = 'Tour actualizado correctamente.';
+    $response['updatedId'] = $id;
+
+    echo json_encode($response);
+    exit;
+
+} catch (Throwable $e) {
+    $response['success'] = false;
+    $response['message'] = 'Error interno al actualizar el tour.';
+    $response['errors'][] = $e->getMessage();
+    echo json_encode($response);
+    exit;
 }
-
-$isFromAdmin = isset($fromAdmin) && $fromAdmin;
-
-if ($isFromAdmin) {
-    if ($success) {
-        header("Location: /Buke-Tours/admin/tours/index.php?success=" . urlencode('Tour actualizado correctamente.'));
-        exit;
-    } else {
-        $msg = $errors[0] ?? 'Error al actualizar tour.';
-        // Redirige de nuevo a edit con el id
-        $idParam = isset($id) ? (int)$id : 0;
-        header("Location: /Buke-Tours/admin/tours/edit.php?id={$idParam}&error=" . urlencode($msg));
-        exit;
-    }
-}
-
-// JSON para Postman / JS
-echo json_encode([
-    'success' => $success,
-    'message' => $success ? 'Tour actualizado correctamente.' : ($errors[0] ?? 'Error al actualizar tour.'),
-    'error'   => $success ? null : $errors
-], JSON_UNESCAPED_UNICODE);

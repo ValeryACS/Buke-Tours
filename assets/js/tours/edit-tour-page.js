@@ -1,192 +1,106 @@
-import { setOnChangeEvents } from "../utils.module.js";
 
-function validateTourForm({
-  stringsRequeridos = [],
-  numerosRequeridos = [],
-  ratingInput,
-  discountInput,
-}) {
-  let isValid = true;
-  const errores = [];
+function validateEditTourForm() {
+  const requiredTextIds = ["sku", "title", "location", "description"];
+  const requiredNumberIds = ["price_usd", "adults_limit", "children_limit"];
 
-  const limpiarEstado = (inputs) => {
-    inputs.forEach((input) => {
-      if (!input) return;
-      input.classList.remove("is-invalid");
-    });
-  };
+  let valid = true;
+  let messages = [];
 
-  limpiarEstado([...stringsRequeridos, ...numerosRequeridos, ratingInput, discountInput]);
-
-  const marcarError = (input, mensaje) => {
-    if (!input) return;
-    isValid = false;
-    input.classList.add("is-invalid");
-    errores.push(mensaje);
-  };
-
-  
-  stringsRequeridos.forEach((input) => {
-    if (!input) return;
-    if (!input.value || input.value.trim() === "") {
-      marcarError(input, `El campo "${input.id}" es obligatorio.`);
-    }
-  });
-
-  
-  numerosRequeridos.forEach((input) => {
-    if (!input) return;
-    const valor = parseFloat(input.value);
-    if (isNaN(valor)) {
-      marcarError(input, `El campo "${input.id}" debe ser un número válido.`);
-      return;
-    }
-    if (valor < 0) {
-      marcarError(input, `El campo "${input.id}" no puede ser negativo.`);
-    }
-  });
-
- 
-  if (ratingInput) {
-    const ratingVal = parseFloat(ratingInput.value);
-    if (isNaN(ratingVal) || ratingVal < 1 || ratingVal > 5) {
-      marcarError(
-        ratingInput,
-        'El campo "rating" debe estar entre 1.0 y 5.0.'
-      );
+  for (const id of requiredTextIds) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (!el.value.trim()) {
+      valid = false;
+      el.classList.add("is-invalid");
+      messages.push(`El campo ${id} es obligatorio.`);
+    } else {
+      el.classList.remove("is-invalid");
     }
   }
 
-  
-  if (discountInput) {
-    const discountVal = parseFloat(discountInput.value);
-    if (isNaN(discountVal) || discountVal < 0 || discountVal > 100) {
-      marcarError(
-        discountInput,
-        'El campo "discount" debe estar entre 0 y 100.'
-      );
+  for (const id of requiredNumberIds) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    const v = el.value.trim();
+    if (v === "" || isNaN(v)) {
+      valid = false;
+      el.classList.add("is-invalid");
+      messages.push(`El campo numérico ${id} es obligatorio.`);
+    } else {
+      el.classList.remove("is-invalid");
     }
   }
 
-  if (!isValid && errores.length) {
-    Swal.fire({
-      icon: "error",
-      title: "Revisa los datos del Tour",
-      text: errores.join(" "),
-      toast: false,
-      position: "top",
-      showConfirmButton: true,
-    });
+  if (!valid) {
+    alert(messages.join("\n"));
   }
-
-  return isValid;
+  return valid;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const tourEditForm = document.getElementById("tour-edit-form");
-  if (!tourEditForm) return;
+  console.log("[edit-tour-page] DOMContentLoaded");
 
-  tourEditForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+  const form = document.getElementById("tour-edit-form");
+  if (!form) {
+    console.error("[edit-tour-page] No se encontró #tour-edit-form");
+    return;
+  }
 
-    const id            = document.getElementById("tour_id");
-    const sku           = document.getElementById("sku");
-    const title         = document.getElementById("title");
-    const location      = document.getElementById("location");
-    const description   = document.getElementById("description");
-    const priceUSD      = document.getElementById("price_usd");
-    const rating        = document.getElementById("rating");
-    const durationHours = document.getElementById("duration_hours");
-    const adultsLimit   = document.getElementById("adults_limit");
-    const childrenLimit = document.getElementById("children_limit");
-    const discount      = document.getElementById("discount");
-    const img           = document.getElementById("img");
-    const cuponCode     = document.getElementById("cupon_code");
-    const iframe        = document.getElementById("iframe");
+  form.addEventListener("submit", async (event) => {
+    console.log("[edit-tour-page] submit capturado");
+    event.preventDefault(); // MUY IMPORTANTE
 
-    setOnChangeEvents({
-      inputTextStrings: [sku, title, location, description, img, cuponCode, iframe],
-      inputNumbers: [priceUSD, rating, durationHours, adultsLimit, childrenLimit, discount],
-    });
+    const idInput = document.getElementById("tour_id");
+    if (!idInput || !idInput.value) {
+      alert("ID de tour inválido.");
+      return;
+    }
 
-    const esValido = validateTourForm({
-      stringsRequeridos: [sku, title, location, description, img],
-      numerosRequeridos: [priceUSD, durationHours, adultsLimit, childrenLimit],
-      ratingInput: rating,
-      discountInput: discount,
-    });
+    // Validar
+    const isValid = validateEditTourForm();
+    if (!isValid) {
+      console.warn("[edit-tour-page] formulario inválido");
+      return;
+    }
 
-    if (!esValido) return;
-
-    const formData = new FormData(tourEditForm);
-    formData.append("id", id.value);
+    const formData = new FormData(form);
+    formData.set("id", idInput.value);
 
     try {
+      console.log("[edit-tour-page] Enviando fetch a /Buke-Tours/api/tours/update.php");
       const response = await fetch("/Buke-Tours/api/tours/update.php", {
         method: "POST",
         body: formData,
       });
 
-      if (!response.ok) {
-        const text = await response.text();
-        Swal.fire({
-          icon: "error",
-          title: "Error al actualizar Tour",
-          text: text || "Ocurrió un error en el servidor.",
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 6000,
-          timerProgressBar: true,
-        });
+      const rawText = await response.text();
+      console.log("[edit-tour-page] Respuesta cruda:", rawText);
+
+      let result;
+      try {
+        result = JSON.parse(rawText);
+      } catch (parseErr) {
+        console.error("No es JSON válido:", rawText);
+        alert("Error al actualizar tour: la API no devolvió JSON válido.");
         return;
       }
 
-      const result = await response.json();
-
-      if (!result?.success) {
+      if (!response.ok || !result?.success) {
         const msg =
           Array.isArray(result?.errors) && result.errors.length
             ? result.errors.join(", ")
             : result?.message || "No se pudo actualizar el tour.";
-        Swal.fire({
-          icon: "error",
-          title: "El Tour no pudo ser actualizado",
-          text: msg,
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 6000,
-          timerProgressBar: true,
-        });
+        console.error("[edit-tour-page] Error en update:", result);
+        alert("El tour no pudo ser actualizado: " + msg);
         return;
       }
 
-      Swal.fire({
-        icon: "success",
-        title: "Tour actualizado exitosamente",
-        text: result?.message || "El tour ha sido actualizado exitosamente.",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
-      });
-
-      setTimeout(() => {
-        window.location.href = "/Buke-Tours/admin/tours/index.php";
-      }, 3000);
+      alert(result?.message || "Tour actualizado correctamente.");
+      // Redirigir a la lista
+      window.location.href = "/Buke-Tours/admin/tours/index.php";
     } catch (err) {
-      Swal.fire({
-        icon: "error",
-        title: "Error de red",
-        text: "No se pudo conectar con el servidor. Intenta nuevamente.",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 6000,
-        timerProgressBar: true,
-      });
+      console.error("[edit-tour-page] Error de red:", err);
+      alert("Error de red al actualizar tour: " + (err?.message || err));
     }
   });
 });

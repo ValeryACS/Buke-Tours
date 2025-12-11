@@ -22,6 +22,7 @@ if ($adminID <= 0) {
 
 include '../../language/lang_' . $_SESSION['lang'] . '.php'; 
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

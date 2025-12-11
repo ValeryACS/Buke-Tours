@@ -1,28 +1,19 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const deleteButtons = document.querySelectorAll(".btn-delete-tour");
   if (!deleteButtons.length) return;
 
   deleteButtons.forEach((btn) => {
-    btn.addEventListener("click", async () => {
+    btn.addEventListener("click", async (event) => {
+      event.preventDefault(); 
+
       const tourId = btn.dataset.tourId;
       if (!tourId) return;
 
-      const confirmResult = await Swal.fire({
-        icon: "warning",
-        title: "¿Eliminar Tour?",
-        text: "Esta acción no se puede deshacer.",
-        showCancelButton: true,
-        confirmButtonText: "Sí, eliminar",
-        cancelButtonText: "Cancelar",
-        toast: false,
-      });
-
-      if (!confirmResult.isConfirmed) return;
+      const confirmed = window.confirm("¿Seguro que deseas eliminar este tour?");
+      if (!confirmed) return;
 
       const formData = new FormData();
       formData.append("id", tourId);
-      formData.append("from_admin", "1");
 
       try {
         const response = await fetch("/Buke-Tours/api/tours/delete.php", {
@@ -30,67 +21,42 @@ document.addEventListener("DOMContentLoaded", () => {
           body: formData,
         });
 
-        if (!response.ok) {
-          const text = await response.text();
-          Swal.fire({
-            icon: "error",
-            title: "Error al eliminar Tour",
-            text: text || "Ocurrió un error en el servidor.",
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 6000,
-            timerProgressBar: true,
-          });
+        const text = await response.text();
+        let result;
+
+        try {
+          result = JSON.parse(text);
+        } catch (e) {
+          console.error("Respuesta no JSON del delete.php:", text);
+          alert("Respuesta no válida del servidor al eliminar el tour.");
           return;
         }
 
-        const result = await response.json();
+        console.log("Resultado delete tour:", result);
 
-        if (!result?.success) {
+        if (!result.success) {
           const msg =
-            Array.isArray(result?.errors) && result.errors.length
+            Array.isArray(result.errors) && result.errors.length
               ? result.errors.join(", ")
-              : result?.message || "No se pudo eliminar el tour.";
-          Swal.fire({
-            icon: "error",
-            title: "El Tour no pudo ser eliminado",
-            text: msg,
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 6000,
-            timerProgressBar: true,
-          });
+              : result.message || "No se pudo eliminar el tour.";
+          alert("Error al eliminar el tour: " + msg);
           return;
         }
 
+        
         const row = document.querySelector(`tr[data-tour-row="${tourId}"]`);
-        if (row) row.remove();
+        if (row) {
+          row.remove();
+        }
 
-        Swal.fire({
-          icon: "success",
-          title: "Tour eliminado",
-          text: result?.message || "El tour se eliminó correctamente.",
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 4000,
-          timerProgressBar: true,
-        });
+        alert(result.message || "Tour eliminado correctamente.");
       } catch (err) {
-        Swal.fire({
-          icon: "error",
-          title: "Error de red",
-          text: "No se pudo conectar con el servidor. Intenta nuevamente.",
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 6000,
-          timerProgressBar: true,
-        });
+        console.error("Error de red al eliminar tour:", err);
+        alert(
+          "Error de red al eliminar el tour: " +
+            (err?.message || String(err))
+        );
       }
     });
   });
 });
-

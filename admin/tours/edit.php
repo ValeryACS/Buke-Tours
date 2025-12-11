@@ -43,6 +43,7 @@ if (!$tour) {
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -247,7 +248,8 @@ if (!$tour) {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script type="module" src="/Buke-Tours/assets/js/tours/edit-tour-page.js" defer></script>
+<script type="module" src="/Buke-Tours/assets/js/tours/edit-tour-page.js"></script>
+
 </body>
 </html>
 
