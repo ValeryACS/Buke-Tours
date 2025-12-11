@@ -37,7 +37,7 @@ include '../../php/helpers/get-country.php';
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
 <div class="container py-4 mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="h4 m-auto titulo px-5">Lista de Clientes</h4>
+        <h4 class="h4 m-auto titulo px-5">Agregar de Clientes</h4>
   </div>
 
    <form id="admin-form" novalidate>
