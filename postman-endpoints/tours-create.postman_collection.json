@@ -1,0 +1,45 @@
+{
+  "info": {
+    "name": "Buke Tours - Tours Create",
+    "description": "Crea un nuevo tour mediante el endpoint /api/tours/create.php",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "POST Crear Tour",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "sku", "value": "TOUR-EXAMPLE-01" },
+            { "key": "title", "value": "Nuevo Tour de Ejemplo" },
+            { "key": "location", "value": "Costa Rica" },
+            { "key": "price_usd", "value": "50.00" },
+            { "key": "img", "value": "https://example.com/tour.jpg" },
+            { "key": "description", "value": "Descripción del tour" },
+            { "key": "cupon_code", "value": "BUKE10" },
+            { "key": "cupon_discount", "value": "10" },
+            { "key": "rating", "value": "4.5" },
+            { "key": "duration_hours", "value": "3" },
+            { "key": "discount", "value": "5" },
+            { "key": "iframe", "value": "<iframe>...</iframe>" },
+            { "key": "adults_limit", "value": "10" },
+            { "key": "children_limit", "value": "5" }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/Buke-Tours/api/tours/create.php",
+          "host": ["{{baseUrl}}"],
+          "path": ["Buke-Tours", "api", "tours", "create.php"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost" }
+  ]
+}

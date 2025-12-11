@@ -1,44 +1,82 @@
 <?php
-/**
- * API GET - Usado para retornar todos los tours almacenados en la base de datos
- */
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include("../../php/config/db.php");
+header('Content-Type: application/json; charset=utf-8');
 
-if($_SERVER["REQUEST_METHOD"] === "GET"){
+include __DIR__ . "/../../php/config/db.php";
+
+$mysqli = null;
+$errors = [];
+$data = [];
+$success = false;
+
+try {
+    if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+        http_response_code(405);
+        throw new Exception('Método no permitido. Usa GET.');
+    }
+
     $mysqli = openConnection();
 
-    $resultado = $mysqli->query('SELECT id,sku,title,location,price_usd,cupon_code, cupon_discount,rating,duration_hours, discount,img,description,iframe from tour');
-    if ($resultado === false) {
-        http_response_code(500);
-        echo json_encode([
-            "success" => false,
-            "error"   => "Error al ejecutar la consulta: " . $mysqli->error
-        ], JSON_UNESCAPED_UNICODE);
+    $q = isset($_GET['q']) ? trim((string)$_GET['q']) : '';
+
+    if ($q !== '') {
+        $sql = "SELECT 
+                    id, sku, title, location, price_usd, cupon_code, cupon_discount,
+                    rating, duration_hours, discount, img, description, iframe,
+                    adults_limit, children_limit
+                FROM tour
+                WHERE title LIKE ? 
+                   OR location LIKE ? 
+                   OR description LIKE ?
+                ORDER BY created_at DESC";
+
+        $stmt = $mysqli->prepare($sql);
+        if (!$stmt) {
+            throw new Exception('Error al preparar la consulta: ' . $mysqli->error);
+        }
+
+        $like = '%' . $q . '%';
+        $stmt->bind_param('sss', $like, $like, $like);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    } else {
+        $sql = "SELECT 
+                    id, sku, title, location, price_usd, cupon_code, cupon_discount,
+                    rating, duration_hours, discount, img, description, iframe,
+                    adults_limit, children_limit
+                FROM tour
+                ORDER BY created_at DESC";
+
+        $result = $mysqli->query($sql);
+        if (!$result) {
+            throw new Exception('Error al ejecutar la consulta: ' . $mysqli->error);
+        }
+    }
+
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+
+    $success = true;
+
+} catch (Exception $e) {
+    $errors[] = $e->getMessage();
+} finally {
+    if (isset($result) && $result instanceof mysqli_result) {
+        $result->free();
+    }
+    if ($mysqli) {
         closeConnection($mysqli);
-        exit;
     }
-
-    // Inicializando el arreglo con los tours
-    $tours = [];
-    while ($row = $resultado->fetch_assoc()) {
-        $tours[] = $row;
-    }
-
-    closeConnection($mysqli);
-
-    /**
-     * Retornando los datos guardados en BD en formato JSON
-     */
-    echo json_encode(
-        [
-            "success" => true,
-            "count"   => count($tours),
-            "data"    => $tours
-        ],
-        JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-    );
 }
+
+echo json_encode([
+    'success' => $success,
+    'message' => $success ? 'Tours obtenidos correctamente.' : ($errors[0] ?? 'Error al obtener tours.'),
+    'error'   => $success ? null : $errors,
+    'data'    => $data
+], JSON_UNESCAPED_UNICODE);

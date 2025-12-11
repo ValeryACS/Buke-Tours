@@ -1,0 +1,32 @@
+{
+  "info": {
+    "name": "Buke Tours - Tours Delete",
+    "description": "Eliminar un tour mediante /api/tours/delete.php",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "POST Eliminar Tour",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "id", "value": "1" }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/Buke-Tours/api/tours/delete.php",
+          "host": ["{{baseUrl}}"],
+          "path": ["Buke-Tours", "api", "tours", "delete.php"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost" }
+  ]
+}

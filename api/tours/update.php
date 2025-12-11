@@ -1,5 +1,5 @@
 <?php
-
+// /Buke-Tours/api/tours/update.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -8,10 +8,9 @@ header('Content-Type: application/json; charset=utf-8');
 
 include __DIR__ . "/../../php/config/db.php";
 
-$mysqli    = null;
-$errors    = [];
-$success   = false;
-$createdId = null;
+$mysqli  = null;
+$errors  = [];
+$success = false;
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -19,15 +18,15 @@ try {
         throw new Exception('Método no permitido. Usa POST.');
     }
 
-    
     $fromAdmin = isset($_POST['from_admin']) && $_POST['from_admin'] === '1';
+
+    $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
 
     $title       = trim($_POST['nombre']      ?? '');
     $description = trim($_POST['descripcion'] ?? '');
     $location    = trim($_POST['ubicacion']   ?? '');
     $img         = trim($_POST['img']         ?? '');
 
-   
     $price_usd      = isset($_POST['price_usd'])      ? (float)$_POST['price_usd']      : 0;
     $rating         = isset($_POST['rating'])         ? (float)$_POST['rating']         : 0;
     $duration_hours = isset($_POST['duration_hours']) ? (float)$_POST['duration_hours'] : 0;
@@ -35,20 +34,18 @@ try {
     $children_limit = isset($_POST['children_limit']) ? (int)$_POST['children_limit']   : 0;
     $discount       = isset($_POST['discount'])       ? (int)$_POST['discount']         : 0;
 
-    
     $cupon_code = trim($_POST['cupon_code'] ?? '');
     $cupon_code = ($cupon_code === '') ? null : $cupon_code;
 
     $iframe = trim($_POST['iframe'] ?? '');
     $iframe = ($iframe === '') ? null : $iframe;
 
-  
     $cupon_discount = 0;
 
-    
-    $sku = 'TOUR-' . time();
+    if ($id <= 0) {
+        $errors[] = 'ID de tour inválido.';
+    }
 
-    
     $missing_required =
         $title === '' ||
         $description === '' ||
@@ -75,23 +72,32 @@ try {
 
     $mysqli = openConnection();
 
-    $sql = "INSERT INTO tour (
-                sku, title, location, price_usd, cupon_code,
-                cupon_discount, rating, duration_hours, discount,
-                img, description, iframe, adults_limit, children_limit
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    $sql = "UPDATE tour
+            SET title = ?,
+                location = ?,
+                price_usd = ?,
+                cupon_code = ?,
+                cupon_discount = ?,
+                rating = ?,
+                duration_hours = ?,
+                discount = ?,
+                img = ?,
+                description = ?,
+                iframe = ?,
+                adults_limit = ?,
+                children_limit = ?
+            WHERE id = ?";
 
     $stmt = $mysqli->prepare($sql);
     if (!$stmt) {
-        throw new Exception('Error al preparar INSERT: ' . $mysqli->error);
+        throw new Exception('Error al preparar UPDATE: ' . $mysqli->error);
     }
 
-   
-    $types = "sssdsiddisssii";
+    // Tipos: s s d s i d d i s s s i i i
+    $types = "ssdsiddisssiii";
 
     $stmt->bind_param(
         $types,
-        $sku,
         $title,
         $location,
         $price_usd,
@@ -104,16 +110,15 @@ try {
         $description,
         $iframe,
         $adults_limit,
-        $children_limit
+        $children_limit,
+        $id
     );
 
     if (!$stmt->execute()) {
-        throw new Exception('Error al ejecutar INSERT: ' . $stmt->error);
+        throw new Exception('Error al ejecutar UPDATE: ' . $stmt->error);
     }
 
-    $createdId = $stmt->insert_id ?: $mysqli->insert_id;
-    $success   = true;
-
+    $success = true;
     $stmt->close();
 
 } catch (Exception $e) {
@@ -124,25 +129,24 @@ try {
     }
 }
 
-
 $isFromAdmin = isset($fromAdmin) && $fromAdmin;
 
 if ($isFromAdmin) {
     if ($success) {
-        header("Location: /Buke-Tours/admin/tours/index.php?success=" . urlencode('Tour creado correctamente.'));
+        header("Location: /Buke-Tours/admin/tours/index.php?success=" . urlencode('Tour actualizado correctamente.'));
         exit;
     } else {
-        $msg = $errors[0] ?? 'Error al crear tour.';
-        header("Location: /Buke-Tours/admin/tours/create.php?error=" . urlencode($msg));
+        $msg = $errors[0] ?? 'Error al actualizar tour.';
+        // Redirige de nuevo a edit con el id
+        $idParam = isset($id) ? (int)$id : 0;
+        header("Location: /Buke-Tours/admin/tours/edit.php?id={$idParam}&error=" . urlencode($msg));
         exit;
     }
 }
 
-
+// JSON para Postman / JS
 echo json_encode([
-    'success'   => $success,
-    'message'   => $success ? 'Tour creado correctamente.' : ($errors[0] ?? 'Error al crear tour.'),
-    'error'     => $success ? null : $errors,
-    'createdId' => $createdId
+    'success' => $success,
+    'message' => $success ? 'Tour actualizado correctamente.' : ($errors[0] ?? 'Error al actualizar tour.'),
+    'error'   => $success ? null : $errors
 ], JSON_UNESCAPED_UNICODE);
-
