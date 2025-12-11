@@ -4,7 +4,6 @@ USE buke_tours_db;
 
 DROP TABLE IF EXISTS tour;
 
--- 1. Crear la tabla tours
 CREATE TABLE tour (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   sku VARCHAR(130) NOT NULL,
@@ -119,7 +118,6 @@ INSERT INTO admins (
 
 DROP TABLE IF EXISTS reservation;
 
--- 2. Crear la tabla reservation
 CREATE TABLE IF NOT EXISTS  reservation(
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   full_name VARCHAR(200) NOT NULL,
@@ -155,9 +153,6 @@ CREATE TABLE IF NOT EXISTS  reservation(
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
 
-
-
-
 DROP TABLE IF EXISTS reservation_tour;
 
 CREATE TABLE reservation_tour (
@@ -169,8 +164,8 @@ CREATE TABLE reservation_tour (
   check_in_date  DATE NOT NULL,
   check_out_date DATE NOT NULL,
 
-  adults   INT UNSIGNED NOT NULL DEFAULT 0, -- cantidad reservada
-  children INT UNSIGNED NOT NULL DEFAULT 0, -- cantidad reservada
+  adults   INT UNSIGNED NOT NULL DEFAULT 0,
+  children INT UNSIGNED NOT NULL DEFAULT 0,
 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

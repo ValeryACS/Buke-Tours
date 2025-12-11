@@ -121,7 +121,7 @@ import {
           showElement(slider);
           hideElement(searchResult);
           searchResult && (searchResult.innerHTML = "");
-          // Solo mostrar alerta si hay texto (ya lo hay) y no hay resultados
+          // Solo mostrar alerta si hay texto y no hay resultados
           Swal.fire({
             icon: "error",
             title: "Tour no encontrado",
@@ -135,7 +135,7 @@ import {
           return;
         }
 
-        // Render de resultados
+        // Renderizando los resultados solo en caso de que `toursFiltered` tenga datos
         hideElement(slider);
         showElement(searchResult);
 
@@ -313,7 +313,7 @@ import {
           return;
         }
 
-        // Render de resultados
+        // Renderizando los resultados solo en caso de que `toursFiltered` tenga datos
         hideElement(toursContainer, "d-flex");
         showElement(searchResultsContainer, "d-flex");
 

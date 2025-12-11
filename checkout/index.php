@@ -76,7 +76,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
         <div
           class="container bg-light container-content float-lg-none float-start"
         >
-          <!-- Encabezado -->
           <div class="d-flex align-items-center justify-content-between mb-4">
             <h1 class="titulo h3 mb-0">Formulario de Compra</h1>
             <span class="badge text-bg-danger tours-added d-none d-lg-flex"
@@ -97,14 +96,12 @@ $sessionValue = function (string $key) use ($profileSession): string {
                 >Comprar Tours</a
               >
             </article>
-            <!-- Formulario  SKELETON: Formulario de Compra -->
             <article
               class="col-12 col-lg-8 skeleton-wrapper"
               id="checkout-form-skeleton"
             >
               <div class="card shadow-sm border-0">
                 <div class="card-body p-4">
-                  <!-- Cabecera (opcional) -->
                   <div
                     class="mb-3 d-flex justify-content-between align-items-center"
                   >
@@ -117,9 +114,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                     ></span>
                   </div>
 
-                  <!-- Acordeón skeleton -->
                   <div class="accordion">
-                    <!-- 1) Datos de contacto (header + algo de contenido) -->
                     <div class="accordion-item mb-2">
                       <h2 class="accordion-header">
                         <button
@@ -162,7 +157,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       </div>
                     </div>
 
-                    <!-- 2) Viajeros (solo barra) -->
                     <div class="accordion-item mb-2">
                       <h2 class="accordion-header">
                         <button
@@ -173,7 +167,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       </h2>
                     </div>
 
-                    <!-- 3) Fechas de Ingreso y Salida (solo barra) -->
                     <div class="accordion-item mb-2">
                       <h2 class="accordion-header">
                         <button
@@ -184,7 +177,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       </h2>
                     </div>
 
-                    <!-- 4) Extras opcionales (solo barra) -->
                     <div class="accordion-item mb-2">
                       <h2 class="accordion-header">
                         <button
@@ -195,7 +187,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       </h2>
                     </div>
 
-                    <!-- 5) Datos de facturación (solo barra) -->
                     <div class="accordion-item mb-2">
                       <h2 class="accordion-header">
                         <button
@@ -206,7 +197,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       </h2>
                     </div>
 
-                    <!-- 6) Tarjeta crédito / débito (header + inputs simulados) -->
                     <div class="accordion-item mb-2">
                       <h2 class="accordion-header">
                         <button
@@ -256,11 +246,9 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       </div>
                     </div>
                   </div>
-                  <!-- /accordion -->
                 </div>
               </div>
             </article>
-            <!-- Formulario -->
             <article
               class="col-12 col-lg-8 d-none"
               id="checkout-article-container"
@@ -268,7 +256,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
               <div id="checkout-form" class="card shadow-sm border-0">
                 <div class="card-body p-4">
                   <div class="accordion" id="accordionCheckout">
-                    <!-- 1) Datos de contacto (abierto) -->
                     <div class="accordion-item">
                       <h2 class="accordion-header" id="headingContacto">
                         <button
@@ -421,7 +408,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       </div>
                     </div>
 
-                    <!-- 3) Detalles del tour -->
                     <div class="accordion-item">
                       <h2 class="accordion-header" id="headingTour">
                         <button
@@ -442,17 +428,14 @@ $sessionValue = function (string $key) use ($profileSession): string {
                         data-bs-parent="#accordionCheckout"
                       >
                         <div class="accordion-body">
-                          <!-- Sub-accordion por tour -->
                           <div
                             class="accordion"
                             id="accordionCheckoutTourList"
                           ></div>
-                          <!-- /accordionCheckoutTourList -->
                         </div>
                       </div>
                     </div>
 
-                    <!-- 4) Extras opcionales -->
                     <div class="accordion-item">
                       <h2 class="accordion-header" id="headingExtras">
                         <button
@@ -550,7 +533,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       </div>
                     </div>
 
-                    <!-- 5) Datos de facturación -->
                     <div class="accordion-item">
                       <h2 class="accordion-header" id="headingFactura">
                         <button
@@ -648,7 +630,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       </div>
                     </div>
 
-                    <!-- 6) Pago (con su propio acordeón interno de métodos) -->
                     <div class="accordion-item">
                       <h2 class="accordion-header" id="headingPago">
                         <button
@@ -758,17 +739,14 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       </div>
                     </div>
                   </div>
-                  <!-- /accordionCheckout -->
                 </div>
               </div>
             </article>
 
-            <!-- Resumen -->
             <aside class="col-12 col-lg-4 resumen-del-pedido d-none">
               <div class="card shadow-sm sticky-lg-top" style="top: 1rem">
                 <div class="card-body">
                   <h2 class="h6 mb-3">Resumen del pedido</h2>
-                  <!-- Cupón -->
                   <div class="mb-3">
                     <label for="coupon" class="form-label small"
                       >Cupón de descuento</label
@@ -791,7 +769,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                     </div>
                   </div>
 
-                  <!-- Totales -->
                   <ul class="list-unstyled mb-4">
                     <li class="d-flex justify-content-between mb-1">
                       <span>D&iacute;as</span>
@@ -908,20 +885,17 @@ $sessionValue = function (string $key) use ($profileSession): string {
               </div>
             </aside>
 
-            <!-- SKELETON: Resumen del pedido -->
             <aside
               class="col-12 col-lg-4 skeleton-wrapper"
               id="checkout-summary-skeleton"
             >
               <div class="card shadow-sm sticky-lg-top" style="top: 1rem">
                 <div class="card-body">
-                  <!-- Título -->
                   <div
                     class="skeleton-line skeleton mb-3"
                     style="width: 40%; height: 18px"
                   ></div>
 
-                  <!-- Cupón -->
                   <div class="mb-3">
                     <div
                       class="skeleton-line skeleton mb-2"
@@ -943,9 +917,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                     </div>
                   </div>
 
-                  <!-- Totales / Extras: filas de dos columnas -->
                   <ul class="list-unstyled mb-4">
-                    <!-- Descuento -->
                     <li class="d-flex justify-content-between mb-2">
                       <span
                         class="skeleton-line skeleton"
@@ -956,7 +928,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                         style="width: 25%"
                       ></span>
                     </li>
-                    <!-- Coupon Codes -->
                     <li class="d-flex justify-content-between mb-2">
                       <span
                         class="skeleton-line skeleton"
@@ -967,7 +938,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                         style="width: 20%"
                       ></span>
                     </li>
-                    <!-- Coupon Discounts -->
                     <li class="d-flex justify-content-between mb-2">
                       <span
                         class="skeleton-line skeleton"
@@ -978,7 +948,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                         style="width: 20%"
                       ></span>
                     </li>
-                    <!-- Adultos -->
                     <li class="d-flex justify-content-between mb-2">
                       <span
                         class="skeleton-line skeleton"
@@ -989,7 +958,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                         style="width: 15%"
                       ></span>
                     </li>
-                    <!-- Niños -->
                     <li class="d-flex justify-content-between mb-2">
                       <span
                         class="skeleton-line skeleton"
@@ -1001,7 +969,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       ></span>
                     </li>
 
-                    <!-- Título Extras -->
                     <li class="d-flex justify-content-between mb-2">
                       <span
                         class="skeleton-line skeleton"
@@ -1009,7 +976,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       ></span>
                     </li>
 
-                    <!-- Extras (6 filas) -->
                     <li class="d-flex justify-content-between mb-2">
                       <span
                         class="skeleton-line skeleton"
@@ -1052,7 +1018,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                     </li>
                   </ul>
 
-                  <!-- Subtotal -->
                   <div class="d-flex justify-content-between mb-2">
                     <div
                       class="skeleton-line skeleton"
@@ -1064,7 +1029,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                     ></div>
                   </div>
 
-                  <!-- Total -->
                   <div
                     class="d-flex justify-content-between border-top pt-2 mb-3"
                   >
@@ -1078,7 +1042,6 @@ $sessionValue = function (string $key) use ($profileSession): string {
                     ></div>
                   </div>
 
-                  <!-- Checkbox términos -->
                   <div class="d-flex align-items-center mb-3">
                     <div
                       class="skeleton skeleton"
@@ -1090,13 +1053,11 @@ $sessionValue = function (string $key) use ($profileSession): string {
                     ></div>
                   </div>
 
-                  <!-- Botones -->
-                  <div class="d-grid">
+                 <div class="d-grid">
                     <div class="skeleton-btn-lg skeleton mb-3"></div>
                     <div class="skeleton-btn-lg skeleton"></div>
                   </div>
 
-                  <!-- Nota inferior -->
                   <div
                     class="skeleton-line skeleton mt-3"
                     style="width: 90%"

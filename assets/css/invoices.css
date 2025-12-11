@@ -1,11 +1,18 @@
-.subtitle-invoice{
-    color: #ffffff;
-    font-size: 19px;
-    font-weight: bold;
-    width: 100%;  
-    margin: 0 auto;
-    background: #282d85;
+.subtitle-invoice {
+  color: #ffffff;
+  font-size: 19px;
+  font-weight: bold;
+  width: 100%;
+  margin: 0 auto;
+  background: #282d85;
 }
-.dataTables_length, .dataTables_filter{
-    display: none;
+.dataTables_length,
+.dataTables_filter {
+  display: none;
+}
+@media (max-width: 1024px) {
+    #invoices_table { display: none !important; }
+}
+@media (min-width: 1023px) {
+    #mobile-invoices { display: none; }
 }

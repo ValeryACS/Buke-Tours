@@ -64,11 +64,10 @@ $sessionValue = function (string $key) use ($profileSession): string {
     ?>
     <?php echo htmlspecialchars($html_lang, ENT_QUOTES, 'UTF-8'); ?>
     <main class="perfil-contenedor">
-      <section class="container bg-warning-subtle mx-auto p-4 mt-5 bg-buke-tours profile-form-section">
+      <section class="container mx-auto p-4 mt-5 bg-buke-tours profile-form-section">
         <h1 class="titulo mb-4">Editar Usuario</h1>
         <form id="profile-form" novalidate>
           <div class="row g-3">
-            <!-- Columna izquierda -->
             <div class="col-12">
               <label
                 for="fullName"

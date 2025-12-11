@@ -28,8 +28,6 @@ $toursDisponibles->execute();
 $toursResult = $toursDisponibles->get_result();
 
 closeConnection($mysqli);
-
-
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $html_lang; ?>">
@@ -185,7 +183,6 @@ closeConnection($mysqli);
         class="main-content bg-buke-tours mx-auto my-5 profile-form-section"
         style="max-width: 768px"
       >
-        <!-- Sección principal -->
         <h1 class="titulo"><?php echo $lang['resenas'] ?? 'Reseñas'; ?></h1>
         <h2 class="subtitulo  w-100"><?php echo $lang['sobre_tours'] ?? 'Sobre los tours'; ?></h2>
         

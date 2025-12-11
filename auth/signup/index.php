@@ -34,7 +34,6 @@ $html_lang = $_SESSION['lang'];
       <h1 class="titulo mb-3"><?php echo $lang['registrarse']; ?></h1>
       <form id="profile-form" novalidate>
         <div class="row g-3">
-          <!-- Columna izquierda -->
           <div class="col-12">
             <label
               for="fullName"

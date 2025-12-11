@@ -26,10 +26,7 @@ error_reporting(E_ALL);
       </div>
 
       <div class="modal-body">
-        <!-- Lista de items -->
         <div class="list-group" id="cartList"></div>
-
-        <!-- Estado vacío -->
         <div class="text-center py-4 d-none" id="emptyState">
           <p class="lead mb-2">Tu carrito está vacío</p>
           <a href="#" class="btn btn-outline-secondary">Explorar tours</a>

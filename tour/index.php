@@ -44,38 +44,7 @@ if ($tourResult) {
 }
 
 closeConnection($mysqli);
-
-/**
- * Valida que un iframe provenga de Google Maps embed.
- */
-function getSafeMapIframe(?string $iframeUrl): ?string {
-    if ($iframeUrl === null) {
-        return null;
-    }
-
-    $iframeUrl = trim($iframeUrl);
-
-    if ($iframeUrl === '' || !filter_var($iframeUrl, FILTER_VALIDATE_URL)) {
-        return null;
-    }
-
-    $parts = parse_url($iframeUrl);
-
-    if (!is_array($parts)) {
-        return null;
-    }
-
-    $scheme = $parts['scheme'] ?? '';
-    $host   = $parts['host'] ?? '';
-    $path   = $parts['path'] ?? '';
-
-    if ($scheme !== 'https' || $host !== 'www.google.com' || strpos($path, '/maps/embed') !== 0) {
-        return null;
-    }
-
-    return $iframeUrl;
-}
-
+include '../php/helpers/get-iframe.php';
 ?>
 
 <!DOCTYPE html>
@@ -106,12 +75,10 @@ function getSafeMapIframe(?string $iframeUrl): ?string {
     </h1>
     
     <div class="row g-4">
-
-      <!-- MAP -->
       <div class="col-lg-7">
         <div class="ratio ratio-4x3 rounded shadow-sm">
           <?php foreach ($rows as $filaTour): 
-            $iframeSrc = getSafeMapIframe($filaTour['iframe'] ?? null);
+            $iframeSrc = getIframe($filaTour['iframe'] ?? null);
             $fallback  = 'https://www.google.com/maps?q=' . urlencode(($filaTour['location'].",". $filaTour['title'])?? '') . '&output=embed';
           ?>
             <?php if ($iframeSrc): ?>
@@ -138,8 +105,6 @@ function getSafeMapIframe(?string $iframeUrl): ?string {
           <?php endforeach; ?>
         </div>
       </div>
-
-      <!-- LIST OF TOURS -->
       <div class="col-lg-5">
         <div class="d-flex flex-column gap-3">
 
@@ -207,8 +172,6 @@ function getSafeMapIframe(?string $iframeUrl): ?string {
         <img class="float-right img-thumbnail" src="<?php echo $rows[0]['img']; ?>" alt="<?php echo $rows[0]['title']; ?>">
       </div>
     </div>
-           
-  <!-- SIMILAR EXPERIENCES-->
   <h4 class="mt-5 mb-3 titulo">Similar Experiences</h4>
 
 
@@ -275,18 +238,11 @@ function getSafeMapIframe(?string $iframeUrl): ?string {
     </div>
 
   </div>
-
- <!-- Navegacion -->
   <div class="swiper-button-next"></div>
   <div class="swiper-button-prev"></div>
-
-
   <div class="swiper-pagination"></div>
 </div>
-
-
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
 <script>
   const swiperSimilar = new Swiper('.mySwiperSimilar', {
     slidesPerView: 3,
