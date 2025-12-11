@@ -159,6 +159,7 @@ export const updateCartModal = async (cartObj) => {
   const cartList = document.getElementById("cartList");
   if (!cartList) return;
   const language = await getLanguageData();
+  const t = (key, fallback) => language?.[key] ?? fallback;
 
   const ids = Object.keys(cartObj || {});
   if (!ids.length) {
@@ -173,8 +174,12 @@ export const updateCartModal = async (cartObj) => {
       ?.classList?.add("d-none");
     document.querySelector("#checkout-form-skeleton")?.classList.add("d-none");
     cartList.innerHTML = `
-          <div class="text-center text-muted p-4">${language['tu_carro_esta_vacio']}</div>
-          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">${language['comprar_tours'] ?? 'Comprar Tours'}</a>
+          <div class="text-center text-muted p-4">
+            ${t("cart_empty_message", "Tu carrito está vacío.")}
+          </div>
+          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">
+            ${t("buy_tours", "Comprar Tours")}
+          </a>
         `;
     return;
   }
@@ -461,7 +466,7 @@ export const updateBasket = async () => {
   if (ids.length === 0) {
     cartList.innerHTML = `
           <div class="text-center text-muted p-4">${language['tu_carro_esta_vacio']}</div>
-          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">${language['comprar_tours']}</a>
+          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">${language['buy_tours']}</a>
         `;
     return;
   }
@@ -584,11 +589,13 @@ export const validateCoupon = async (cupon_code) => {
   const code = String(cupon_code || "")
     .trim()
     .toUpperCase();
+  const language = await getLanguageData();
+  const t = (key, fallback) => language?.[key] ?? fallback;
   if (!code) {
     Swal.fire({
       icon: "error",
-      title: "Cupón vacío",
-      text: "Por favor ingresa un código de cupón.",
+      title: t("coupon_empty_title", "Cupón vacío"),
+      text: t("coupon_empty_text", "Por favor ingresa un código de cupón."),
       toast: true,
       position: "top-end",
       showConfirmButton: false,
@@ -618,8 +625,11 @@ export const validateCoupon = async (cupon_code) => {
     if (!tourByCoupon) {
       Swal.fire({
         icon: "error",
-        title: "Cupón Incorrecto",
-        text: "El código ingresado no corresponde a ningún tour.",
+        title: t("coupon_invalid_code_title", "Cupón incorrecto"),
+        text: t(
+          "coupon_invalid_code_text",
+          "El código ingresado no corresponde a ningún tour."
+        ),
         toast: true,
         position: "top-end",
         showConfirmButton: false,
@@ -633,8 +643,11 @@ export const validateCoupon = async (cupon_code) => {
     if (!cartIds.has(String(tourByCoupon.sku))) {
       Swal.fire({
         icon: "error",
-        title: "Cupón no aplicable",
-        text: `Este cupón no pertenece a ningun tour de tu carrito.`,
+        title: t("coupon_not_applicable_title", "Cupón no aplicable"),
+        text: t(
+          "coupon_not_applicable_text",
+          "Este cupón no pertenece a ningún tour de tu carrito."
+        ),
         toast: true,
         position: "top-end",
         showConfirmButton: false,
@@ -649,8 +662,11 @@ export const validateCoupon = async (cupon_code) => {
     if (existCupons[code]) {
       Swal.fire({
         icon: "info",
-        title: "Cupón ya canjeado",
-        text: "Este cupón ya fue aplicado.",
+        title: t("coupon_already_used_title", "Cupón ya canjeado"),
+        text: t(
+          "coupon_already_used_text",
+          "Este cupón ya fue aplicado."
+        ),
         toast: true,
         position: "top-end",
         showConfirmButton: false,
@@ -668,8 +684,11 @@ export const validateCoupon = async (cupon_code) => {
 
     Swal.fire({
       icon: "success",
-      title: "Cupón canjeado",
-      text: `Cupón aplicado: -${tourByCoupon.cupon_discount}%`,
+      title: t("coupon_applied_title", "Cupón canjeado"),
+      text: t(
+        "coupon_applied_text",
+        "Cupón aplicado: -{discount}%"
+      ).replace("{discount}", tourByCoupon.cupon_discount ?? 0),
       toast: true,
       position: "top-end",
       showConfirmButton: false,
@@ -682,8 +701,11 @@ export const validateCoupon = async (cupon_code) => {
     console.error("Error validando cupón:", err);
     Swal.fire({
       icon: "error",
-      title: "Error",
-      text: "No se pudo validar el cupón en este momento.",
+      title: t("coupon_validation_error_title", "Error"),
+      text: t(
+        "coupon_validation_error_text",
+        "No se pudo validar el cupón en este momento."
+      ),
       toast: true,
       position: "top-end",
       showConfirmButton: false,

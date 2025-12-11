@@ -2,11 +2,14 @@ import {
   updateBasket,
   updateCartTotal,
   validateCoupon,
-  readCart
+  readCart,
 } from "./cart.module.js";
+import { getLanguageData } from "./language-module.js";
 
 (() => {
   document.addEventListener("DOMContentLoaded", async () => {
+    const language = await getLanguageData();
+    const t = (key, fallback) => language?.[key] ?? fallback;
     await updateBasket();
     await updateCartTotal();
     const cartProducts = readCart();
@@ -31,8 +34,8 @@ import {
       if (!inputCoupon.value.length) {
         Swal.fire({
           icon: "error",
-          title: "Cupon Inválido",
-          text: "El Código del Cupon es inválido",
+          title: t("coupon_invalid_title", "Cupón inválido"),
+          text: t("coupon_invalid_text", "El código del cupón es inválido."),
           toast: true,
           position: "top-end",
           showConfirmButton: false,

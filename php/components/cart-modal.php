@@ -16,20 +16,20 @@ error_reporting(E_ALL);
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="cartModalLabel">Carrito de compras</h1>
+        <h1 class="modal-title fs-5" id="cartModalLabel"><?php echo $lang['modal_cart_title']; ?></h1>
         <button
           type="button"
           class="btn-close"
           data-bs-dismiss="modal"
-          aria-label="Cerrar"
+          aria-label="<?php echo $lang['close_label']; ?>"
         ></button>
       </div>
 
       <div class="modal-body">
         <div class="list-group" id="cartList"></div>
         <div class="text-center py-4 d-none" id="emptyState">
-          <p class="lead mb-2">Tu carrito está vacío</p>
-          <a href="#" class="btn btn-outline-secondary">Explorar tours</a>
+          <p class="lead mb-2"><?php echo $lang['modal_cart_empty']; ?></p>
+          <a href="/Buke-Tours/tours/" class="btn btn-outline-secondary"><?php echo $lang['modal_cart_explore']; ?></a>
         </div>
       </div>
 
@@ -37,16 +37,16 @@ error_reporting(E_ALL);
         class="modal-footer flex-column flex-sm-row gap-2 justify-content-between"
       >
         <div class="ms-auto me-sm-3">
-          <div class="text-muted small">Costo por Persona</div>
+          <div class="text-muted small"><?php echo $lang['modal_cost_per_person']; ?></div>
           <div class="fs-5 fw-semibold" aria-live="polite">
             <span id="cartTotal"></span>
           </div>
         </div>
         <div class="d-flex gap-2">
           <a href="/Buke-Tours/checkout/" type="button" class="btn btn-danger-buke-tours">
-            Pagar
+            <?php echo $lang['modal_pay']; ?>
           </a>
-          <a href="/Buke-Tours/cart/" class="btn btn-primary">Ir al carrito</a>
+          <a href="/Buke-Tours/cart/" class="btn btn-primary"><?php echo $lang['modal_go_to_cart']; ?></a>
         </div>
       </div>
     </div>
