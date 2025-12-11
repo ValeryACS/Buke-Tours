@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.btn-eliminar-customer').forEach(button => {
+    document.querySelectorAll('.btn-eliminar-resenna').forEach(button => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
 
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!taskId) return;
 
             const result = await Swal.fire({
-                title: "¿Está seguro de eliminar este usuario?",
+                title: "¿Está seguro de eliminar esta reseña?",
                 text: "¡No podrás revertir esto!",
                 icon: "warning",
                 showCancelButton: true,
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 formData.append('id', taskId);
 
                 try {
-                    const response = await fetch('/Buke-Tours/api/admin/profile_customers/delete_profile_customers.php', { 
+                    const response = await fetch('/Buke-Tours/api/admin/reviews/delete_reviews.php', { 
                         method: 'POST',
                         body: formData
                     });
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (data.success) {
                         Swal.fire({
-                            title: "¡Eliminado!",
+                            title: "¡Eliminada!",
                             text: data.message,
                             icon: "success"
                         }).then(() => {
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch (error) {
                     Swal.fire({
                         title: "Error de Conexión",
-                        text: "No se pudo conectar al servidor para eliminar el usuario.",
+                        text: "No se pudo conectar al servidor para eliminar la reseña.",
                         icon: "error"
                     });
                 }
