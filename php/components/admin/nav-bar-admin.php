@@ -33,7 +33,7 @@ if($adminID > 0){?>
           <a class="nav-link" href="/Buke-Tours/admin/admins/">Administradores</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/Buke-Tours/admin/customers/">Reseñas</a>
+          <a class="nav-link" href="/Buke-Tours/admin/reviews/">Reseñas</a>
         </li>
        
          

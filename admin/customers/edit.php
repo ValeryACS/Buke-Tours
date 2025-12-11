@@ -23,7 +23,6 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
 include '../../php/helpers/get-country.php';
 include("../../php/config/db.php");
 
-// 1. Redirección si no hay ID, con exit()
 if (!isset($_GET['id'])) {
     header('Location: ../admin/customers/');
     exit();
@@ -31,7 +30,6 @@ if (!isset($_GET['id'])) {
 
 $mysqli = openConnection();
 
-// Consulta preparada para obtener el cliente
 $sqlCustomer = 'SELECT * FROM `customer` WHERE id = ? LIMIT 1';
 
 $customers = $mysqli->prepare($sqlCustomer);
@@ -40,25 +38,22 @@ $customers->bind_param("i", $_GET['id']);
 $customers->execute();
 $resultadocustomers = $customers->get_result();
 
-// 2. Simplificación: Obtener el resultado directamente como array asociativo
 $customerseleccionado = $resultadocustomers->fetch_assoc();
 
 if ($resultadocustomers) {
     $resultadocustomers->free();
 }
 
-// 3. Redirección si el administrador no existe
+// Redirección si el usuario no existe
 if (!$customerseleccionado) {
     header('Location: ../admin/customers/');
     exit();
 }
 
-// 4. Variables para la selección en el formulario (Usando nombres de columnas de la tabla)
-// Nota: La tabla usa 'genre', 'lang', 'country', 'birth_date', 'passport', 'home_addres', 'city', 'province', 'zip_code'
 $generoAdmin = $customerseleccionado['genre'] ?? '';
 $idiomaAdmin = $customerseleccionado['lang'] ?? 'es';
 $paisAdmin = $customerseleccionado['country'] ?? ''; 
-$adminIdActual = $customerseleccionado['id'] ?? 0; // Se obtiene el ID para el campo oculto
+$adminIdActual = $customerseleccionado['id'] ?? 0; 
 ?>
 
 <!DOCTYPE html>

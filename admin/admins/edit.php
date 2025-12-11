@@ -31,7 +31,6 @@ if (!isset($_GET['id'])) {
 
 $mysqli = openConnection();
 
-// Consulta preparada para obtener el administrador
 $sqlAdmin = 'SELECT * FROM `admins` WHERE id = ? LIMIT 1';
 
 $admins = $mysqli->prepare($sqlAdmin);
@@ -40,25 +39,23 @@ $admins->bind_param("i", $_GET['id']);
 $admins->execute();
 $resultadoAdmins = $admins->get_result();
 
-// 2. Simplificación: Obtener el resultado directamente como array asociativo
 $adminSeleccionado = $resultadoAdmins->fetch_assoc();
 
 if ($resultadoAdmins) {
     $resultadoAdmins->free();
 }
 
-// 3. Redirección si el administrador no existe
+// Redirección si el administrador no existe
 if (!$adminSeleccionado) {
     header('Location: ../admin/admins/');
     exit();
 }
 
-// 4. Variables para la selección en el formulario (Usando nombres de columnas de la tabla)
-// Nota: La tabla usa 'genre', 'lang', 'country', 'birth_date', 'passport', 'home_addres', 'city', 'province', 'zip_code'
+
 $generoAdmin = $adminSeleccionado['genre'] ?? '';
 $idiomaAdmin = $adminSeleccionado['lang'] ?? 'es';
 $paisAdmin = $adminSeleccionado['country'] ?? ''; 
-$adminIdActual = $adminSeleccionado['id'] ?? 0; // Se obtiene el ID para el campo oculto
+$adminIdActual = $adminSeleccionado['id'] ?? 0; 
 ?>
 
 <!DOCTYPE html>
