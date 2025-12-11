@@ -57,6 +57,7 @@ closeConnection($mysqli);
   </div>
 
 
+
     <div class="table-responsive">
         <table class="table table-striped table-bordered" id="table-admins">
             <thead class="table-dark">

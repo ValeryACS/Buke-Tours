@@ -58,7 +58,7 @@ include '../../../php/components/admin/nav-bar-admin.php'; ?>
           placeholder="<?php echo $lang['contrasena_ph'];?>"
         />
         <br />
-        <button type="submit" id="btn-login" class="login-boton btn w-100">
+        <button type="submit" id="btn-login" class="btn btn-danger login-boton btn w-100">
           <?php echo $lang['iniciar_sesion'];?>
         </button>
       </form>

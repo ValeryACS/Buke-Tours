@@ -35,10 +35,11 @@ include '../../php/helpers/get-country.php';
 </head>
 <body>
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
-  
-<div class="container py-4">
+<div class="container py-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="h4 m-auto titulo px-5">Lista de Clientes</h4>
+  </div>
 
-  <h1>Agregar Cliente</h1>
    <form id="admin-form" novalidate>
           <div class="row g-3">
             <div class="col-12">

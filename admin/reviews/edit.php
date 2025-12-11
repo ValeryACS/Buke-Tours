@@ -63,10 +63,11 @@ $validStatuses = ['Aprobada', 'Denegada', 'Pendiente'];
 </head>
 <body>
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
-    
-<div class="container py-4">
+<div class="container py-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="h4 m-auto titulo px-5">Editar Reseña</h4>
+  </div>
 
-    <h1>Editar Reseña</h1>
     <?php if(!empty($errors)):?>
         <?php endif; ?>
 

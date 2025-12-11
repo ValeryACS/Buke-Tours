@@ -63,9 +63,10 @@ if ($result) {
                 </aside>
                 <section class="col-12 col-lg-10">
                     <header class="d-flex align-items-center justify-content-between mb-3">
-                        <div>
-                            <h1 class="h4 m-auto titulo px-5">Facturas</h1>
-                        </div>
+                        <div class="container py-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="h4 m-auto titulo px-5">Facturas</h4>
+
                         <div>
                             <button title="Imprimir en PDF" id="print-invoices-to-pdf"  type="button" class="btn btn-danger"><i class="bi bi-file-earmark-pdf mx-1 display-6"></i></button>
                         </div>
