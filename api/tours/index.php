@@ -1,6 +1,10 @@
 <?php
 /**
  * API GET - Usado para retornar todos los tours almacenados en la base de datos
+ * siempre y cuando esten disponibles, cada tour tiene un limite de adultos y de niños
+ * por medio de un LEFT JOIN se compara si un tour ya alcanzo su limite para una fecha en especifico
+ * si no se envian las fechas por defecto usara la fecha del dia de mañana como check_in_date
+ * y si no se envia el checkout_date se usara la fecha de pasado mañana
  */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -74,7 +78,6 @@ if($_SERVER["REQUEST_METHOD"] === "GET"){
           AND (t.children_limit - IFNULL(r.reserved_children, 0)) > 0
     ';
     
-    // Ejecuta la consulta y almacena los resultados en un arreglo
     $toursStmt = $mysqli->prepare($sqlTours);
     $toursStmt->bind_param("ss", $checkInDate, $checkOutDate);
     $toursStmt->execute();
@@ -97,9 +100,6 @@ if($_SERVER["REQUEST_METHOD"] === "GET"){
     
     closeConnection($mysqli);
 
-    /**
-     * Retornando los datos guardados en BD en formato JSON
-     */
     echo json_encode(
         [
             "success" => true,

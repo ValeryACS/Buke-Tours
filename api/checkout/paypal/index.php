@@ -7,6 +7,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include("../../../php/config/db.php");
+include("../../../php/helpers/parse-json.php");
+include("../../../php/helpers/is-date.php");
+include("../../../php/helpers/parse-boolean.php");
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -47,45 +50,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $total = isset($_POST['total']) ? floatval($_POST['total']) : 0;
     $idioma = isset($_POST['idioma']) ? trim((string)$_POST['idioma']) : '';
     $pasaporteOdocumento = isset($_POST['pasaporteOdocumento']) ? trim((string)$_POST['pasaporteOdocumento']) : '';
-
-    // Expect JSON strings or plain strings; avoid trim() on arrays to prevent TypeError
     $fechasDeingresos = isset($_POST['fechasDeingresos'])
         ? (is_array($_POST['fechasDeingresos'])
-            ? json_encode($_POST['fechasDeingresos'])
+            ? json_encode($_POST['fechasDeingresos'])// Se espera un JSON como input ya que un tour puede estar asociado a multiples fechas distintas
             : trim((string)$_POST['fechasDeingresos']))
         : '';
-
     $fechasDeSalidas = isset($_POST['fechasDeSalidas'])
         ? (is_array($_POST['fechasDeSalidas'])
-            ? json_encode($_POST['fechasDeSalidas'])
+            ? json_encode($_POST['fechasDeSalidas'])// Se espera un JSON como input ya que un tour puede estar asociado a multiples fechas distintas
             : trim((string)$_POST['fechasDeSalidas']))
         : '';
-
     // Booleans o checkbox
     $seguro = isset($_POST['seguro'])
         ? (is_bool($_POST['seguro']) ? ($_POST['seguro'] ? '1' : '0') : trim((string)$_POST['seguro']))
         : '';
-
     $transporte = isset($_POST['transporte'])
         ? (is_bool($_POST['transporte']) ? ($_POST['transporte'] ? '1' : '0') : trim((string)$_POST['transporte']))
         : '';
-
     $fotos = isset($_POST['fotos'])
         ? (is_bool($_POST['fotos']) ? ($_POST['fotos'] ? '1' : '0') : trim((string)$_POST['fotos']))
         : '';
-
     $desayuno = isset($_POST['desayuno'])
         ? (is_bool($_POST['desayuno']) ? ($_POST['desayuno'] ? '1' : '0') : trim((string)$_POST['desayuno']))
         : '';
-
     $almuerzo = isset($_POST['almuerzo'])
         ? (is_bool($_POST['almuerzo']) ? ($_POST['almuerzo'] ? '1' : '0') : trim((string)$_POST['almuerzo']))
         : '';
-
     $cena = isset($_POST['cena'])
         ? (is_bool($_POST['cena']) ? ($_POST['cena'] ? '1' : '0') : trim((string)$_POST['cena']))
         : '';
-
     $direccion = isset($_POST['direccion']) ? trim((string)$_POST['direccion']) : '';
     $ciudad = isset($_POST['ciudad']) ? trim((string)$_POST['ciudad']) : '';
     $provincia = isset($_POST['provincia']) ? trim((string)$_POST['provincia']) : '';
@@ -95,29 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mes = isset($_POST['mes']) ? trim((string)$_POST['mes']) : (string)date('n');
     $year = isset($_POST['year']) ? trim((string)$_POST['year']) : (string)date('Y');
     $cvv = isset($_POST['cvv']) ? trim((string)$_POST['cvv']) : '';
-
-    // Helpers para fechas
-    $parseJson = function ($raw) {
-        $raw = trim($raw);
-        if ($raw === '') return [];
-        $first = substr($raw, 0, 1);
-        if ($first === '[' || $first === '{') {
-            $decoded = json_decode($raw, true);
-            return (json_last_error() === JSON_ERROR_NONE) ? $decoded : [];
-        }
-        return [];
-    };
     /**
-     * Valida si las fechas cumplen con el formato esperado
+     * Valida si las fechas cumplen con el formato esperado,sin embargo se espera un JSON como input
+     * ya que cada tour puede que tenga asociado una fecha diferente es por esto que se envia y se recibe un JSON
      */
-    $isValidDate = function ($dateStr) {
-        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateStr)) return false;
-        [$y, $m, $d] = explode('-', $dateStr);
-        return checkdate((int)$m, (int)$d, (int)$y);
-    };
-
-    $ingresos = $parseJson($fechasDeingresos);
-    $salidas  = $parseJson($fechasDeSalidas);
+    $ingresos = parseJson($fechasDeingresos);
+    $salidas  = parseJson($fechasDeSalidas);
 
     // Validar ingresos
     if (!is_array($ingresos) || empty($ingresos)) {
@@ -129,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 continue;
             }
             $date = $item['check_in_date'] ?? '';
-            if (!$isValidDate($date)) {
+            if (!isValidDate($date)) {
                 $errors[] = "Fecha de ingreso #$idx inválida (formato YYYY-MM-DD)";
             }
             if(!$item['tour_id'] || $item['tour_id']<=0){
@@ -148,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 continue;
             }
             $date = $item['check_out_date'] ?? '';
-            if (!$isValidDate($date)) {
+            if (!isValidDate($date)) {
                 $errors[] = "Fecha de salida #$idx inválida (formato YYYY-MM-DD)";
             }
             if(!$item['tour_id'] || $item['tour_id']<=0){
@@ -250,29 +226,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Codigo postal invalido';
     }
 
-    // Si no hay errores, procesar DB
     if (empty($errors)) {
-
-        // Cerrar stmt previo si existiera
         if (isset($stmt) && $stmt instanceof mysqli_stmt) {
             $stmt->close();
         }
-
-        // Email normalizado
         $email = isset($_POST['email']) ? trim((string)$_POST['email']) : '';
-
-        // Normalizar booleans a 0/1
-        $toBool = function ($v) {
-            $v = strtolower((string)$v);
-            return in_array($v, ['1','true','on'], true) ? 1 : 0;
-        };
-
-        $breakfast        = $toBool($desayuno);
-        $lunch            = $toBool($almuerzo);
-        $dinner           = $toBool($cena);
-        $transport        = $toBool($transporte);
-        $travel_insurance = $toBool($seguro);
-        $photo_package    = $toBool($fotos);
+        $breakfast        = parseBoolean($desayuno);
+        $lunch            = parseBoolean($almuerzo);
+        $dinner           = parseBoolean($cena);
+        $transport        = parseBoolean($transporte);
+        $travel_insurance = parseBoolean($seguro);
+        $photo_package    = parseBoolean($fotos);
 
         // Para poder hacer los pares de fechas por tour
         $ingresosPorTour = [];
@@ -290,7 +254,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mysqli->begin_transaction();
 
         try {
-            // INSERT en reservation
             $sqlReservation = "INSERT INTO reservation (
                 full_name,
                 email,
@@ -332,7 +295,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $photo_package_i    = (int)$photo_package;
             $usuarioIdParam     = $usuarioId;
 
-            // Tipos: sssss i i s i i i i i i ssss dd i
             $types = 'sssssiisiiiiiissssddi';
 
             $stmt->bind_param(
@@ -367,7 +329,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $reservationId = $mysqli->insert_id;
             $stmt->close();
 
-            // INSERT en reservation_tour
             $sqlRT = "INSERT INTO reservation_tour (
                 reservation_id,
                 tour_id,

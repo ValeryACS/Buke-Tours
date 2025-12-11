@@ -1,29 +1,24 @@
-import {
-  setState
-} from "./utils.module.js";
+import { setState, onlyDigits } from "./utils.module.js";
 
 /**
- * @funcion - Funcion que valida los inputs del formulario de Login
- *
- * @param {Object} params - Objeto con los inputs a validar
- * @param {HTMLInputElement[]} params.stringsRequeridos - Inputs de tipo Texto
- * @returns {boolean} true si todo es válido; false si hay errores
+ * 
+ * @param {Object} stringsRequeridos - Un Objeto con los string requeridos para determinar si el formulario esta validado o no 
+ * @returns {Boolean} - Determina si fue validado el formulario satisfactoriamente - Si presenta errores retorna `false` caso contrario `true`
  */
-export const validateLoginForm =({
-  stringsRequeridos = [],
-}) => {
+export const validateContactForm = ({ stringsRequeridos = [] }) => {
   const errors = [];
+
   /**
    * Usada para ir agregando errores por cada input que incumpla su validacion
    * @param {HTMLInputElement} inputElement - El Input que presenta error
-   * @param {string} errorMessage - El Mensaje de error asociado al input
+   * @param {string} errorMmsg - El Mensaje de error asociado al input
    */
-  const pushErrorMessage = (inputElement, errorMessage) => {
-    errors.push({ inputElement, errorMessage });
+  const pushErrorMessage = (inputElement, errorMmsg) => {
+    errors.push({ inputElement, errorMmsg });
     setState(inputElement, false);
   };
 
-  // ---- 1) Validando los inputs de tipo string o texto
+  // Validando los inputs de tipo string o texto
   stringsRequeridos.forEach((inputElement) => {
     if (!inputElement) return;
     const inputValue = (inputElement.value ?? "").trim();
@@ -35,22 +30,48 @@ export const validateLoginForm =({
         `El campo "${inputElement.labels?.[0]?.innerText || id}" es requerido.`
       );
     }
-    if(id === 'password'){
-      const pattern = /^(?=(?:.*[A-Za-z]){4,})(?=(?:.*[AEIOUaeiou]){3,})(?=(?:.*\d){4,})(?=(?:.*[^A-Za-z0-9]){3,}).+$/;
-      if (!pattern.test(inputValue)) {
+
+    if (id === "nombre") {
+      if (inputValue.length <= 5) {
         return pushErrorMessage(
           inputElement,
-          "La contraseña debe contener al menos 4 letras, 3 vocales, 3 caracteres especiales y 4 números."
+          "El Nombre completo debe contener al menos 5 caracteres."
         );
       }
     }
-    
+    if (id === "asunto") {
+      if (inputValue.length < 6) {
+        return pushErrorMessage(
+          inputElement,
+          "El asunto debe contener mas de 6 caracteres."
+        );
+      }
+    }
+    if (id === "mensaje") {
+      if (inputValue.length < 10) {
+        return pushErrorMessage(
+          inputElement,
+          "El Mensaje debe contener mas de 10 caracteres."
+        );
+      }
+    }
     if (id === "email") {
       const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue); // Valida si es un email valido
       if (!isValidEmail)
         return pushErrorMessage(
           inputElement,
           "El correo electrónico no tiene un formato válido."
+        );
+    }
+
+    if (id === "telefono") {
+      // Valida el Telefono
+      const digitosDelTelefono = onlyDigits(inputValue);
+      const isValidTelephone = digitosDelTelefono.length >= 8; // mínimo razonable
+      if (!isValidTelephone)
+        return pushErrorMessage(
+          inputElement,
+          "El teléfono debe contener mínimo 8 dígitos."
         );
     }
 
@@ -67,7 +88,7 @@ export const validateLoginForm =({
     const htmlList = `<ul style="margin:0;padding-left:1.1rem;text-align:left;">
       ${errors
         .slice(0, 9)
-        .map((e) => `<li>${e.errorMessage}</li>`)
+        .map((e) => `<li>${e.errorMmsg}</li>`)
         .join("")}
       ${
         errors.length > 6
@@ -78,7 +99,7 @@ export const validateLoginForm =({
 
     Swal.fire({
       icon: "error",
-      title: errors?.[0].errorMessage ?? "Datos Incompletos o Incorrectos",
+      title: "Datos Incompletos",
       html: htmlList,
       toast: true,
       position: "top-end",
@@ -89,5 +110,5 @@ export const validateLoginForm =({
 
     return false;
   }
-  return true; // El Formulario de Login ha sido validado exitosamente
+  return true; // El Formulario de Contacto ha sido validado exitosamente
 };

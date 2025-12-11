@@ -145,15 +145,6 @@ if ($result) {
             <div class="alert alert-info">No hay facturas disponibles.</div>
             <a href="/Buke-Tours/tours/" class="btn btn-success" title="Comprar Tours">Comprar Tours</a>
         <?php endif; ?>
-                    <style>
-                    /* Hide table on small screens, show on lg and up */
-                    @media (max-width: 1024px) {
-                        #invoices_table { display: none !important; }
-                    }
-                    @media (min-width: 1023px) {
-                        #mobile-invoices { display: none; }
-                    }
-                    </style>
 
                     <div id="mobile-invoices" class="mt-3">
                         <?php

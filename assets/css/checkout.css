@@ -1,11 +1,10 @@
 .accordion-button:not(.collapsed) {
   color: #fff !important;
-  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#168769+0,216868+100 */
   background: linear-gradient(
     to bottom,
     #168769 0%,
     #216868 100%
-  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  );
 }
 
 .accordion-button:not(.collapsed)::after {
@@ -14,12 +13,11 @@
 }
 
 .accordion-button {
-  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffd89c+0,fea03c+100 */
   background: linear-gradient(
     to bottom,
     #ffd89c 0%,
     #fea03c 100%
-  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  );
   color: #000;
   border: 1px solid grey;
 }

@@ -7,7 +7,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include("../../../php/config/db.php"); 
-
+include("../../../php/helpers/is-date.php");
 $mysqli = openConnection();
 
 $errors = [];
@@ -51,12 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($idioma === '' || $idioma === 'no-seleccionado') { $errors[] = 'Idioma es obligatorio'; }
     if ($pasaporteOdocumento === '') { $errors[] = 'Documento es obligatorio'; }
 
-    $isValidDate = function ($dateStr) {
-        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateStr)) { return false; }
-        [$y, $m, $d] = explode('-', $dateStr);
-        return checkdate((int)$m, (int)$d, (int)$y);
-    };
-    if ($fechaDeNacimiento !== '' && !$isValidDate($fechaDeNacimiento)) {
+    
+    if ($fechaDeNacimiento !== '' && !isValidDate($fechaDeNacimiento)) {
         $errors[] = 'Fecha de nacimiento invalida (formato YYYY-MM-DD)';
     }
 

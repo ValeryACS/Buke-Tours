@@ -39,14 +39,12 @@ $html_lang = $_SESSION['lang'];
     <main>
       <section id="cart" class="py-5">
         <div class="container bg-light container-content float-lg-none float-start">
-          <!-- Encabezado -->
           <div class="d-flex align-items-center justify-content-between mb-4">
             <h1 class="titulo h3 mb-0">Bukë Tours</h1>
             <span class="badge text-bg-danger tours-added d-none d-lg-flex">3 artículos</span>
           </div>
 
           <div class="row g-4">
-            <!-- Lista de productos -->
             <div class="col-12 col-lg-8">
               <div class="list-group" id="cart-list-tours">
                 <?php 
@@ -54,7 +52,6 @@ $html_lang = $_SESSION['lang'];
                 ?>
               </div>
 
-              <!-- CTA inferior en móvil -->
               <div class="d-grid d-lg-none mt-4 gap-2">
                 <a href="/Buke-Tours/checkout/" class="btn btn-dark btn-lg"
                   >Finalizar compra</a
@@ -64,8 +61,6 @@ $html_lang = $_SESSION['lang'];
                 >
               </div>
             </div>
-
-            <!-- Resumen -->
             <aside class="col-12 col-lg-4 resumen-del-pedido">
               <?php 
                     include '../php/components/skeletons/cart-summary-skeleton.php';
@@ -74,7 +69,6 @@ $html_lang = $_SESSION['lang'];
                 <div class="card-body">
                   <h2 class="h6 mb-3">Resumen del pedido</h2>
 
-                  <!-- Cupón -->
                   <div class="mb-3">
                     <label for="coupon" class="form-label small"
                       >Cupón de descuento</label
@@ -96,7 +90,6 @@ $html_lang = $_SESSION['lang'];
                     </div>
                   </div>
 
-                  <!-- Totales -->
                   <ul class="list-unstyled mb-4">
                     <li class="d-flex justify-content-between mb-1">
                       <span>Subtotal</span>

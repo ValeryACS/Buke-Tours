@@ -193,7 +193,7 @@ export const updateCartModal = async (cartObj) => {
       const output = ids
         .map((sku) => {
           const tour = data.find((t) => String(t.sku) === String(sku));
-          if (!tour) return ""; // si no existe en el JSON, sáltalo
+          if (!tour) return ""; // si el tour no existe entonces retornamos string vacio para saltar el tour
 
           const qty = Number(cartObj[sku]) || 0;
           const price = Number(tour.price_usd) || 0;
@@ -289,8 +289,8 @@ export const updateCartModal = async (cartObj) => {
         ?.classList.add("d-none");
       cartList.innerHTML = output;
 
-      // Re-vincular eventos de + / − / input / eliminar
-      attachCartItemEvents();
+      
+      attachCartItemEvents();// Re-vincula todos los eventos del Carro de compras luego de actualizar el DOM
     })
     .catch((err) => console.error("Error:", err));
 };
@@ -301,7 +301,10 @@ export const updateCartModal = async (cartObj) => {
  * @returns {void} - Setea los eventos de los inputs del modal
  */
 export const attachCartItemEvents = () => {
-  // +
+  /**
+   * Setea el evento que se ejecuta cuando se le da click al boton +
+   * De cualquier tour adentro del Modal del Carro de compras
+   */
   document.querySelectorAll(".btn-add-quantity").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
       const sku = e.currentTarget.getAttribute("data-tour-id");
@@ -309,7 +312,10 @@ export const attachCartItemEvents = () => {
     });
   });
 
-  // −
+  /**
+   * Setea el evento que se ejecuta cuando se le da click al boton -
+   * De cualquier tour adentro del Modal del Carro de compras
+   */
   document.querySelectorAll(".btn-substract-quantity").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
       const sku = e.currentTarget.getAttribute("data-tour-id");
@@ -317,7 +323,10 @@ export const attachCartItemEvents = () => {
     });
   });
 
-  // input directo
+  /**
+   * Setea el evento que se ejecuta cuando el usuario inserta una cantidad numerica para x tour
+   * Adentro del Carro de Compras
+   */
   document.querySelectorAll(".input-qty").forEach((input) => {
     input.addEventListener("change", (e) => {
       const sku = e.currentTarget.getAttribute("data-tour-id");
@@ -326,7 +335,10 @@ export const attachCartItemEvents = () => {
     });
   });
 
-  // eliminar
+  /**
+   * Setea el evento que se ejecuta cuando el usuario clickea el boton de eliminar x tour
+   * Adentro del Carro de Compras
+   */
   document.querySelectorAll(".btn-remove").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const sku = e.currentTarget.getAttribute("data-tour-id");
@@ -433,7 +445,7 @@ export const onAddTourToCart = async (sku) => {
 };
 
 /**
- * Actualiza todos los tours incluidos en el carrito de compras para la pagina del carrito (no es el modal)
+ * Actualiza todos los tours incluidos en el carrito de compras para la pagina del carrito (no en el modal)
  * @returns {Promise<void>} - Usado para renderizar los tours incluidos en el carrito
  **/
 export const updateBasket = async () => {
@@ -460,7 +472,7 @@ export const updateBasket = async () => {
       const output = ids
         .map((sku) => {
           const tour = data.find((t) => String(t.sku) === String(sku));
-          if (!tour) return ""; // si no existe en el JSON, sáltalo
+          if (!tour) return ""; // si no existe en el JSON retornamos un string vacio para saltar el Tour
 
           const qty = Number(cart[sku]) || 0;
           const price = Number(tour.price_usd) || 0;
@@ -555,7 +567,7 @@ export const updateBasket = async () => {
 
       cartList.innerHTML = output;
 
-      attachCartItemEvents(); // Re-vincula los eventos de los inputs agregados al DOM
+      attachCartItemEvents(); // Re-vincula todos los eventos de los inputs del Carro de Compras agregados al DOM
     })
     .catch((err) => console.error("Error:", err));
 };
