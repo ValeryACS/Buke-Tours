@@ -67,7 +67,7 @@ $html_lang = $_SESSION['lang'];
                 </div>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-success px-5 py-2 w-100"><?php echo $lang['enviar mensaje']; ?></button>
+                    <button type="submit" class="btn btn-success px-5 py-2 w-100"><?php echo $lang['send_message']; ?></button>
                 </div>
             </form>
         </section>

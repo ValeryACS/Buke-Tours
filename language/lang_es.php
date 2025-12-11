@@ -1,6 +1,5 @@
 <?php
 $lang = array(
-
     'inicio'                 => 'Inicio',
     'tours'                  => 'Tours',
     'reseñas'                => 'Reseñas',
@@ -8,7 +7,7 @@ $lang = array(
     'contacto'               => 'Contacto',
     'iniciar_sesion'         => 'Iniciar Sesión',
     'editar_perfil'          => 'Editar Perfil',
-    'Buscar_Tours'           => 'Buscar Tours',
+    'search_tours_button'    => 'Buscar Tours',
     'Buscar_Tour'            => 'Buscar tours...',
     'home_page_title'        => 'Inicio',
     'tours_page_title'       => 'Tours Disponibles',
@@ -126,15 +125,39 @@ $lang = array(
     'detalle' => 'Escribe tu mensaje aquí',
     'ejemplo' => 'Ej: Consulta sobre Tour a Guanacaste',
     'mensaje' => 'Mensaje',
-    'enviar mensaje' => 'Enviar mensaje',
-    'invoices'=> 'Facturas'
-
-    
-
-
-
-    
+    'send_message' => 'Enviar mensaje',
+    'invoices'=> 'Facturas',
+    'checkout_form_title'         => 'Formulario de Compra',
+    'contact_section_title'       => 'Datos de contacto',
+    'full_name_example'           => 'Ej: Ana Rodríguez',
+    'email_example'               => 'ejemplo@correo.com',
+    'select_language_prompt'      => 'Seleccione un Idioma',
+    'dates_section_title'         => 'Fechas de Ingreso y Salida',
+    'optional_extras_title'       => 'Extras opcionales',
+    'breakfast_extra_description' => 'Desayuno incluido (+$11.00)',
+    'lunch_extra_description'     => 'Almuerzo incluido (+$12.00)',
+    'dinner_extra_description'    => 'Cena incluida (+$17.00)',
+    'transport_extra_description' => 'Transporte(+$30.00)',
+    'insurance_extra_description' => 'Seguro de viaje (+$9.00)',
+    'photos_extra_description'    => 'Paquete de fotografías (+$15.00)',
+    'billing_section_title'       => 'Datos de facturación',
+    'address_placeholder_example' => 'Calle, número, apartamento',
+    'card_section_title'          => 'Tarjeta de crédito / débito',
+    'cardholder_name_label'       => 'Nombre del Titular de la tarjeta',
+    'card_number_label'           => 'Número de tarjeta',
+    'card_month_label'            => 'Mes',
+    'card_year_label'             => 'Año',
+    'days_label'                  => 'Días',
+    'breakfasts_label'            => 'Desayunos',
+    'lunches_label'               => 'Almuerzos',
+    'dinner_label'                => 'Cena',
+    'transport_label'             => 'Transporte',
+    'insurance_label'             => 'Seguro',
+    'photos_label'                => 'Fotografías',
+    'accept_terms_prefix'         => 'Acepto los',
+    'terms_and_conditions_label'  => 'términos y condiciones',
+    'pay_with_paypal_button'      => 'Pagar con Paypal',
+    'pay_with_card_button'        => 'Pagar con Tarjeta',
+    'voucher_confirmation_note'   => 'Recibirás el voucher y la confirmación por correo electrónico.'  
 );
-
-
 ?>
