@@ -46,10 +46,8 @@ header("Content-Type: text/html; charset=UTF-8");
               <div class="d-flex justify-content-between align-items-center">
                
                 <div class="btn-group">
-                  <!-- Bot�n Editar -->
                   <a href="edit.php?id=<?= $i ?>" class="btn btn-sm btn-primary">Editar</a>
 
-                  <!-- Bot�n Eliminar -->
 <a href="delete.php?id=<?= $i ?>" class="btn btn-sm btn-danger" onclick="return confirm('�Seguro que deseas eliminar el Tour <?= $i ?>?');">Eliminar</a>
                 </div>
               </div>

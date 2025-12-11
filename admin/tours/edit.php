@@ -3,7 +3,7 @@ header("Content-Type: text/html; charset=UTF-8");
 
 // Obtener ID
 if (!isset($_GET["id"])) {
-  die("Error: No se proporcionó el ID del tour.");
+  die("Error: No se proporcionï¿½ el ID del tour.");
 }
 
 $id = intval($_GET["id"]);
@@ -22,8 +22,7 @@ $id = intval($_GET["id"]);
 <div class="container py-4">
   <h1 class="mb-4">Editar Tour #<?= $id ?></h1>
 
-  <!-- Aquí puedes cargar datos reales desde la base -->
-  <!-- Placeholder para demostración -->
+
   <form action="update.php" method="POST">
 
     <input type="hidden" name="id" value="<?= $id ?>">
@@ -34,14 +33,14 @@ $id = intval($_GET["id"]);
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Descripción</label>
-      <textarea name="descripcion" class="form-control" rows="4">Descripción del tour <?= $id ?></textarea>
+      <label class="form-label">Descripciï¿½n</label>
+      <textarea name="descripcion" class="form-control" rows="4">Descripciï¿½n del tour <?= $id ?></textarea>
     </div>
 
 
 
     <div class="mb-3">
-      <label class="form-label">Ubicación</label>
+      <label class="form-label">Ubicaciï¿½n</label>
       <input type="text" name="ubicacion" class="form-control" value="Costa Rica">
     </div>
 

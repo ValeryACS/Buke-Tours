@@ -2,12 +2,11 @@
 header("Content-Type: text/html; charset=UTF-8");
 
 if (!isset($_GET['id'])) {
-    die("Error: No se proporcionó el ID de la factura.");
+    die("Error: No se proporcionï¿½ el ID de la factura.");
 }
 
 $id = intval($_GET['id']);
 
-// Cargar datos reales aquí (simulado para ejemplo)
 $factura = [
     "customer_id" => 1,
     "tour" => "Tour Aventura"

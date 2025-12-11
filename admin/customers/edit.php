@@ -69,7 +69,6 @@ $adminIdActual = $customerseleccionado['id'] ?? 0; // Se obtiene el ID para el c
     <title>Editar Cliente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
     <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
-    <link rel="stylesheet" href="/Buke-Tours/assets/css/main.css" />
 </head>
 <body>
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
@@ -253,7 +252,6 @@ $adminIdActual = $customerseleccionado['id'] ?? 0; // Se obtiene el ID para el c
                     required
                 >
                     <?php 
-                    // Se pasa el valor actual a la función para que lo seleccione
                     echo getCountrySelected($paisAdmin);
                     ?>
                 </select>

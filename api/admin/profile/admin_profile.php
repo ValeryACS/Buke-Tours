@@ -1,6 +1,6 @@
 <?php
 /**
- * API endpoint para guardar los datos del usuario y registrar un inicio de sesión.
+ * endpoint para agregar administradores
  */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

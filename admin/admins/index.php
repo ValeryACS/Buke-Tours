@@ -44,7 +44,6 @@ closeConnection($mysqli);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Administradores</title>
     <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
-        <link rel="stylesheet" href="/Buke-Tours/assets/css/main.css" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
@@ -75,7 +74,6 @@ closeConnection($mysqli);
 
                         ?>
                         
-                <!-- Fila de ejemplo 1 -->
                 <tr>
                     <td><?php echo $fila["id"];?></td>
                     <td><?php echo $fila["full_name"];?></td>

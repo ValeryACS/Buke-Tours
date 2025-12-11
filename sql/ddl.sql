@@ -49,6 +49,7 @@ CREATE TABLE tour (
     birth_date DATE NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    avatar_url VARCHAR(500);
     UNIQUE KEY uq_customer_email (email),
     UNIQUE KEY uq_customer_passport (passport),
     PRIMARY KEY (id)
@@ -56,8 +57,6 @@ CREATE TABLE tour (
     DEFAULT CHARSET=utf8mb4
     COLLATE=utf8mb4_unicode_ci;
 
- ALTER TABLE customer
-  ADD avatar_url VARCHAR(500);
 
 DROP TABLE IF EXISTS admins;
 
@@ -78,6 +77,7 @@ DROP TABLE IF EXISTS admins;
     birth_date DATE NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    avatar_url VARCHAR(500);
     UNIQUE KEY uq_admin_email (email),
     UNIQUE KEY uq_admin_passport (passport),
     PRIMARY KEY (id)
@@ -85,8 +85,7 @@ DROP TABLE IF EXISTS admins;
     DEFAULT CHARSET=utf8mb4
     COLLATE=utf8mb4_unicode_ci;
     
-    ALTER TABLE admins
-    ADD avatar_url VARCHAR(500);
+   
 
 INSERT INTO admins (
     full_name,

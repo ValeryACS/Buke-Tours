@@ -2,14 +2,12 @@
 header("Content-Type: text/html; charset=UTF-8");
 
 if (!isset($_GET['id'])) {
-    die("Error: No se proporcionó el ID de la factura.");
+    die("Error: No se proporcionï¿½ el ID de la factura.");
 }
 
 $id = intval($_GET['id']);
 
-// Simulación de eliminación con confirmación POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Aquí va la lógica para eliminar la factura en base de datos
 
     header("Location: index.php");
     exit;
@@ -27,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="container py-4">
   <h1>Eliminar Factura #<?= $id ?></h1>
-  <p>¿Está seguro que desea eliminar esta factura?</p>
+  <p>ï¿½Estï¿½ seguro que desea eliminar esta factura?</p>
 
   <form method="POST">
-    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <button type="submit" class="btn btn-danger">Sï¿½, eliminar</button>
     <a href="index.php" class="btn btn-secondary">Cancelar</a>
   </form>
 </div>

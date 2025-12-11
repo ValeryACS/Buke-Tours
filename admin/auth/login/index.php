@@ -21,7 +21,6 @@ $html_lang = $_SESSION['lang'];
     <?php 
 include '../../../php/components/admin/styles/admin-common-styles.php';    ?>
     
-    <link rel="stylesheet" href="/Buke-Tours/assets/css/profile.css" />
   </head>
   <body>
     <?php
