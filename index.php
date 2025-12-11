@@ -34,7 +34,7 @@ closeConnection($mysqli);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inicio</title>
+    <title><?php echo $lang['home_page_title']; ?></title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="/Buke-Tours/assets/css/slider.css" type="text/css" />
@@ -68,7 +68,7 @@ closeConnection($mysqli);
                 id="check-in-date"
                 name="check_in_date"
                 min="<?php echo date('Y-m-d'); ?>"
-                placeholder="Check in"
+                placeholder="<?php echo $lang['check_in_label']; ?>"
               />
             </div>
             <div class="col-12 col-sm-6 col-md-2">
@@ -78,7 +78,7 @@ closeConnection($mysqli);
                 id="check-out-date"
                 name="check_out_date"
                 min="<?php echo date('Y-m-d'); ?>"
-                placeholder="Check out"
+                placeholder="<?php echo $lang['check_out_label']; ?>"
               />
             </div>
             <div class="col-12 col-md-2 d-grid">
@@ -93,6 +93,7 @@ closeConnection($mysqli);
                 class="btn btn-danger"
               >
                 <i class="bi bi-arrow-counterclockwise me-1"></i>
+                <?php echo $lang['btn_clear']; ?>
               </button>
             </div>
           </form>

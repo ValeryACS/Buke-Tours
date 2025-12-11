@@ -19,11 +19,11 @@ $html_lang = $_SESSION['lang'];
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo $html_lang; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de contacto</title>
+    <title><?php echo $lang['contact_page_title']; ?></title>
      <?php 
       include '../php/styles/common-styles.php';
     ?>

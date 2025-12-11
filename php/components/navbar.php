@@ -127,3 +127,4 @@ $html_lang = $_SESSION['lang'];
     </button>
   </div>
 </nav>
+<script src="/Buke-Tours/assets/js/language-component.js"></script>
