@@ -24,7 +24,6 @@ include '../../language/lang_' . $_SESSION['lang'] . '.php';
 
 $mysqli = openConnection();
 
-
 $sql = "SELECT id, sku, title, location, price_usd, discount 
         FROM tour
         ORDER BY created_at DESC";
@@ -129,3 +128,4 @@ closeConnection($mysqli);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
+
