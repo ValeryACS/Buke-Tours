@@ -20,7 +20,7 @@ if($adminID<= 0){
 }
 
 include '../../language/lang_' . $_SESSION['lang'] . '.php'; 
-include '../../helpers/get-country.php';
+include '../../php/helpers/get-country.php';
 
 ?>
 
@@ -32,7 +32,6 @@ include '../../helpers/get-country.php';
   <title>Agregar Administrador</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
   <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
-        <link rel="stylesheet" href="/Buke-Tours/assets/css/main.css" />
 </head>
 <body>
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
@@ -42,7 +41,6 @@ include '../../helpers/get-country.php';
   <h1>Agregar Administrador</h1>
    <form id="admin-form" novalidate>
           <div class="row g-3">
-            <!-- Columna izquierda -->
             <div class="col-12">
               <label
                 for="fullName"

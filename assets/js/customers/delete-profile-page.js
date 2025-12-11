@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.btn-eliminar-admin').forEach(button => {
+    document.querySelectorAll('.btn-eliminar-customer').forEach(button => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
 
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!taskId) return;
 
             const result = await Swal.fire({
-                title: "¿Está seguro de eliminar este administrador?",
+                title: "¿Está seguro de eliminar este usuario?",
                 text: "¡No podrás revertir esto!",
                 icon: "warning",
                 showCancelButton: true,
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 formData.append('id', taskId);
 
                 try {
-                    const response = await fetch('/Buke-Tours/api/admin/profile/delete_profile_admin.php', {                        method: 'POST',
+                    const response = await fetch('/Buke-Tours/api/admin/profile_customers/delete_profile_customers.php', {                        method: 'POST',
                         body: formData
                     });
                     
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch (error) {
                     Swal.fire({
                         title: "Error de Conexión",
-                        text: "No se pudo conectar al servidor para eliminar el administrador.",
+                        text: "No se pudo conectar al servidor para eliminar el usuario.",
                         icon: "error"
                     });
                 }

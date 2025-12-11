@@ -21,7 +21,6 @@ $html_lang = $_SESSION['lang'];
     <?php 
 include '../../../php/components/admin/styles/admin-common-styles.php';    ?>
     
-    <link rel="stylesheet" href="/Buke-Tours/assets/css/profile.css" />
   </head>
   <body>
     <?php
@@ -77,7 +76,6 @@ include '../../../php/components/admin/nav-bar-admin.php'; ?>
       include '../../../php/components/cart-modal.php';
       include '../../../php/scripts/common-scripts.php';
     ?>
-    <script type="module" src="/Buke-Tours/assets/js/login-page-admin.js"  defer></script>
-    
+    <script type="module" src="/Buke-Tours/assets/js/admins/login-page-admin.js"  defer></script>
   </body>
 </html>

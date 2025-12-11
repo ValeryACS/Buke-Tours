@@ -139,7 +139,6 @@ if ($result) {
                         </table>
                     </div>
                     <style>
-                    /* Hide table on small screens, show on lg and up */
                     @media (max-width: 1024px) {
                         #invoices_table { display: none !important; }
                     }

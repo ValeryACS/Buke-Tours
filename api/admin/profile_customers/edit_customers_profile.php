@@ -1,6 +1,6 @@
 <?php
 /**
- * endpoint para actualizar un administrador
+ * endpoint para actualizar clientes
  */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $adminId = isset($_POST['admin_id']) ? (int)$_POST['admin_id'] : 0;
 
     if ($adminId <= 0) {
-        $errors[] = 'ID del administrador es obligatorio para la edición.';
+        $errors[] = 'ID del usuario es obligatorio para la edición.';
     }
 
     $nombre = isset($_POST['nombre']) ? trim((string)$_POST['nombre']) : '';
@@ -35,8 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fechaDeNacimiento = isset($_POST['fechaDeNacimiento']) ? trim((string)$_POST['fechaDeNacimiento']) : '';
     $pasaporteOdocumento = isset($_POST['pasaporteOdocumento']) ? trim((string)$_POST['pasaporteOdocumento']) : '';
 
-    // VALIDACIONES
-
+    //  VALIDACIONES
     if ($nombre === '') { $errors[] = 'Nombre es obligatorio'; }
     if ($telefono === '' || !preg_match('/^[0-9+\-()\s]{7,20}$/', $telefono)) { $errors[] = 'Telefono invalido'; }
     if ($pais === '') { $errors[] = 'Pais es obligatorio'; }
@@ -74,23 +73,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors) && $adminId > 0) {
-        $stmtCheck = $mysqli->prepare("SELECT id FROM admins WHERE id = ? LIMIT 1");
+        $stmtCheck = $mysqli->prepare("SELECT id FROM customer WHERE id = ? LIMIT 1");
         $stmtCheck->bind_param("i", $adminId);
         $stmtCheck->execute();
         $resCheck = $stmtCheck->get_result();
         if ($resCheck->num_rows === 0) {
-            $errors[] = 'El administrador con el ID proporcionado no existe.';
+            $errors[] = 'El usuario con el ID proporcionado no existe.';
         }
         $stmtCheck->close();
 
         if (empty($errors)) {
-            $stmtExist = $mysqli->prepare("SELECT id FROM admins WHERE (email = ? OR passport = ?) AND id != ? LIMIT 1");
+            $stmtExist = $mysqli->prepare("SELECT id FROM customer WHERE (email = ? OR passport = ?) AND id != ? LIMIT 1");
             if ($stmtExist) {
                 $stmtExist->bind_param("ssi", $email, $pasaporteOdocumento, $adminId);
                 $stmtExist->execute();
                 $resultadoExist = $stmtExist->get_result();
                 if ($resultadoExist && $resultadoExist->num_rows > 0) {
-                    $errors[] = 'Ya existe otro administrador registrado con ese correo o documento.';
+                    $errors[] = 'Ya existe otro usuario registrado con ese correo o documento.';
                 }
                 $stmtExist->close();
             } else {
@@ -104,8 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mysqli->begin_transaction();
 
         try {
-    
-            $sqlCustomer = "UPDATE `admins` SET 
+            
+            $sqlCustomer = "UPDATE `customer` SET 
                 `full_name` = ?, 
                 `email` = ?, 
                 `phone` = ?, 
@@ -149,14 +148,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt = $mysqli->prepare($sqlCustomer);
             if (!$stmt) {
-                 throw new Exception("Error al preparar UPDATE admins: " . $mysqli->error);
+                 throw new Exception("Error al preparar UPDATE customers: " . $mysqli->error);
             }
             
             array_unshift($bindParams, $types);
             call_user_func_array([$stmt, 'bind_param'], $bindParams);
             
             if (!$stmt->execute()) {
-                throw new Exception($stmt->error ?: "Error al actualizar administrador");
+                throw new Exception($stmt->error ?: "Error al actualizar usuario");
             }
             
             $stmt->close();
@@ -165,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         } catch (Exception $e) {
             $mysqli->rollback();
-            $errors[] = $e->getMessage() ?? 'Error Inesperado en el Servidor al actualizar el administrador.';
+            $errors[] = $e->getMessage() ?? 'Error Inesperado en el Servidor al actualizar el usuario.';
             $success = false;
         }
     }
@@ -173,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $data = [
         'success' => empty($errors),
-        'message' => empty($errors) ? 'El Administrador ha sido Actualizado Exitosamente' : $errors[0] ?? 'Error al actualizar Administrador',
+        'message' => empty($errors) ? 'El usuario ha sido Actualizado Exitosamente' : $errors[0] ?? 'Error al actualizar usuario',
         'errors'  => empty($errors) ? null : $errors,
     ];
 

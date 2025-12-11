@@ -1,6 +1,6 @@
 <?php
 /**
- * endpoint para agregar administradores
+ *  endpoint para agregar clientes
  */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -91,13 +91,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $stmtExist = $mysqli->prepare("SELECT id FROM admins WHERE email = ? OR passport = ? LIMIT 1");
+        $stmtExist = $mysqli->prepare("SELECT id FROM customer WHERE email = ? OR passport = ? LIMIT 1");
         if ($stmtExist) {
             $stmtExist->bind_param("ss", $email, $pasaporteOdocumento);
             $stmtExist->execute();
             $resultadoExist = $stmtExist->get_result();
             if ($resultadoExist && $resultadoExist->num_rows > 0) {
-                $errors[] = 'Ya existe un administrador registrado con ese correo o documento.';
+                $errors[] = 'Ya existe un usuario registrado con ese correo o documento.';
             }
             $stmtExist->close();
         } else {
@@ -113,10 +113,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mysqli->begin_transaction();
 
         try {
-            $sqlCustomer = "INSERT INTO `admins` ( `full_name`, `email`, `password_hash`, `phone`, `country`, `passport`, `lang`, `genre`, `home_addres`, `city`, `province`, `zip_code`, `birth_date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            $sqlCustomer = "INSERT INTO `customer` ( `full_name`, `email`, `password_hash`, `phone`, `country`, `passport`, `lang`, `genre`, `home_addres`, `city`, `province`, `zip_code`, `birth_date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             $stmt = $mysqli->prepare($sqlCustomer);
             if (!$stmt) {
-                throw new Exception("Error al preparar INSERT admins: " . $mysqli->error);
+                throw new Exception("Error al preparar INSERT customers: " . $mysqli->error);
             }
 
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -142,14 +142,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param($types, ...$bindParams);
 
             if (!$stmt->execute()) {
-                throw new Exception($stmt->error ?: "Error al insertar administrador");
+                throw new Exception($stmt->error ?: "Error al insertar usuario");
             }
 
             $stmt->close();
             $userId = $mysqli->insert_id;
 
             if (!$userId || $userId <= 0) {
-                $sqlSelectUserId = 'SELECT id FROM admins WHERE email = ? LIMIT 1';
+                $sqlSelectUserId = 'SELECT id FROM customer WHERE email = ? LIMIT 1';
                 $idDelUsuario = $mysqli->prepare($sqlSelectUserId);
                 if ($idDelUsuario) {
                     $idDelUsuario->bind_param("s", $email);
@@ -164,14 +164,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             if (!$userId || $userId <= 0) {
-                throw new Exception('No se pudo obtener el identificador del administrador recién creado.');
+                throw new Exception('No se pudo obtener el identificador del usuario recién creado.');
             }
 
-            $sqlUser = "SELECT id, full_name, email, phone, passport, country, lang, genre, home_addres, city, province, zip_code, birth_date FROM admins WHERE id = ?";
+            $sqlUser = "SELECT id, full_name, email, phone, passport, country, lang, genre, home_addres, city, province, zip_code, birth_date FROM customer WHERE id = ?";
             $stmtUserData = $mysqli->prepare($sqlUser);
 
             if (!$stmtUserData) {
-                throw new Exception("Error al obtener la información del administrador: " . $mysqli->error);
+                throw new Exception("Error al obtener la información del usuario: " . $mysqli->error);
             }
 
             $stmtUserData->bind_param("i", $userId);
@@ -184,21 +184,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 
             } else {
-                throw new Exception("El administrador no esta disponible. Favor intentar mas tarde.");
+                throw new Exception("El usuario no esta disponible. Favor intentar mas tarde.");
             }
 
             $stmtUserData->close();
             $mysqli->commit();
         } catch (Exception $e) {
             $mysqli->rollback();
-            $errors[] = $e->getMessage() ?? 'Error Inesperado en el Servidor al crear un nuevo administrador.';
+            $errors[] = $e->getMessage() ?? 'Error Inesperado en el Servidor al crear un nuevo usuario.';
             $success = false;
         }
     }
 
     $data = [
         'success' => empty($errors),
-        'message' => empty($errors) ? 'El Administrador ha sido Creado Exitasamente' : $errors[0] ?? 'Error al crear Administrador',
+        'message' => empty($errors) ? 'El Usuario ha sido Creado Exitasamente' : $errors[0] ?? 'Error al crear usuario',
         'error'   => empty($errors) ? null : $errors,
     ];
 

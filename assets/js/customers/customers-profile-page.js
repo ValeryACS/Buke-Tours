@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
       formData.append("fechaDeNacimiento", fechaDeNacimiento.value);
 
       try {
-        const response = await fetch("/Buke-Tours/api/admin/profile/admin_profile.php", {
+        const response = await fetch("/Buke-Tours/api/admin/profile_customers/customers_profile.php", {
           method: "POST",
           body: formData,
         });
@@ -93,10 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
           const msg =
             Array.isArray(result?.errors) && result.errors.length
               ? result.errors.join(", ")
-              : result?.message || "No se pudo crear el administrador.";
+              : result?.message || "No se pudo crear el usuario.";
           Swal.fire({
             icon: "error",
-            title: "El Administrador no pudo ser creado",
+            title: "El Usuario no pudo ser creado",
             text: msg,
             toast: true,
             position: "top-end",
@@ -109,8 +109,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         Swal.fire({
           icon: "success",
-          title: "Administrador Creado Exitosamente",
-          text: result?.message || "El administrador ha sido creado exitosamente.",
+          title: "Usuario Creado Exitosamente",
+          text: result?.message || "El usuario ha sido creado exitosamente.",
           toast: true,
           position: "top-end",
           showConfirmButton: false,
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
           timerProgressBar: true,
         });
         setTimeout(() => {
-          window.location.href = '/Buke-Tours/admin/admins/index.php';
+          window.location.href = '/Buke-Tours/admin/customers/index.php';
         }, 3000);
       } catch (err) {
         Swal.fire({

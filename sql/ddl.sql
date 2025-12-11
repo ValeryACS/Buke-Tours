@@ -49,12 +49,14 @@ CREATE TABLE tour (
     birth_date DATE NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    avatar_url VARCHAR(500);
     UNIQUE KEY uq_customer_email (email),
     UNIQUE KEY uq_customer_passport (passport),
     PRIMARY KEY (id)
   ) ENGINE=InnoDB
     DEFAULT CHARSET=utf8mb4
     COLLATE=utf8mb4_unicode_ci;
+
 
 DROP TABLE IF EXISTS admins;
 
@@ -75,12 +77,45 @@ DROP TABLE IF EXISTS admins;
     birth_date DATE NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    avatar_url VARCHAR(500);
     UNIQUE KEY uq_admin_email (email),
     UNIQUE KEY uq_admin_passport (passport),
     PRIMARY KEY (id)
   ) ENGINE=InnoDB
     DEFAULT CHARSET=utf8mb4
     COLLATE=utf8mb4_unicode_ci;
+    
+   
+
+INSERT INTO admins (
+    full_name,
+    email,
+    password_hash,
+    phone,
+    country,
+    passport,
+    lang,
+    genre,
+    home_addres,
+    city,
+    province,
+    zip_code,
+    birth_date
+) VALUES (
+    'Juan Pérez García',
+    'juan.perez@example.com',
+    'aJrgba1235a@%.', -- Replace with a strong, hashed password
+    '+34600123456',
+    'CR',
+    'ABC123456',
+    'es',
+    'Masculino',
+    'Calle Falsa 123',
+    'Alajuela',
+    'Alajuela',
+    '28001',
+    '1985-05-15'
+);
 
 DROP TABLE IF EXISTS reservation;
 
