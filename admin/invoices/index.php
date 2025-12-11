@@ -43,6 +43,7 @@ if ($result) {
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
 </head>
 <body>
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
@@ -62,9 +63,10 @@ if ($result) {
                 </aside>
                 <section class="col-12 col-lg-10">
                     <header class="d-flex align-items-center justify-content-between mb-3">
-                        <div>
-                            <h1 class="h4 m-auto titulo px-5">Facturas</h1>
-                        </div>
+                        <div class="container py-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="h4 m-auto titulo px-5">Facturas</h4>
+
                         <div>
                             <button title="Imprimir en PDF" id="print-invoices-to-pdf"  type="button" class="btn btn-danger"><i class="bi bi-file-earmark-pdf mx-1 display-6"></i></button>
                         </div>
@@ -220,7 +222,7 @@ if ($result) {
     </main>
     <script type="module" src="/Buke-Tours/assets/js/invoices-page.js" defer></script>
     <?php 
-      include '../../php/components/footer.php';
+      include '../../php/components/admin/styles/footer.php';
       include '../../php/components/cart-modal.php';
       include '../../php/scripts/common-scripts.php';
 
@@ -235,7 +237,6 @@ if ($result) {
         })
     </script>
 
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

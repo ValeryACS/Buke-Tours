@@ -46,18 +46,20 @@ closeConnection($mysqli);
     <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+
 </head>
 <body>
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
-
-<div class="container my-5">
+<div class="container py-4 mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Lista de Administradores</h2>
-        <a href="create.php" class="btn btn-primary">Agregar Administrador</a>
-    </div>
+        <h4 class="h4 m-auto titulo px-5">Lista de Administradores</h4>
+        <a href="create.php" class="btn btn-primary"> + Agregar Administrador</a>
+  </div>
+
+
 
     <div class="table-responsive">
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered" id="table-admins">
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
@@ -97,10 +99,22 @@ closeConnection($mysqli);
         </table>
     </div>
 </div>
+<?php 
+      include '../../php/components/admin/styles/footer.php'; ?>
 
+<script defer async>
+    $(document).ready(() => {
+        $('#table-admins').dataTable({ 
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            }
+        })
+    })
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="module" src="/Buke-Tours/assets/js/admins/delete-profile-page.js" defer></script>
+
 
 
 </body>

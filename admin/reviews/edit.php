@@ -63,10 +63,11 @@ $validStatuses = ['Aprobada', 'Denegada', 'Pendiente'];
 </head>
 <body>
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
-    
-<div class="container py-4">
+<div class="container py-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="h4 m-auto titulo px-5">Editar Reseña</h4>
+  </div>
 
-    <h1>Editar Reseña</h1>
     <?php if(!empty($errors)):?>
         <?php endif; ?>
 
@@ -104,7 +105,7 @@ $validStatuses = ['Aprobada', 'Denegada', 'Pendiente'];
             <div class="col-12 d-flex justify-content-end pt-2">
                 <button
                     type="submit"
-                    class="btn btn-success w-100 px-4"
+                    class="btn btn-danger w-100 px-4"
                     id="btn-save-status" >
                     <?php echo $lang['boton_guardar_cambios'] ?>
                 </button>

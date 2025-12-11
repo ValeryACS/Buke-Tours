@@ -20,7 +20,7 @@ $html_lang = $_SESSION['lang'];
     <title>Inicio</title>
     <?php 
 include '../../../php/components/admin/styles/admin-common-styles.php';    ?>
-    
+
   </head>
   <body>
     <?php
@@ -58,7 +58,7 @@ include '../../../php/components/admin/nav-bar-admin.php'; ?>
           placeholder="<?php echo $lang['contrasena_ph'];?>"
         />
         <br />
-        <button type="submit" id="btn-login" class="login-boton btn w-100">
+        <button type="submit" id="btn-login" class="btn btn-danger login-boton btn w-100">
           <?php echo $lang['iniciar_sesion'];?>
         </button>
       </form>
@@ -72,7 +72,6 @@ include '../../../php/components/admin/nav-bar-admin.php'; ?>
       </div> -->
     </section>
     <?php 
-      include '../../../php/components/footer.php';
       include '../../../php/components/cart-modal.php';
       include '../../../php/scripts/common-scripts.php';
     ?>

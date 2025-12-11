@@ -35,10 +35,10 @@ include '../../php/helpers/get-country.php';
 </head>
 <body>
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
-  
-<div class="container py-4">
-
-  <h1>Agregar Administrador</h1>
+<div class="container py-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="h4 m-auto titulo px-5">Agregar Administrador</h4>
+  </div>
    <form id="admin-form" novalidate>
           <div class="row g-3">
             <div class="col-12">
@@ -273,7 +273,7 @@ include '../../php/helpers/get-country.php';
             <div class="col-12 d-flex justify-content-end pt-2">
               <button
                 type="submit"
-                class="btn btn-success w-100 px-4"
+                class="btn btn-danger w-100 px-4"
                 id="btn-profile"
               >
                 <?php echo $lang['boton_guardar_cambios'] ?>
