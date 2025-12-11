@@ -20,7 +20,7 @@ $html_lang = $_SESSION['lang'];
     <title>Inicio</title>
     <?php 
 include '../../../php/components/admin/styles/admin-common-styles.php';    ?>
-    
+
   </head>
   <body>
     <?php
@@ -72,10 +72,11 @@ include '../../../php/components/admin/nav-bar-admin.php'; ?>
       </div> -->
     </section>
     <?php 
-      include '../../../php/components/footer.php';
+      include '../../../php/components/admin/styles/footer.php';    
       include '../../../php/components/cart-modal.php';
       include '../../../php/scripts/common-scripts.php';
     ?>
+      <link rel="stylesheet" href="/Buke-Tours/assets/css/admin/footer.css" />
     <script type="module" src="/Buke-Tours/assets/js/admins/login-page-admin.js"  defer></script>
   </body>
 </html>

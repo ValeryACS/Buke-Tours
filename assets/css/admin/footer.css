@@ -1,0 +1,30 @@
+/* Footer */
+.footer-redes {
+  background-color: #2a7e7e;
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  bottom: 0;
+  padding: 0px 0;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.footer-redes-li {
+  display: inline;
+  margin: 0 15px;
+}
+
+.footer-redes a {
+  text-decoration: none;
+  color: white;
+}
+
+.footer-redes a:hover {
+  color: lightblue;
+}
+
+img.logo-footer{
+  height: 60px;
+}

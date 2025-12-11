@@ -220,7 +220,7 @@ if ($result) {
     </main>
     <script type="module" src="/Buke-Tours/assets/js/invoices-page.js" defer></script>
     <?php 
-      include '../../php/components/footer.php';
+      include '../../php/components/admin/styles/footer.php';
       include '../../php/components/cart-modal.php';
       include '../../php/scripts/common-scripts.php';
 
@@ -235,7 +235,7 @@ if ($result) {
         })
     </script>
 
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/Buke-Tours/assets/css/admin/footer.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

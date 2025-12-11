@@ -53,7 +53,7 @@ closeConnection($mysqli);
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Lista de Clientes</h2>
-        <a href="create.php" class="btn btn-primary">Agregar Cliente</a>
+        <a href="create.php" class="btn btn-primary"> + Agregar Cliente</a>
     </div>
 
     <div class="table-responsive">
@@ -99,6 +99,9 @@ closeConnection($mysqli);
     </div>
 </div>
 
+<?php 
+      include '../../php/components/admin/styles/footer.php'; ?>
+<link rel="stylesheet" href="/Buke-Tours/assets/css/admin/footer.css" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="module" src="/Buke-Tours/assets/js/customers/delete-profile-page.js" defer></script>
