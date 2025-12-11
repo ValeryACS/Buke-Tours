@@ -146,6 +146,7 @@ $lang = array(
     'cardholder_name_label'       => 'Nombre del Titular de la tarjeta',
     'card_number_label'           => 'Número de tarjeta',
     'card_month_label'            => 'Mes',
+    'similar_experiences'=> 'Experiencias Similares',
     'card_year_label'             => 'Año',
     'days_label'                  => 'Días',
     'breakfasts_label'            => 'Desayunos',
@@ -158,6 +159,7 @@ $lang = array(
     'terms_and_conditions_label'  => 'términos y condiciones',
     'pay_with_paypal_button'      => 'Pagar con Paypal',
     'pay_with_card_button'        => 'Pagar con Tarjeta',
-    'voucher_confirmation_note'   => 'Recibirás el voucher y la confirmación por correo electrónico.'  
+    'voucher_confirmation_note'   => 'Recibirás el voucher y la confirmación por correo electrónico.',
+    'no_similar_tours'            => 'No hay tours similares disponibles.'
 );
 ?>
