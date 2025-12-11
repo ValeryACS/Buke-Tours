@@ -104,7 +104,7 @@ $validStatuses = ['Aprobada', 'Denegada', 'Pendiente'];
             <div class="col-12 d-flex justify-content-end pt-2">
                 <button
                     type="submit"
-                    class="btn btn-success w-100 px-4"
+                    class="btn btn-danger w-100 px-4"
                     id="btn-save-status" >
                     <?php echo $lang['boton_guardar_cambios'] ?>
                 </button>

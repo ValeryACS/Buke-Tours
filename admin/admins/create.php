@@ -273,7 +273,7 @@ include '../../php/helpers/get-country.php';
             <div class="col-12 d-flex justify-content-end pt-2">
               <button
                 type="submit"
-                class="btn btn-success w-100 px-4"
+                class="btn btn-danger w-100 px-4"
                 id="btn-profile"
               >
                 <?php echo $lang['boton_guardar_cambios'] ?>
