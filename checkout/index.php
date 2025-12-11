@@ -13,19 +13,17 @@ if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'es'; // Idioma por defecto español
 }
 
-$userID = isset($_SESSION['id'])? (int)$_SESSION['id']: 0;
+$html_lang = $_SESSION['lang'];
+include '../language/lang_' . $html_lang . '.php';
+
+$userID = isset($_SESSION['id']) ? (int)$_SESSION['id'] : 0;
 
 if($userID<= 0){
     header("Location: ../auth/login/");
     exit();
 }
 
-include '../language/lang_' . $_SESSION['lang'] . '.php'; 
-
-$html_lang = $_SESSION['lang'];
 include '../php/helpers/get-country.php';
-
-$html_lang = $_SESSION['lang']; 
 
 $profileSession = [
     'nombre' => $_SESSION['nombre'] ?? '',
@@ -48,11 +46,11 @@ $sessionValue = function (string $key) use ($profileSession): string {
 
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="<?php echo htmlspecialchars($html_lang, ENT_QUOTES, 'UTF-8'); ?>">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formulario de Compra</title>
+    <title><?php echo htmlspecialchars($lang['checkout_form_title'], ENT_QUOTES, 'UTF-8'); ?></title>
     <?php 
       include '../php/styles/common-styles.php';
     ?>
@@ -77,10 +75,10 @@ $sessionValue = function (string $key) use ($profileSession): string {
           class="container bg-light container-content float-lg-none float-start"
         >
           <div class="d-flex align-items-center justify-content-between mb-4">
-            <h1 class="titulo h3 mb-0">Formulario de Compra</h1>
-            <span class="badge text-bg-danger tours-added d-none d-lg-flex"
-              >3 artículos</span
-            >
+            <h1 class="titulo h3 mb-0"><?php echo htmlspecialchars($lang['checkout_form_title'], ENT_QUOTES, 'UTF-8'); ?></h1>
+            <span class="badge text-bg-danger tours-added d-none d-lg-flex">
+              <?php echo htmlspecialchars($lang['cart_items_badge'], ENT_QUOTES, 'UTF-8'); ?>
+            </span>
           </div>
           <div class="row g-4">
             <article
@@ -88,12 +86,12 @@ $sessionValue = function (string $key) use ($profileSession): string {
               class="col-12 col-lg-8 d-flex flex-column justify-content-center align-items-center d-none"
             >
               <div class="text-center text-muted p-4">
-                Tu carrito está vacío.
+                <?php echo htmlspecialchars($lang['modal_cart_empty'], ENT_QUOTES, 'UTF-8'); ?>
               </div>
               <a
                 href="/Buke-Tours/tours/"
                 class="btn btn-danger-buke-tours m-auto"
-                >Comprar Tours</a
+                ><?php echo htmlspecialchars($lang['cta_comprar_tours'], ENT_QUOTES, 'UTF-8'); ?></a
               >
             </article>
             <article
@@ -266,7 +264,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                           aria-expanded="true"
                           aria-controls="collapseContacto"
                         >
-                          Datos de contacto
+                          <?php echo htmlspecialchars($lang['contact_section_title'], ENT_QUOTES, 'UTF-8'); ?>
                         </button>
                       </h2>
                       <div
@@ -279,14 +277,14 @@ $sessionValue = function (string $key) use ($profileSession): string {
                           <div class="row g-3 text-start">
                             <div class="col-12 col-md-6 form-group">
                               <label for="nombre" class="form-label"
-                                >Nombre completo</label
+                                ><?php echo htmlspecialchars($lang['nombre_completo'], ENT_QUOTES, 'UTF-8'); ?></label
                               >
                               <input
                                 id="nombre"
                                 name="nombre"
                                 type="text"
                                 class="form-control"
-                                placeholder="Ej: Ana Rodríguez"
+                                placeholder="<?php echo htmlspecialchars($lang['full_name_example'], ENT_QUOTES, 'UTF-8'); ?>"
                                 autocomplete="name"
                                 maxlength="50"
                                 value="<?php 
@@ -298,14 +296,14 @@ $sessionValue = function (string $key) use ($profileSession): string {
                             </div>
                             <div class="col-12 col-md-6 form-group">
                               <label for="email" class="form-label"
-                                >Correo electrónico</label
+                                ><?php echo htmlspecialchars($lang['correo_electronico'], ENT_QUOTES, 'UTF-8'); ?></label
                               >
                               <input
                                 id="email"
                                 name="email"
                                 type="email"
                                 class="form-control"
-                                placeholder="ejemplo@correo.com"
+                                placeholder="<?php echo htmlspecialchars($lang['email_example'], ENT_QUOTES, 'UTF-8'); ?>"
                                 autocomplete="email"
                                 maxlength="90"
                                 value="<?php 
@@ -317,7 +315,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                             </div>
                             <div class="col-12 col-md-6 form-group">
                               <label for="telefono" class="form-label"
-                                >Teléfono</label
+                                ><?php echo htmlspecialchars($lang['numero_telefono'], ENT_QUOTES, 'UTF-8'); ?></label
                               >
                               <input
                                 id="telefono"
@@ -341,7 +339,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                                 aria-hidden="true"
                               ></span>
                               <label for="pais" class="form-label"
-                                >País de residencia</label
+                                ><?php echo htmlspecialchars($lang['pais_residencia'], ENT_QUOTES, 'UTF-8'); ?></label
                               >
                               <input type="hidden" name="country-value" readonly value="<?php 
                                 if(isset($_SESSION['pais'])){
@@ -362,14 +360,14 @@ $sessionValue = function (string $key) use ($profileSession): string {
                             </div>
                             <div class="col-12 col-md-6 form-group text-start">
                               <label for="documento" class="form-label"
-                                >Cédula / Pasaporte</label
+                                ><?php echo htmlspecialchars($lang['documento_label'], ENT_QUOTES, 'UTF-8'); ?></label
                               >
                               <input
                                 id="documento"
                                 name="documento"
                                 type="text"
                                 class="form-control"
-                                placeholder="Número de Cédula"
+                                placeholder="<?php echo htmlspecialchars($lang['documento_placeholder'], ENT_QUOTES, 'UTF-8'); ?>"
                                 maxlength="20"
                                 value="<?php 
                                 if(isset($_SESSION['passport'])){
@@ -380,7 +378,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                             </div>
                             <div class="col-12 col-md-6 form-group text-start">
                               <label for="idioma" class="form-label"
-                                >Idioma</label
+                                ><?php echo htmlspecialchars($lang['idioma'], ENT_QUOTES, 'UTF-8'); ?></label
                               >
                               <select
                                 id="idioma"
@@ -389,18 +387,18 @@ $sessionValue = function (string $key) use ($profileSession): string {
                                 aria-label="Idioma Seleccionado"
                               >
                                 <option selected value="no-seleccionado">
-                                  Seleccione un Idioma
+                                  <?php echo htmlspecialchars($lang['select_language_prompt'], ENT_QUOTES, 'UTF-8'); ?>
                                 </option>
                                 <option value="en" <?php 
                                 if(isset($_SESSION['idioma']) && $_SESSION['idioma'] ==='en'){
                                   echo "selected";
                                 }
-                                ?> >Ingles</option>
+                                ?> ><?php echo htmlspecialchars($lang['lang_option_en'], ENT_QUOTES, 'UTF-8'); ?></option>
                                 <option value="es" <?php 
                                 if(isset($_SESSION['idioma']) && $_SESSION['idioma'] ==='es'){
                                   echo "selected";
                                 }
-                                ?>>Español</option>
+                                ?>><?php echo htmlspecialchars($lang['lang_option_es'], ENT_QUOTES, 'UTF-8'); ?></option>
                               </select>
                             </div>
                           </div>
@@ -418,7 +416,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                           aria-expanded="false"
                           aria-controls="collapseTour"
                         >
-                          Fechas de Ingreso y Salida
+                          <?php echo htmlspecialchars($lang['dates_section_title'], ENT_QUOTES, 'UTF-8'); ?>
                         </button>
                       </h2>
                       <div
@@ -446,7 +444,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                           aria-expanded="false"
                           aria-controls="collapseExtras"
                         >
-                          Extras opcionales
+                          <?php echo htmlspecialchars($lang['optional_extras_title'], ENT_QUOTES, 'UTF-8'); ?>
                         </button>
                       </h2>
                       <div
@@ -456,7 +454,9 @@ $sessionValue = function (string $key) use ($profileSession): string {
                         data-bs-parent="#accordionCheckout"
                       >
                         <div class="accordion-body">
-                          <h6 class="mb-2">Costo por persona:</h6>
+                          <h6 class="mb-2">
+                            <?php echo htmlspecialchars($lang['modal_cost_per_person'], ENT_QUOTES, 'UTF-8'); ?>:
+                          </h6>
                           <div class="row g-3">
                             <div class="col-12 col-md-6">
                               <div class="form-check text-start">
@@ -467,7 +467,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                                   name="desayuno"
                                 />
                                 <label class="form-check-label" for="desayuno"
-                                  >Desayuno incluido (+$11.00)</label
+                                  ><?php echo htmlspecialchars($lang['breakfast_extra_description'], ENT_QUOTES, 'UTF-8'); ?></label
                                 >
                               </div>
                               <div class="form-check text-start">
@@ -478,7 +478,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                                   name="almuerzo"
                                 />
                                 <label class="form-check-label" for="almuerzo"
-                                  >Almuerzo incluido (+$12.00)</label
+                                  ><?php echo htmlspecialchars($lang['lunch_extra_description'], ENT_QUOTES, 'UTF-8'); ?></label
                                 >
                               </div>
                               <div class="form-check text-start">
@@ -489,7 +489,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                                   name="cena"
                                 />
                                 <label class="form-check-label" for="cena"
-                                  >Cena incluida (+$17.00)</label
+                                  ><?php echo htmlspecialchars($lang['dinner_extra_description'], ENT_QUOTES, 'UTF-8'); ?></label
                                 >
                               </div>
                             </div>
@@ -502,7 +502,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                                   name="transporte"
                                 />
                                 <label class="form-check-label" for="transporte"
-                                  >Transporte(+$30.00)</label
+                                  ><?php echo htmlspecialchars($lang['transport_extra_description'], ENT_QUOTES, 'UTF-8'); ?></label
                                 >
                               </div>
                               <div class="form-check text-start">
@@ -513,7 +513,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                                   name="seguro"
                                 />
                                 <label class="form-check-label" for="seguro"
-                                  >Seguro de viaje (+$9.00)</label
+                                  ><?php echo htmlspecialchars($lang['insurance_extra_description'], ENT_QUOTES, 'UTF-8'); ?></label
                                 >
                               </div>
                               <div class="form-check text-start">
@@ -524,7 +524,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                                   name="fotos"
                                 />
                                 <label class="form-check-label" for="fotos"
-                                  >Paquete de fotografías (+$15.00)</label
+                                  ><?php echo htmlspecialchars($lang['photos_extra_description'], ENT_QUOTES, 'UTF-8'); ?></label
                                 >
                               </div>
                             </div>
@@ -543,7 +543,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                           aria-expanded="false"
                           aria-controls="collapseFactura"
                         >
-                          Datos de facturación
+                          <?php echo htmlspecialchars($lang['billing_section_title'], ENT_QUOTES, 'UTF-8'); ?>
                         </button>
                       </h2>
                       <div
@@ -556,14 +556,14 @@ $sessionValue = function (string $key) use ($profileSession): string {
                           <div class="row g-3">
                             <div class="col-12 text-start">
                               <label for="direccion" class="form-label"
-                                >Dirección</label
+                                ><?php echo htmlspecialchars($lang['direccion_label'], ENT_QUOTES, 'UTF-8'); ?></label
                               >
                               <input
                                 id="direccion"
                                 name="direccion"
                                 type="text"
                                 class="form-control"
-                                placeholder="Calle, número, apartamento"
+                                placeholder="<?php echo htmlspecialchars($lang['address_placeholder_example'], ENT_QUOTES, 'UTF-8'); ?>"
                                 autocomplete="street-address"
                                 maxlength="200"
                                 value="<?php 
@@ -575,7 +575,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                             </div>
                             <div class="col-12 col-md-6">
                               <label for="ciudad" class="form-label"
-                                >Ciudad</label
+                                ><?php echo htmlspecialchars($lang['ciudad_label'], ENT_QUOTES, 'UTF-8'); ?></label
                               >
                               <input
                                 id="ciudad"
@@ -592,7 +592,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                             </div>
                             <div class="col-6 col-md-3">
                               <label for="provincia" class="form-label"
-                                >Provincia</label
+                                ><?php echo htmlspecialchars($lang['provincia_label'], ENT_QUOTES, 'UTF-8'); ?></label
                               >
                               <input
                                 id="provincia"
@@ -609,7 +609,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                             </div>
                             <div class="col-6 col-md-3">
                               <label for="zip" class="form-label"
-                                >Código Postal</label
+                                ><?php echo htmlspecialchars($lang['codigo_postal_label'], ENT_QUOTES, 'UTF-8'); ?></label
                               >
                               <input
                                 id="zip"
@@ -640,7 +640,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                           aria-expanded="false"
                           aria-controls="collapsePago"
                         >
-                          Tarjeta de crédito / débito
+                          <?php echo htmlspecialchars($lang['card_section_title'], ENT_QUOTES, 'UTF-8'); ?>
                         </button>
                       </h2>
                       <div
@@ -660,7 +660,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                               <div class="row g-3">
                                 <div class="col-12 text-start form-group">
                                   <label for="cardName" class="form-label"
-                                    >Nombre del Titular de la tarjeta</label
+                                    ><?php echo htmlspecialchars($lang['cardholder_name_label'], ENT_QUOTES, 'UTF-8'); ?></label
                                   >
                                   <input
                                     id="cardName"
@@ -673,7 +673,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                                 </div>
                                 <div class="col-12 text-start form-group">
                                   <label for="cardNumber" class="form-label"
-                                    >Número de tarjeta</label
+                                    ><?php echo htmlspecialchars($lang['card_number_label'], ENT_QUOTES, 'UTF-8'); ?></label
                                   >
                                   <input
                                     id="cardNumber"
@@ -688,7 +688,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                                 </div>
                                 <div class="col-6 col-md-4 form-group">
                                   <label for="cardMonth" class="form-label"
-                                    >Mes</label
+                                    ><?php echo htmlspecialchars($lang['card_month_label'], ENT_QUOTES, 'UTF-8'); ?></label
                                   >
                                   <input
                                     id="cardMonth"
@@ -704,7 +704,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                                 </div>
                                 <div class="col-6 col-md-4 form-group">
                                   <label for="cardYear" class="form-label"
-                                    >Año</label
+                                    ><?php echo htmlspecialchars($lang['card_year_label'], ENT_QUOTES, 'UTF-8'); ?></label
                                   >
                                   <input
                                     id="cardYear"
@@ -746,10 +746,10 @@ $sessionValue = function (string $key) use ($profileSession): string {
             <aside class="col-12 col-lg-4 resumen-del-pedido d-none">
               <div class="card shadow-sm sticky-lg-top" style="top: 1rem">
                 <div class="card-body">
-                  <h2 class="h6 mb-3">Resumen del pedido</h2>
+                  <h2 class="h6 mb-3"><?php echo htmlspecialchars($lang['order_summary'], ENT_QUOTES, 'UTF-8'); ?></h2>
                   <div class="mb-3">
                     <label for="coupon" class="form-label small"
-                      >Cupón de descuento</label
+                      ><?php echo htmlspecialchars($lang['discount_coupon'], ENT_QUOTES, 'UTF-8'); ?></label
                     >
                     <div class="input-group">
                       <input
@@ -757,65 +757,65 @@ $sessionValue = function (string $key) use ($profileSession): string {
                         name="coupon"
                         type="text"
                         class="form-control"
-                        placeholder="Código de cupón"
+                        placeholder="<?php echo htmlspecialchars($lang['coupon_placeholder'], ENT_QUOTES, 'UTF-8'); ?>"
                       />
                       <button
                         class="btn btn-success"
                         type="button"
                         id="btn-coupon"
                       >
-                        Aplicar
+                        <?php echo htmlspecialchars($lang['apply_coupon'], ENT_QUOTES, 'UTF-8'); ?>
                       </button>
                     </div>
                   </div>
 
                   <ul class="list-unstyled mb-4">
                     <li class="d-flex justify-content-between mb-1">
-                      <span>D&iacute;as</span>
+                      <span><?php echo htmlspecialchars($lang['days_label'], ENT_QUOTES, 'UTF-8'); ?></span>
                       <span id="dias-cart">x1</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Descuento</span>
+                      <span><?php echo htmlspecialchars($lang['discount_label'], ENT_QUOTES, 'UTF-8'); ?></span>
                       <span id="discount-cart">−$10.00</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Coupon Codes</span> <span id="cupon-cart"></span>
+                      <span><?php echo htmlspecialchars($lang['coupon_codes_label'], ENT_QUOTES, 'UTF-8'); ?></span> <span id="cupon-cart"></span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Coupon Discounts</span>
+                      <span><?php echo htmlspecialchars($lang['coupon_discounts_label'], ENT_QUOTES, 'UTF-8'); ?></span>
                       <span id="cupon-discounts-cart"></span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Adultos</span>
+                      <span><?php echo htmlspecialchars($lang['label_adultos'], ENT_QUOTES, 'UTF-8'); ?></span>
                       <span id="adultos-sidebar-cart">1</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Niños</span>
+                      <span><?php echo htmlspecialchars($lang['label_ninos'], ENT_QUOTES, 'UTF-8'); ?></span>
                       <span id="children-sidebar-cart">0</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <h3>Extras:</h3>
+                      <h3><?php echo htmlspecialchars($lang['label_extras'], ENT_QUOTES, 'UTF-8'); ?></h3>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Desayunos</span><span id="breakfast-cart"> 0</span>
+                      <span><?php echo htmlspecialchars($lang['breakfasts_label'], ENT_QUOTES, 'UTF-8'); ?></span><span id="breakfast-cart"> 0</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Almuerzos</span><span id="launch-cart">0</span>
+                      <span><?php echo htmlspecialchars($lang['lunches_label'], ENT_QUOTES, 'UTF-8'); ?></span><span id="launch-cart">0</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Cena</span><span id="diner-cart">0</span>
+                      <span><?php echo htmlspecialchars($lang['dinner_label'], ENT_QUOTES, 'UTF-8'); ?></span><span id="diner-cart">0</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Transporte</span><span id="transport-cart">0</span>
+                      <span><?php echo htmlspecialchars($lang['transport_label'], ENT_QUOTES, 'UTF-8'); ?></span><span id="transport-cart">0</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Seguro</span><span id="security-cart">0</span>
+                      <span><?php echo htmlspecialchars($lang['insurance_label'], ENT_QUOTES, 'UTF-8'); ?></span><span id="security-cart">0</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <span>Fotografias</span><span id="photos-cart">0</span>
+                      <span><?php echo htmlspecialchars($lang['photos_label'], ENT_QUOTES, 'UTF-8'); ?></span><span id="photos-cart">0</span>
                     </li>
                     <li class="d-flex justify-content-between mb-1">
-                      <h4>Subtotal</h4>
+                      <h4><?php echo htmlspecialchars($lang['subtotal_label'], ENT_QUOTES, 'UTF-8'); ?></h4>
                       <span id="subtotal-cart">$152.29</span>
                       <input
                         type="number"
@@ -829,7 +829,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                     <li
                       class="d-flex justify-content-between border-top pt-2 fw-semibold"
                     >
-                      <h2>Total</h2>
+                      <h2><?php echo htmlspecialchars($lang['total_label'], ENT_QUOTES, 'UTF-8'); ?></h2>
                       <span id="total-cart">$147.28</span>
                       <input
                         type="number"
@@ -850,9 +850,9 @@ $sessionValue = function (string $key) use ($profileSession): string {
                           id="terms"
                         />
                         <label class="form-check-label" for="terms">
-                          Acepto los
+                          <?php echo htmlspecialchars($lang['accept_terms_prefix'], ENT_QUOTES, 'UTF-8'); ?>
                           <a href="#terminos-y-condiciones"
-                            >términos y condiciones</a
+                            ><?php echo htmlspecialchars($lang['terms_and_conditions_label'], ENT_QUOTES, 'UTF-8'); ?></a
                           >
                           .
                         </label>
@@ -867,19 +867,18 @@ $sessionValue = function (string $key) use ($profileSession): string {
                       class="btn btn-secondary btn-lg mb-3 mt-3"
                     >
                       <i class="bi bi-paypal"></i>
-                      Pagar con Paypal
+                      <?php echo htmlspecialchars($lang['pay_with_paypal_button'], ENT_QUOTES, 'UTF-8'); ?>
                     </button>
                     <button
                       class="btn btn-dark btn-lg"
                       type="button"
                       id="pagar-con-tarjeta-btn"
                     >
-                      <i class="bi bi-credit-card"></i>Pagar con Tarjeta
+                      <i class="bi bi-credit-card"></i><?php echo htmlspecialchars($lang['pay_with_card_button'], ENT_QUOTES, 'UTF-8'); ?>
                     </button>
                   </div>
                   <p class="small text-muted mt-3 mb-0">
-                    Recibirás el **voucher** y la confirmación por correo
-                    electrónico.
+                    <?php echo htmlspecialchars($lang['voucher_confirmation_note'], ENT_QUOTES, 'UTF-8'); ?>
                   </p>
                 </div>
               </div>
