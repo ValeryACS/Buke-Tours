@@ -1,39 +1,33 @@
 <?php
-header("Content-Type: text/html; charset=UTF-8");
+session_start();
 
-if (!isset($_GET["id"])) {
-  die("Error: No se proporcionó el ID del tour.");
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: /Buke-Tours/admin/auth/login-admin.php");
+    exit;
 }
 
-$id = intval($_GET["id"]);
-?>
+if (!isset($_GET['id'])) {
+    die("ID no proporcionado");
+}
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Eliminar Tour</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+$tourId = intval($_GET['id']);
 
-<body class="bg-light">
 
-<div class="container py-4">
+$apiUrl = "http://localhost/Buke-Tours/api/tours/delete.php?id=" . $tourId;
 
-  <div class="alert alert-danger">
-    <h4 class="alert-heading">¿Eliminar Tour #<?= $id ?>?</h4>
-    <p>Esta acción no se puede deshacer. ¿Estás seguro?</p>
-    <hr>
+$ch = curl_init($apiUrl);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    <form action="remove.php" method="POST">
-      <input type="hidden" name="id" value="<?= $id ?>">
+$response = curl_exec($ch);
+curl_close($ch);
 
-      <button type="submit" class="btn btn-danger">Sí, eliminar</button>
-      <a href="/admin/tours/" class="btn btn-secondary">Cancelar</a>
-    </form>
-  </div>
+$data = json_decode($response, true);
 
-</div>
+if ($data["success"]) {
+    header("Location: /Buke-Tours/admin/tours/index.php?deleted=1");
+    exit;
+} else {
+    echo "Error al eliminar: " . ($data["message"] ?? "Error desconocido");
+}
 
-</body>
-</html>

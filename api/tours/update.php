@@ -3,7 +3,6 @@
 
 header('Content-Type: application/json; charset=UTF-8');
 
-
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
@@ -14,13 +13,21 @@ $response = [
     'success'   => false,
     'message'   => '',
     'errors'    => [],
-    'createdId' => null,
+    'updatedId' => null,
 ];
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         $response['message'] = 'Método no permitido. Usa POST.';
         $response['errors'][] = 'Método no permitido. Usa POST.';
+        echo json_encode($response);
+        exit;
+    }
+
+    $id            = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+    if ($id <= 0) {
+        $response['message'] = 'ID de tour inválido.';
+        $response['errors'][] = 'ID de tour inválido.';
         echo json_encode($response);
         exit;
     }
@@ -45,6 +52,7 @@ try {
     if ($title === '')       { $response['errors'][] = 'El nombre del tour es obligatorio.'; }
     if ($location === '')    { $response['errors'][] = 'La ubicación es obligatoria.'; }
     if ($description === '') { $response['errors'][] = 'La descripción es obligatoria.'; }
+
     if ($price_usd === '' || !is_numeric($price_usd)) {
         $response['errors'][] = 'El precio debe ser numérico.';
     }
@@ -75,23 +83,30 @@ try {
     
     $mysqli = openConnection();
 
-    $sql = "INSERT INTO tour (
-                sku, title, location, description,
-                price_usd, rating, duration_hours,
-                adults_limit, children_limit, discount,
-                img, cupon_code, iframe
-            ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-            )";
+    $sql = "UPDATE tour
+            SET sku = ?,
+                title = ?,
+                location = ?,
+                description = ?,
+                price_usd = ?,
+                rating = ?,
+                duration_hours = ?,
+                adults_limit = ?,
+                children_limit = ?,
+                discount = ?,
+                img = ?,
+                cupon_code = ?,
+                iframe = ?
+            WHERE id = ?";
 
     $stmt = $mysqli->prepare($sql);
     if (!$stmt) {
         throw new Exception('Error al preparar el statement: ' . $mysqli->error);
     }
 
-    
+   
     $stmt->bind_param(
-        "ssssdddiiisss",
+        "ssssdddiiisssi",
         $sku,
         $title,
         $location,
@@ -104,31 +119,28 @@ try {
         $discount,
         $img,
         $cupon_code,
-        $iframe
+        $iframe,
+        $id
     );
 
     if (!$stmt->execute()) {
-        throw new Exception('Error al ejecutar el INSERT: ' . $stmt->error);
+        throw new Exception('Error al ejecutar el UPDATE: ' . $stmt->error);
     }
-
-    $createdId = $stmt->insert_id ?: $mysqli->insert_id;
 
     $stmt->close();
     closeConnection($mysqli);
 
     $response['success']   = true;
-    $response['message']   = 'Tour creado correctamente.';
-    $response['createdId'] = $createdId;
+    $response['message']   = 'Tour actualizado correctamente.';
+    $response['updatedId'] = $id;
 
     echo json_encode($response);
     exit;
 
 } catch (Throwable $e) {
-    
     $response['success'] = false;
-    $response['message'] = 'Error interno al crear el tour.';
+    $response['message'] = 'Error interno al actualizar el tour.';
     $response['errors'][] = $e->getMessage();
-
     echo json_encode($response);
     exit;
 }

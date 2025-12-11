@@ -1,105 +1,218 @@
-<?php
+<?php 
 header("Content-Type: text/html; charset=UTF-8");
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+include("../../php/config/db.php");
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es';
+}
+
+$adminID = isset($_SESSION['admin_id']) ? (int)$_SESSION['admin_id'] : 0;
+if ($adminID <= 0) {
+    header("Location: ../auth/login/");
+    exit();
+}
+
+include '../../language/lang_' . $_SESSION['lang'] . '.php'; 
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Crear Tour</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crear Tour</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
 </head>
-
-<body class="bg-light">
+<body>
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
 
-<div class="container py-4">
-    <h1 class="mb-4">Crear Tour</h1>
+<div class="container py-4 mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="h4 m-auto titulo px-5">Crear Tour</h4>
+  </div>
 
-    <form action="index.php" method="POST" id="createTourForm">
+  <form id="tour-form" novalidate>
+    <div class="row g-3">
+      <div class="col-12 col-md-6">
+        <label for="sku" class="form-label d-flex text-start">SKU</label>
+        <input
+          id="sku"
+          name="sku"
+          type="text"
+          class="form-control"
+          autocomplete="off"
+          required
+        />
+      </div>
 
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre del Tour</label>
-            <input type="text" name="nombre" id="nombre" class="form-control">
-            <div class="invalid-feedback">El nombre es obligatorio y no debe contener números.</div>
-        </div>
+      <div class="col-12 col-md-6">
+        <label for="title" class="form-label d-flex text-start">Nombre del Tour</label>
+        <input
+          id="title"
+          name="title"
+          type="text"
+          class="form-control"
+          autocomplete="off"
+          required
+        />
+      </div>
 
-        <div class="mb-3">
-            <label for="ubicacion" class="form-label">Ubicación</label>
-            <input type="text" name="ubicacion" id="ubicacion" class="form-control" placeholder="Costa Rica">
-            <div class="invalid-feedback">La ubicación es obligatoria y no debe contener números.</div>
-        </div>
-        
-        <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripción</label>
-            <textarea name="descripcion" id="descripcion" class="form-control" rows="4"></textarea>
-            <div class="invalid-feedback">La descripción es obligatoria y debe tener al menos 20 caracteres.</div>
-        </div>
+      <div class="col-12">
+        <label for="location" class="form-label d-flex text-start">Ubicación</label>
+        <input
+          id="location"
+          name="location"
+          type="text"
+          class="form-control"
+          autocomplete="off"
+          required
+        />
+      </div>
 
-        <hr>
-        
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="price_usd" class="form-label">Precio ($ USD)</label>
-                <input type="text" name="price_usd" id="price_usd" class="form-control input-number">
-                <div class="invalid-feedback">El precio es obligatorio y debe ser un número positivo.</div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="rating" class="form-label">Rating (1.0 - 5.0)</label>
-                <input type="text" name="rating" id="rating" class="form-control input-number">
-                <div class="invalid-feedback">El rating es obligatorio (entre 1.0 y 5.0).</div>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <label for="duration_hours" class="form-label">Duración (Horas)</label>
-                <input type="text" name="duration_hours" id="duration_hours" class="form-control input-number">
-                <div class="invalid-feedback">La duración es obligatoria.</div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label for="adults_limit" class="form-label">Límite Adultos</label>
-                <input type="text" name="adults_limit" id="adults_limit" class="form-control input-number">
-                <div class="invalid-feedback">El límite de adultos es obligatorio.</div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label for="children_limit" class="form-label">Límite Niños</label>
-                <input type="text" name="children_limit" id="children_limit" class="form-control input-number">
-                <div class="invalid-feedback">El límite de niños es obligatorio.</div>
-            </div>
-        </div>
+      <div class="col-12">
+        <label for="description" class="form-label d-flex text-start">Descripción</label>
+        <textarea
+          id="description"
+          name="description"
+          rows="4"
+          class="form-control"
+          required
+        ></textarea>
+      </div>
 
-        <div class="mb-3">
-            <label for="discount" class="form-label">Descuento (%)</label>
-            <input type="text" name="discount" id="discount" class="form-control input-number">
-            <div class="invalid-feedback">El descuento es obligatorio (0-100).</div>
-        </div>
+      <div class="col-12 col-md-4">
+        <label for="price_usd" class="form-label d-flex text-start">Precio (USD)</label>
+        <input
+          id="price_usd"
+          name="price_usd"
+          type="number"
+          step="0.01"
+          min="0"
+          class="form-control"
+          required
+        />
+      </div>
 
-        <hr>
+      <div class="col-12 col-md-4">
+        <label for="rating" class="form-label d-flex text-start">Rating (1.0 - 5.0)</label>
+        <input
+          id="rating"
+          name="rating"
+          type="number"
+          step="0.1"
+          min="1"
+          max="5"
+          class="form-control"
+          required
+        />
+      </div>
 
-        <div class="mb-3">
-            <label for="img" class="form-label">URL de Imagen</label>
-            <input type="text" name="img" id="img" class="form-control" placeholder="http://ejemplo.com/imagen.jpg">
-            <div class="invalid-feedback">La URL de la imagen es obligatoria.</div>
-        </div>
+      <div class="col-12 col-md-4">
+        <label for="duration_hours" class="form-label d-flex text-start">Duración (horas)</label>
+        <input
+          id="duration_hours"
+          name="duration_hours"
+          type="number"
+          step="0.5"
+          min="0"
+          class="form-control"
+          required
+        />
+      </div>
 
-        <div class="mb-3">
-            <label for="cupon_code" class="form-label">Código de Cupón (Opcional)</label>
-            <input type="text" name="cupon_code" id="cupon_code" class="form-control">
-        </div>
+      <div class="col-12 col-md-4">
+        <label for="adults_limit" class="form-label d-flex text-start">Límite adultos</label>
+        <input
+          id="adults_limit"
+          name="adults_limit"
+          type="number"
+          min="0"
+          class="form-control"
+          required
+        />
+      </div>
 
-        <div class="mb-3">
-            <label for="iframe" class="form-label">Iframe / Mapa (Opcional)</label>
-            <textarea name="iframe" id="iframe" class="form-control" rows="2"></textarea>
-        </div>
-        
-        <button type="submit" class="btn btn-success">Guardar Tour</button>
-        <a href="/admin/tours/" class="btn btn-secondary">Cancelar</a>
+      <div class="col-12 col-md-4">
+        <label for="children_limit" class="form-label d-flex text-start">Límite niños</label>
+        <input
+          id="children_limit"
+          name="children_limit"
+          type="number"
+          min="0"
+          class="form-control"
+          required
+        />
+      </div>
 
-    </form>
+      <div class="col-12 col-md-4">
+        <label for="discount" class="form-label d-flex text-start">Descuento (%)</label>
+        <input
+          id="discount"
+          name="discount"
+          type="number"
+          min="0"
+          max="100"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <div class="col-12">
+        <label for="img" class="form-label d-flex text-start">URL de imagen</label>
+        <input
+          id="img"
+          name="img"
+          type="text"
+          class="form-control"
+          autocomplete="off"
+          required
+        />
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label for="cupon_code" class="form-label d-flex text-start">Código de cupón (opcional)</label>
+        <input
+          id="cupon_code"
+          name="cupon_code"
+          type="text"
+          class="form-control"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label for="iframe" class="form-label d-flex text-start">Iframe / mapa (opcional)</label>
+        <textarea
+          id="iframe"
+          name="iframe"
+          rows="2"
+          class="form-control"
+        ></textarea>
+      </div>
+
+      <div class="col-12 d-flex justify-content-end pt-2">
+        <button
+          type="submit"
+          class="btn btn-danger w-100 px-4"
+          id="btn-create-tour"
+        >
+          Guardar Tour
+        </button>
+      </div>
+    </div>
+  </form>
 </div>
 
-<script type="module" src=".././create-tour.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script type="module" src="/Buke-Tours/assets/js/tours/create-tour-page.js" defer></script>
 </body>
 </html>

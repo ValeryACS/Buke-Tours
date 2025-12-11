@@ -1,31 +1,42 @@
 <?php
-/**
- * API GET - Usado para retornar todos los tours almacenados en la base de datos
- * siempre y cuando esten disponibles, cada tour tiene un limite de adultos y de niños
- * por medio de un LEFT JOIN se compara si un tour ya alcanzo su limite para una fecha en especifico
- * si no se envian las fechas por defecto usara la fecha del dia de mañana como check_in_date
- * y si no se envia el checkout_date se usara la fecha de pasado mañana
- */
+
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include("../../php/config/db.php");
+header('Content-Type: application/json; charset=utf-8');
 
-if($_SERVER["REQUEST_METHOD"] === "GET"){
+include __DIR__ . "/../../php/config/db.php";
+
+$mysqli  = null;
+$tours   = [];
+$success = false;
+$error   = null;
+
+try {
+    if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+        http_response_code(405);
+        throw new Exception('Método no permitido. Usa GET.');
+    }
+
     $mysqli = openConnection();
-    // Obtiene la fecha actual y le suma un día
-    $tomorrowTimestamp = strtotime('+1 day');
-    // Obtiene la fecha actual y le suma 2 días
+    if (!$mysqli) {
+        throw new Exception('No se pudo conectar a la base de datos.');
+    }
+
+    
+    $tomorrowTimestamp      = strtotime('+1 day');
     $afterTomorrowTimestamp = strtotime('+2 day');
 
-    // Formatea el timestamp al formato 'yyyy-mm-dd'
-    $tomorrowDay =  date('Y-m-d', $tomorrowTimestamp);
-    $dayAfterTomorrow =  date('Y-m-d', $afterTomorrowTimestamp);
+    $tomorrowDay      = date('Y-m-d', $tomorrowTimestamp);
+    $dayAfterTomorrow = date('Y-m-d', $afterTomorrowTimestamp);
 
-    $checkInParam = isset($_GET['check_in_date']) ? $_GET['check_in_date'] : null;
+    
+    $checkInParam  = isset($_GET['check_in_date']) ? $_GET['check_in_date'] : null;
     $checkOutParam = isset($_GET['check_out_date']) ? $_GET['check_out_date'] : null;
 
+    
     $checkInDate = $tomorrowDay;
     if ($checkInParam) {
         $checkInDateTime = DateTime::createFromFormat('Y-m-d', $checkInParam);
@@ -34,6 +45,7 @@ if($_SERVER["REQUEST_METHOD"] === "GET"){
         }
     }
 
+    
     $checkOutDate = $dayAfterTomorrow;
     if ($checkOutParam) {
         $checkOutDateTime = DateTime::createFromFormat('Y-m-d', $checkOutParam);
@@ -42,6 +54,7 @@ if($_SERVER["REQUEST_METHOD"] === "GET"){
         }
     }
 
+    
     if (strtotime($checkOutDate) < strtotime($checkInDate)) {
         $checkOutDate = date('Y-m-d', strtotime($checkInDate . ' +1 day'));
     }
@@ -61,51 +74,62 @@ if($_SERVER["REQUEST_METHOD"] === "GET"){
             t.img,
             t.description,
             t.iframe,
-            (t.adults_limit - IFNULL(r.reserved_adults, 0)) AS adults_available,
+            (t.adults_limit   - IFNULL(r.reserved_adults,   0)) AS adults_available,
             (t.children_limit - IFNULL(r.reserved_children, 0)) AS children_available
         FROM tour t
         LEFT JOIN (
             SELECT
                 tour_id,
-                SUM(adults) AS reserved_adults,
+                SUM(adults)   AS reserved_adults,
                 SUM(children) AS reserved_children
             FROM reservation_tour
             WHERE check_in_date <= ?
               AND check_out_date >= ?
             GROUP BY tour_id
         ) AS r ON r.tour_id = t.id
-        WHERE (t.adults_limit - IFNULL(r.reserved_adults, 0)) > 0
+        WHERE (t.adults_limit   - IFNULL(r.reserved_adults,   0)) > 0
           AND (t.children_limit - IFNULL(r.reserved_children, 0)) > 0
+        ORDER BY t.created_at DESC
     ';
-    
-    $toursStmt = $mysqli->prepare($sqlTours);
-    $toursStmt->bind_param("ss", $checkInDate, $checkOutDate);
-    $toursStmt->execute();
-    $toursResult = $toursStmt->get_result();
 
-    if(!$toursResult){
-        http_response_code(500);
-        echo json_encode([
-            "success" => false,
-            "error"   => "Error al ejecutar la consulta: " . $mysqli->error
-        ], JSON_UNESCAPED_UNICODE);
-        closeConnection($mysqli);
-        exit;
+    $stmt = $mysqli->prepare($sqlTours);
+    if (!$stmt) {
+        throw new Exception('Error al preparar la consulta: ' . $mysqli->error);
     }
-    $tours = [];
-    while ($row = $toursResult->fetch_assoc()) {
+
+    $stmt->bind_param("ss", $checkInDate, $checkOutDate);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if (!$result) {
+        throw new Exception('Error al ejecutar la consulta: ' . $mysqli->error);
+    }
+
+    while ($row = $result->fetch_assoc()) {
         $tours[] = $row;
     }
-    $toursStmt->close();
-    
-    closeConnection($mysqli);
 
-    echo json_encode(
-        [
-            "success" => true,
-            "count"   => count($tours),
-            "data"    => $tours
-        ],
-        JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
-    );
+    $stmt->close();
+    $success = true;
+
+} catch (Exception $e) {
+    $error = $e->getMessage();
+    http_response_code(500);
+} finally {
+    if (isset($result) && $result instanceof mysqli_result) {
+        $result->free();
+    }
+    if ($mysqli) {
+        closeConnection($mysqli);
+    }
 }
+
+echo json_encode(
+    [
+        "success" => $success,
+        "count"   => count($tours),
+        "error"   => $success ? null : $error,
+        "data"    => $tours,
+    ],
+    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK
+);
