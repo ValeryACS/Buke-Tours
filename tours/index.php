@@ -25,7 +25,7 @@ $html_lang = $_SESSION['lang'];
     <?php 
       include '../php/styles/common-styles.php';
     ?>
-    <title>Tours Disponibles</title>
+    <title><?php echo $lang['tours_page_title']; ?></title>
   </head>
   <body>
     <?php 
@@ -52,7 +52,7 @@ $html_lang = $_SESSION['lang'];
               id="check-in-date"
               name="check_in_date"
               min="<?php echo date('Y-m-d'); ?>"
-              placeholder="Check in"
+              placeholder="<?php echo $lang['check_in_label']; ?>"
             />
           </div>
           <div class="col-12 col-sm-6 col-md-2">
@@ -62,7 +62,7 @@ $html_lang = $_SESSION['lang'];
               id="check-out-date"
               name="check_out_date"
               min="<?php echo date('Y-m-d'); ?>"
-              placeholder="Check out"
+              placeholder="<?php echo $lang['check_out_label']; ?>"
             />
           </div>
           <div class="col-12 col-md-2 d-grid">
@@ -77,6 +77,7 @@ $html_lang = $_SESSION['lang'];
               class="btn btn-danger"
             >
               <i class="bi bi-arrow-counterclockwise me-1"></i>
+              <?php echo $lang['btn_clear']; ?>
             </button>
           </div>
         </form>
