@@ -1,6 +1,86 @@
-// assets/js/tours/edit-tour-page.js
 import { setOnChangeEvents } from "../utils.module.js";
-import { validateProfileForm } from "../profile-module.js";
+
+function validateTourForm({
+  stringsRequeridos = [],
+  numerosRequeridos = [],
+  ratingInput,
+  discountInput,
+}) {
+  let isValid = true;
+  const errores = [];
+
+  const limpiarEstado = (inputs) => {
+    inputs.forEach((input) => {
+      if (!input) return;
+      input.classList.remove("is-invalid");
+    });
+  };
+
+  limpiarEstado([...stringsRequeridos, ...numerosRequeridos, ratingInput, discountInput]);
+
+  const marcarError = (input, mensaje) => {
+    if (!input) return;
+    isValid = false;
+    input.classList.add("is-invalid");
+    errores.push(mensaje);
+  };
+
+  
+  stringsRequeridos.forEach((input) => {
+    if (!input) return;
+    if (!input.value || input.value.trim() === "") {
+      marcarError(input, `El campo "${input.id}" es obligatorio.`);
+    }
+  });
+
+  
+  numerosRequeridos.forEach((input) => {
+    if (!input) return;
+    const valor = parseFloat(input.value);
+    if (isNaN(valor)) {
+      marcarError(input, `El campo "${input.id}" debe ser un número válido.`);
+      return;
+    }
+    if (valor < 0) {
+      marcarError(input, `El campo "${input.id}" no puede ser negativo.`);
+    }
+  });
+
+ 
+  if (ratingInput) {
+    const ratingVal = parseFloat(ratingInput.value);
+    if (isNaN(ratingVal) || ratingVal < 1 || ratingVal > 5) {
+      marcarError(
+        ratingInput,
+        'El campo "rating" debe estar entre 1.0 y 5.0.'
+      );
+    }
+  }
+
+  
+  if (discountInput) {
+    const discountVal = parseFloat(discountInput.value);
+    if (isNaN(discountVal) || discountVal < 0 || discountVal > 100) {
+      marcarError(
+        discountInput,
+        'El campo "discount" debe estar entre 0 y 100.'
+      );
+    }
+  }
+
+  if (!isValid && errores.length) {
+    Swal.fire({
+      icon: "error",
+      title: "Revisa los datos del Tour",
+      text: errores.join(" "),
+      toast: false,
+      position: "top",
+      showConfirmButton: true,
+    });
+  }
+
+  return isValid;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const tourEditForm = document.getElementById("tour-edit-form");
@@ -9,36 +89,37 @@ document.addEventListener("DOMContentLoaded", () => {
   tourEditForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const id             = document.getElementById("tour_id");
-    const sku            = document.getElementById("sku");
-    const title          = document.getElementById("title");
-    const location       = document.getElementById("location");
-    const description    = document.getElementById("description");
-    const priceUSD       = document.getElementById("price_usd");
-    const rating         = document.getElementById("rating");
-    const durationHours  = document.getElementById("duration_hours");
-    const adultsLimit    = document.getElementById("adults_limit");
-    const childrenLimit  = document.getElementById("children_limit");
-    const discount       = document.getElementById("discount");
-    const img            = document.getElementById("img");
-    const cuponCode      = document.getElementById("cupon_code");
-    const iframe         = document.getElementById("iframe");
+    const id            = document.getElementById("tour_id");
+    const sku           = document.getElementById("sku");
+    const title         = document.getElementById("title");
+    const location      = document.getElementById("location");
+    const description   = document.getElementById("description");
+    const priceUSD      = document.getElementById("price_usd");
+    const rating        = document.getElementById("rating");
+    const durationHours = document.getElementById("duration_hours");
+    const adultsLimit   = document.getElementById("adults_limit");
+    const childrenLimit = document.getElementById("children_limit");
+    const discount      = document.getElementById("discount");
+    const img           = document.getElementById("img");
+    const cuponCode     = document.getElementById("cupon_code");
+    const iframe        = document.getElementById("iframe");
 
     setOnChangeEvents({
       inputTextStrings: [sku, title, location, description, img, cuponCode, iframe],
       inputNumbers: [priceUSD, rating, durationHours, adultsLimit, childrenLimit, discount],
     });
 
-    const isValid = validateProfileForm({
-      stringsRequeridos: [sku, title, location, description],
-      numerosRequeridos: [priceUSD, rating, durationHours, adultsLimit, childrenLimit, discount],
-      fechasRequeridas: [],
+    const esValido = validateTourForm({
+      stringsRequeridos: [sku, title, location, description, img],
+      numerosRequeridos: [priceUSD, durationHours, adultsLimit, childrenLimit],
+      ratingInput: rating,
+      discountInput: discount,
     });
 
-    if (!isValid) return;
+    if (!esValido) return;
 
     const formData = new FormData(tourEditForm);
-    formData.set("id", id.value); // nos aseguramos que vaya el id correcto
+    formData.append("id", id.value);
 
     try {
       const response = await fetch("/Buke-Tours/api/tours/update.php", {
@@ -109,4 +190,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
