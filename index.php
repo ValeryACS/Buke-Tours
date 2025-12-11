@@ -49,21 +49,58 @@ closeConnection($mysqli);
    <?php 
    require_once 'config.php';
    ?>
-    <main>
-      <section>
-        <div class="form-group mt-5 mb-5 container-md">
-          <form id="search-form" class="d-flex justify-content-center flex-row">
-            <input
-              class="barra-busqueda m-auto form-control"
-              placeholder="<?php echo $lang['Buscar_Tour'];?>"
-              type="text"
-              id="search-input"
-            />
-            <button type="submit" id="btn-search" class="btn btn-success">
-              <i class="bi bi-search"></i>
-            </button>
+    <main class="w-100">
+      <div class="form-group mb-5 bg-yellow-light pb-3">
+          <form
+            id="search-form"
+            class="row g-3 align-items-center justify-content-center"
+          >
+            <div class="col-12 col-md-4">
+              <input
+                class="barra-busqueda form-control"
+                placeholder="<?php echo $lang['Buscar_Tour'];?>"
+                type="text"
+                id="search-input"
+              />
+            </div>
+            <div class="col-12 col-sm-6 col-md-2">
+              <input
+                type="date"
+                class="form-control"
+                id="check-in-date"
+                name="check_in_date"
+                min="<?php echo date('Y-m-d'); ?>"
+                placeholder="Check in"
+              />
+            </div>
+            <div class="col-12 col-sm-6 col-md-2">
+              <input
+                type="date"
+                class="form-control"
+                id="check-out-date"
+                name="check_out_date"
+                min="<?php echo date('Y-m-d'); ?>"
+                placeholder="Check out"
+              />
+            </div>
+            <div class="col-12 col-md-2 d-grid">
+              <button type="submit" id="btn-search" class="btn btn-success">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+            <div class="col-12 col-md-2 d-grid">
+              <button
+                type="button"
+                id="btn-clear-home-search"
+                class="btn btn-danger"
+              >
+                <i class="bi bi-arrow-counterclockwise me-1"></i>
+              </button>
+            </div>
           </form>
         </div>
+      <section>
+        
         <div id="search-result" class="w-100 bg-white"></div>
         <div
           style="
@@ -85,19 +122,22 @@ closeConnection($mysqli);
                               class="tour-imagen"
                             />
                             <div class="overlay-effect position-absolute">
-                              <h1>
-                                <?php echo $fila['title']; ?>
-                                <i
-                                  class="bi bi-cart-plus-fill display-4 add-to-cart"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#cartModal"
-                                  data-tour-id="<?php echo $fila['sku']; ?>"
-                                ></i>
-                                <i
-                                  class="bi bi-cursor-fill view-tour-page"
-                                  data-tour-id="<?php echo $fila['id']; ?>"
-                                ></i>
-                              </h1>
+                            <h1 style="color: #ffd89c;background: #2a2238;">
+                                <?php echo strlen($fila['title']) <= 23 ? $fila['title'] : substr($fila['title'], 0, 23) . "..."; ?>
+                            </h1>  
+                            <h3>
+                                <?php echo strlen($fila['location']) <= 23 ? $fila['location'] : substr($fila['location'], 0, 23) . "..."; ?>
+                            </h3>
+                            <i
+                              class="bi bi-cart-plus-fill display-4 add-to-cart"
+                              data-bs-toggle="modal"
+                              data-bs-target="#cartModal"
+                              data-tour-id="<?php echo $fila['sku']; ?>"
+                            ></i>
+                            <i
+                              class="bi bi-cursor-fill view-tour-page display-4 "
+                              data-tour-id="<?php echo $fila['id']; ?>"
+                            ></i>
                             </div>
                             <div
                               class="swiper-lazy-preloader swiper-lazy-preloader-white"
