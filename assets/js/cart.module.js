@@ -1,4 +1,5 @@
 import {setTourDetailsForm} from './checkout-module.js';
+import {getLanguageData} from './language-module.js';
 
 /**
  * @function
@@ -157,6 +158,8 @@ export const saveCart = (cartObj) => {
 export const updateCartModal = async (cartObj) => {
   const cartList = document.getElementById("cartList");
   if (!cartList) return;
+  const language = await getLanguageData();
+  const t = (key, fallback) => language?.[key] ?? fallback;
 
   const ids = Object.keys(cartObj || {});
   if (!ids.length) {
@@ -171,8 +174,12 @@ export const updateCartModal = async (cartObj) => {
       ?.classList?.add("d-none");
     document.querySelector("#checkout-form-skeleton")?.classList.add("d-none");
     cartList.innerHTML = `
-          <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
-          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">Comprar Tours</a>
+          <div class="text-center text-muted p-4">
+            ${t("cart_empty_message", "Tu carrito está vacío.")}
+          </div>
+          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">
+            ${t("buy_tours", "Comprar Tours")}
+          </a>
         `;
     return;
   }
@@ -193,7 +200,7 @@ export const updateCartModal = async (cartObj) => {
       const output = ids
         .map((sku) => {
           const tour = data.find((t) => String(t.sku) === String(sku));
-          if (!tour) return ""; // si no existe en el JSON, sáltalo
+          if (!tour) return ""; // si el tour no existe entonces retornamos string vacio para saltar el tour
 
           const qty = Number(cartObj[sku]) || 0;
           const price = Number(tour.price_usd) || 0;
@@ -289,8 +296,8 @@ export const updateCartModal = async (cartObj) => {
         ?.classList.add("d-none");
       cartList.innerHTML = output;
 
-      // Re-vincular eventos de + / − / input / eliminar
-      attachCartItemEvents();
+      
+      attachCartItemEvents();// Re-vincula todos los eventos del Carro de compras luego de actualizar el DOM
     })
     .catch((err) => console.error("Error:", err));
 };
@@ -301,7 +308,10 @@ export const updateCartModal = async (cartObj) => {
  * @returns {void} - Setea los eventos de los inputs del modal
  */
 export const attachCartItemEvents = () => {
-  // +
+  /**
+   * Setea el evento que se ejecuta cuando se le da click al boton +
+   * De cualquier tour adentro del Modal del Carro de compras
+   */
   document.querySelectorAll(".btn-add-quantity").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
       const sku = e.currentTarget.getAttribute("data-tour-id");
@@ -309,7 +319,10 @@ export const attachCartItemEvents = () => {
     });
   });
 
-  // −
+  /**
+   * Setea el evento que se ejecuta cuando se le da click al boton -
+   * De cualquier tour adentro del Modal del Carro de compras
+   */
   document.querySelectorAll(".btn-substract-quantity").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
       const sku = e.currentTarget.getAttribute("data-tour-id");
@@ -317,7 +330,10 @@ export const attachCartItemEvents = () => {
     });
   });
 
-  // input directo
+  /**
+   * Setea el evento que se ejecuta cuando el usuario inserta una cantidad numerica para x tour
+   * Adentro del Carro de Compras
+   */
   document.querySelectorAll(".input-qty").forEach((input) => {
     input.addEventListener("change", (e) => {
       const sku = e.currentTarget.getAttribute("data-tour-id");
@@ -326,7 +342,10 @@ export const attachCartItemEvents = () => {
     });
   });
 
-  // eliminar
+  /**
+   * Setea el evento que se ejecuta cuando el usuario clickea el boton de eliminar x tour
+   * Adentro del Carro de Compras
+   */
   document.querySelectorAll(".btn-remove").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const sku = e.currentTarget.getAttribute("data-tour-id");
@@ -433,7 +452,7 @@ export const onAddTourToCart = async (sku) => {
 };
 
 /**
- * Actualiza todos los tours incluidos en el carrito de compras para la pagina del carrito (no es el modal)
+ * Actualiza todos los tours incluidos en el carrito de compras para la pagina del carrito (no en el modal)
  * @returns {Promise<void>} - Usado para renderizar los tours incluidos en el carrito
  **/
 export const updateBasket = async () => {
@@ -441,11 +460,13 @@ export const updateBasket = async () => {
   const cartList = document.getElementById("cart-list-tours");
   if (!cartList) return;
 
+  const language = await getLanguageData();
+
   const ids = Object.keys(cart || {});
   if (ids.length === 0) {
     cartList.innerHTML = `
-          <div class="text-center text-muted p-4">Tu carrito está vacío.</div>
-          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">Comprar Tours</a>
+          <div class="text-center text-muted p-4">${language['tu_carro_esta_vacio']}</div>
+          <a href="/Buke-Tours/tours/" class="btn btn-danger-buke-tours m-auto">${language['buy_tours']}</a>
         `;
     return;
   }
@@ -460,7 +481,7 @@ export const updateBasket = async () => {
       const output = ids
         .map((sku) => {
           const tour = data.find((t) => String(t.sku) === String(sku));
-          if (!tour) return ""; // si no existe en el JSON, sáltalo
+          if (!tour) return ""; // si no existe en el JSON retornamos un string vacio para saltar el Tour
 
           const qty = Number(cart[sku]) || 0;
           const price = Number(tour.price_usd) || 0;
@@ -555,7 +576,7 @@ export const updateBasket = async () => {
 
       cartList.innerHTML = output;
 
-      attachCartItemEvents(); // Re-vincula los eventos de los inputs agregados al DOM
+      attachCartItemEvents(); // Re-vincula todos los eventos de los inputs del Carro de Compras agregados al DOM
     })
     .catch((err) => console.error("Error:", err));
 };
@@ -568,11 +589,13 @@ export const validateCoupon = async (cupon_code) => {
   const code = String(cupon_code || "")
     .trim()
     .toUpperCase();
+  const language = await getLanguageData();
+  const t = (key, fallback) => language?.[key] ?? fallback;
   if (!code) {
     Swal.fire({
       icon: "error",
-      title: "Cupón vacío",
-      text: "Por favor ingresa un código de cupón.",
+      title: t("coupon_empty_title", "Cupón vacío"),
+      text: t("coupon_empty_text", "Por favor ingresa un código de cupón."),
       toast: true,
       position: "top-end",
       showConfirmButton: false,
@@ -602,8 +625,11 @@ export const validateCoupon = async (cupon_code) => {
     if (!tourByCoupon) {
       Swal.fire({
         icon: "error",
-        title: "Cupón Incorrecto",
-        text: "El código ingresado no corresponde a ningún tour.",
+        title: t("coupon_invalid_code_title", "Cupón incorrecto"),
+        text: t(
+          "coupon_invalid_code_text",
+          "El código ingresado no corresponde a ningún tour."
+        ),
         toast: true,
         position: "top-end",
         showConfirmButton: false,
@@ -617,8 +643,11 @@ export const validateCoupon = async (cupon_code) => {
     if (!cartIds.has(String(tourByCoupon.sku))) {
       Swal.fire({
         icon: "error",
-        title: "Cupón no aplicable",
-        text: `Este cupón no pertenece a ningun tour de tu carrito.`,
+        title: t("coupon_not_applicable_title", "Cupón no aplicable"),
+        text: t(
+          "coupon_not_applicable_text",
+          "Este cupón no pertenece a ningún tour de tu carrito."
+        ),
         toast: true,
         position: "top-end",
         showConfirmButton: false,
@@ -633,8 +662,11 @@ export const validateCoupon = async (cupon_code) => {
     if (existCupons[code]) {
       Swal.fire({
         icon: "info",
-        title: "Cupón ya canjeado",
-        text: "Este cupón ya fue aplicado.",
+        title: t("coupon_already_used_title", "Cupón ya canjeado"),
+        text: t(
+          "coupon_already_used_text",
+          "Este cupón ya fue aplicado."
+        ),
         toast: true,
         position: "top-end",
         showConfirmButton: false,
@@ -652,8 +684,11 @@ export const validateCoupon = async (cupon_code) => {
 
     Swal.fire({
       icon: "success",
-      title: "Cupón canjeado",
-      text: `Cupón aplicado: -${tourByCoupon.cupon_discount}%`,
+      title: t("coupon_applied_title", "Cupón canjeado"),
+      text: t(
+        "coupon_applied_text",
+        "Cupón aplicado: -{discount}%"
+      ).replace("{discount}", tourByCoupon.cupon_discount ?? 0),
       toast: true,
       position: "top-end",
       showConfirmButton: false,
@@ -666,8 +701,11 @@ export const validateCoupon = async (cupon_code) => {
     console.error("Error validando cupón:", err);
     Swal.fire({
       icon: "error",
-      title: "Error",
-      text: "No se pudo validar el cupón en este momento.",
+      title: t("coupon_validation_error_title", "Error"),
+      text: t(
+        "coupon_validation_error_text",
+        "No se pudo validar el cupón en este momento."
+      ),
       toast: true,
       position: "top-end",
       showConfirmButton: false,

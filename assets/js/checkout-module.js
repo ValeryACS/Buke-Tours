@@ -1,8 +1,4 @@
-import {
-  readCart,
-  getTotal,
-  getCoupons,
-} from "./cart.module.js";
+import { readCart, getTotal, getCoupons } from "./cart.module.js";
 import {
   onlyDigits,
   containNumbers,
@@ -41,7 +37,9 @@ export const setTourDetailsForm = async () => {
           for (let tourIndex = 0; tourIndex < quantityOfTours; tourIndex++) {
             const accordionHtml = `
             <div class="accordion-item" data-tour-id="${sku}" data-accordion-id="${sku}-${counter}" >
-                <input type="hidden" class="d-none" id="data-tour-discount-${sku}-${counter}" value="${tour.discount}"/>
+                <input type="hidden" class="d-none" id="data-tour-discount-${sku}-${counter}" value="${
+              tour.discount
+            }"/>
                 <h2 class="accordion-header" id="headingTour-${sku}-${counter}">
                     <button
                         class="accordion-button"
@@ -198,7 +196,6 @@ export const validateCheckoutForm = ({
     }
 
     if (id === "nombre") {
-      // Valida el nombre
       if (containNumbers(inputValue)) {
         return pushErrorMessage(
           inputElement,
@@ -208,7 +205,6 @@ export const validateCheckoutForm = ({
     }
 
     if (id === "email") {
-      // Valida el email
       const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue); // Valida si es un email valido
       if (!isValidEmail)
         return pushErrorMessage(
@@ -218,9 +214,8 @@ export const validateCheckoutForm = ({
     }
 
     if (id === "telefono") {
-      // Valida el Telefono
       const digitosDelTelefono = onlyDigits(inputValue);
-      const isValidTelephone = digitosDelTelefono.length >= 8; // mínimo razonable
+      const isValidTelephone = digitosDelTelefono.length >= 8;
       if (!isValidTelephone)
         return pushErrorMessage(
           inputElement,
@@ -229,7 +224,6 @@ export const validateCheckoutForm = ({
     }
 
     if (id === "pais") {
-      // Valida el pais
       if (!inputElement.value) {
         return pushErrorMessage(
           inputElement,
@@ -241,7 +235,7 @@ export const validateCheckoutForm = ({
     setState(inputElement, true);
   });
 
-  // ---- 2) Valida los inputs de typo number
+  // ---- 2) Validando los inputs de tipo number
   const now = new Date();
   const curYY = now.getFullYear() % 100; // dos dígitos
   const curMM = now.getMonth() + 1;
@@ -281,7 +275,6 @@ export const validateCheckoutForm = ({
       const id = (inputElement.id || "").toLowerCase();
       const numberValue = (inputElement.value ?? "").trim();
 
-      // Input del numero vacio
       if (!numberValue) {
         pushErrorMessage(
           inputElement,
@@ -292,7 +285,6 @@ export const validateCheckoutForm = ({
         return;
       }
 
-      // por defecto: comprobar número y min (si existe)
       const minAttr = inputElement.getAttribute("min");
       const number = Number(onlyDigits(numberValue)) || Number(numberValue);
 
@@ -319,7 +311,6 @@ export const validateCheckoutForm = ({
         }
       }
 
-      // Reglas específicas de tarjeta
       if (id === "cardnumber") {
         const digits = onlyDigits(numberValue);
         if (digits.length < 13 || digits.length > 19) {
@@ -341,7 +332,6 @@ export const validateCheckoutForm = ({
       }
 
       if (id === "cardyear") {
-        // Representa el año
         let year = onlyDigits(numberValue);
         if (!(year.length === 2)) {
           return pushErrorMessage(
@@ -350,17 +340,13 @@ export const validateCheckoutForm = ({
           );
         }
         const year2 = Number(year);
-
-        // si tenemos el mes, comprobamos no expirada
         const monthEl = document.getElementById("cardMonth");
         if (monthEl && monthEl.value) {
           const mm = Number(onlyDigits(monthEl.value));
-          // tarjeta expirada: año menor, o año igual y mes menor
           if (year2 < curYY || (year2 === curYY && mm < curMM)) {
             return pushErrorMessage(inputElement, "La tarjeta está expirada.");
           }
         } else if (year2 < curYY) {
-          // si no hay mes, al menos año no menor al actual (mejor que nada)
           return pushErrorMessage(
             inputElement,
             "La tarjeta podría estar expirada (verifica mes y año)."
@@ -382,7 +368,7 @@ export const validateCheckoutForm = ({
     }
   });
 
-  // ---- 3) Valida las fechas de los Tours
+  // ---- 3) Validando los inputs de tipo fecha
   const [fechasDeIngreso, fechasDeSalida] = fechasRequeridas; // Se espera un array con 2 NodeList: [ingresos, salidas]
 
   if (fechasDeIngreso && fechasDeSalida) {
@@ -394,7 +380,6 @@ export const validateCheckoutForm = ({
       const inputFechasDeIngreso = ingresos[i];
       const inputFechasDeSalida = salidas[i];
 
-      // Validando la fecha de ingreso como requerida
       if (!inputFechasDeIngreso || !inputFechasDeIngreso.value) {
         pushErrorMessage(
           inputFechasDeIngreso || salidas[i],
@@ -402,7 +387,6 @@ export const validateCheckoutForm = ({
         );
         continue;
       }
-      // Validando la fecha de salida como requerida
       if (!inputFechasDeSalida || !inputFechasDeSalida.value) {
         pushErrorMessage(
           inputFechasDeSalida || ingresos[i],
@@ -411,7 +395,6 @@ export const validateCheckoutForm = ({
         continue;
       }
 
-      // Pareseando las fechas para poder validar si la fecha de llegada es mayor a la fecha de salida
       const initialDate = new Date(inputFechasDeIngreso.value);
       const outDate = new Date(inputFechasDeSalida.value);
       if (Number.isNaN(initialDate.getTime())) {
@@ -458,14 +441,13 @@ export const validateCheckoutForm = ({
     }
   }
 
-  // ---- 4) Imprimiendo los errores en el DOM
+  // ---- 4) Imprimiendo los errores encontrados en el DOM
   if (errors.length) {
     const firstInputError = errors[0].inputElement;
     if (firstInputError && typeof firstInputError.focus === "function") {
       firstInputError.focus({ preventScroll: true });
       firstInputError.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-    // Lista de errores en HTML5
     const htmlList = `<ul style="margin:0;padding-left:1.1rem;text-align:left;">
       ${errors
         .slice(0, 9) // limitar para no saturar el toast
@@ -491,7 +473,7 @@ export const validateCheckoutForm = ({
 
     return false;
   }
-  return true; // Todo está ok
+  return true; // El Formulario del Checkout ha sido validado exitosamente
 };
 /**
  * @function - Usada para renderizar las banderas de los paises una vez que el usuario selecciona un pais
@@ -501,10 +483,8 @@ export const renderFlags = () => {
   const select = document.getElementById("pais");
   const flag = document.getElementById("flagCountry");
   const setFlag = (code) => {
-    // Resetear clases
     flag.className = "fi";
 
-    // Normalizar código
     const normalized = (code || "").toLowerCase();
 
     if (!normalized) {
@@ -513,25 +493,19 @@ export const renderFlags = () => {
       return;
     }
 
-    // Mostrar bandera
     flag.classList.remove("d-none");
     flag.classList.add(`fi-${normalized}`);
 
-    // Hint accesible (tooltip nativo del title)
     const label = select.options[select.selectedIndex]?.text || "";
     flag.setAttribute("title", label);
   };
-
-  // Inicial (por si el select ya viene con un valor)
   setFlag(select.value);
-
-  // Cambio dinámico
-  select.addEventListener("change", (e) => setFlag(e.target.value));
+  select.addEventListener("change", (e) => setFlag(e.target.value)); // En cada onChange setea la bandera seleccionada
 };
 
 /**
- * @function - 
- * Usada para calcular el monto extra dependiendo de si el usuario selecciona o no alguno 
+ * @function -
+ * Usada para calcular el monto extra dependiendo de si el usuario selecciona o no alguno
  * de los checkobox opcionales.
  * @param {Object} params - Un Objeto el cual contiene todos los extras
  * @param {Number} params.children - La cantidad de niños
@@ -651,9 +625,9 @@ export const calculateExtras = ({
     transportCart.innerHTML = `<span class="badge text-bg-danger">No</span>`;
   }
   if (totalCartSidebar) {
-    totalCartSidebar.textContent = `$${String(
-      Number(newTotal)
-    ).toLocaleString("es-CR")}`;
+    totalCartSidebar.textContent = `$${String(Number(newTotal)).toLocaleString(
+      "es-CR"
+    )}`;
   }
   if (subTotalCartSidebar) {
     subTotalCartSidebar.textContent = `$${String(
@@ -679,7 +653,9 @@ export const calculateAccordionTotal = (data) => {
 
   accordionItems.forEach((item, index) => {
     const sku = item.getAttribute("data-tour-id");
-    const tourDiscount = Number(item.querySelector(`#data-tour-discount-${sku}-${index}`).value);
+    const tourDiscount = Number(
+      item.querySelector(`#data-tour-discount-${sku}-${index}`).value
+    );
     const startDate = item.querySelector(`#fechaIngresoTour-${sku}-${index}`);
     const endDate = item.querySelector(`#fechaSalidaTour-${sku}-${index}`);
 
@@ -689,7 +665,7 @@ export const calculateAccordionTotal = (data) => {
         endDate: String(endDate.value),
       });
     }
-    
+
     // Obtener el input dentro del accordion item
     const inputs = Array.from(item.querySelectorAll(".tour-quantity"));
     if (!inputs.length) return;
@@ -705,21 +681,18 @@ export const calculateAccordionTotal = (data) => {
         subtotal += price * qty;
       }
     });
-   
-    if(diffDays >= 1){
-      totalDescuento += diffDays * tourDiscount
-      
+
+    if (diffDays >= 1) {
+      totalDescuento += diffDays * tourDiscount;
+    } else {
+      totalDescuento += tourDiscount;
     }
-    else{
-      totalDescuento += tourDiscount
-    }
-    
   });
-  if(totalDescuento > 30 ){
+  if (totalDescuento > 30) {
     totalDescuento = 30;
   }
-  itemDiscountDollars = Number((subtotal * totalDescuento ) / 100);
-  
+  itemDiscountDollars = Number((subtotal * totalDescuento) / 100);
+
   // Aplicar cupones válidos (solo si su tour está en el carrito)
   const { totalCouponsPct } = getCoupons(data);
   const { finalTotal, finalFmt } = getTotal({
@@ -727,7 +700,7 @@ export const calculateAccordionTotal = (data) => {
     itemDiscountDollars,
     totalCouponsPct,
   });
-  if(totalDescuento >=30){
+  if (totalDescuento >= 30) {
     totalDescuento = 30;
   }
 

@@ -15,7 +15,6 @@ $success = false;
 $error   = null;
 
 try {
-    
     if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
         http_response_code(405);
         throw new Exception('Método no permitido. Usa GET.');
@@ -37,7 +36,7 @@ try {
     $checkInParam  = isset($_GET['check_in_date']) ? $_GET['check_in_date'] : null;
     $checkOutParam = isset($_GET['check_out_date']) ? $_GET['check_out_date'] : null;
 
-   
+    
     $checkInDate = $tomorrowDay;
     if ($checkInParam) {
         $checkInDateTime = DateTime::createFromFormat('Y-m-d', $checkInParam);
@@ -46,6 +45,7 @@ try {
         }
     }
 
+    
     $checkOutDate = $dayAfterTomorrow;
     if ($checkOutParam) {
         $checkOutDateTime = DateTime::createFromFormat('Y-m-d', $checkOutParam);
@@ -59,7 +59,6 @@ try {
         $checkOutDate = date('Y-m-d', strtotime($checkInDate . ' +1 day'));
     }
 
-    
     $sqlTours = '
         SELECT
             t.id,
@@ -75,7 +74,7 @@ try {
             t.img,
             t.description,
             t.iframe,
-            (t.adults_limit - IFNULL(r.reserved_adults, 0))   AS adults_available,
+            (t.adults_limit   - IFNULL(r.reserved_adults,   0)) AS adults_available,
             (t.children_limit - IFNULL(r.reserved_children, 0)) AS children_available
         FROM tour t
         LEFT JOIN (
@@ -88,7 +87,7 @@ try {
               AND check_out_date >= ?
             GROUP BY tour_id
         ) AS r ON r.tour_id = t.id
-        WHERE (t.adults_limit - IFNULL(r.reserved_adults, 0)) > 0
+        WHERE (t.adults_limit   - IFNULL(r.reserved_adults,   0)) > 0
           AND (t.children_limit - IFNULL(r.reserved_children, 0)) > 0
         ORDER BY t.created_at DESC
     ';

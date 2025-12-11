@@ -116,13 +116,12 @@ body {
   color: #666;
 }
 
-/* Imagen superior con alto consistente */
+
 .card-img-top {
-  height: 200px; /* ajústalo si quieres */
-  object-fit: cover; /* Bootstrap 5 tiene .object-fit-cover, pero lo dejamos directo */
+  height: 200px;
+  object-fit: cover;
 }
 
-/* “Read more” como barra oscura inferior a ancho completo */
 .read-more {
   border-radius: 0 0 var(--card-radius) var(--card-radius);
   font-family: "Inter", sans-serif;

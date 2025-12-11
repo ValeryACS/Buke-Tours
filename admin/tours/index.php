@@ -44,16 +44,20 @@ closeConnection($mysqli);
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Administrar Tours</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
   <?php include '../../php/components/admin/styles/admin-common-styles.php'; ?>
-  <link rel="stylesheet" href="/Buke-Tours/assets/css/main.css" />
+  <link rel="stylesheet" href="/Buke-Tours/assets/css/admin/main.css" />
 </head>
 <body>
 <?php include '../../php/components/admin/nav-bar-admin.php'; ?>
 
-<div class="container py-4">
+<div class="container py-4 admin-container">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="mb-0">Administrar Tours</h1>
+    <h1 class="mb-0 admin-page-title">Administrar Tours</h1>
     <a href="/Buke-Tours/admin/tours/create.php" class="btn btn-success">
       + Nuevo Tour
     </a>
@@ -74,8 +78,8 @@ closeConnection($mysqli);
   <?php if (empty($tours)): ?>
     <p>No hay tours registrados.</p>
   <?php else: ?>
-    <div class="table-responsive">
-      <table class="table table-striped align-middle">
+    <div class="table-responsive admin-card">
+      <table class="table table-striped align-middle mb-0">
         <thead>
           <tr>
             <th>ID</th>
@@ -99,7 +103,7 @@ closeConnection($mysqli);
             <td class="text-end">
               <a
                 href="/Buke-Tours/admin/tours/edit.php?id=<?php echo (int)$tour['id']; ?>"
-                class="btn btn-sm btn-primary"
+                class="btn btn-sm btn-primary me-1"
               >
                 Editar
               </a>
@@ -128,4 +132,3 @@ closeConnection($mysqli);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
-

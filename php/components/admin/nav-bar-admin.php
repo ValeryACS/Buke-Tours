@@ -9,6 +9,9 @@ $adminID = isset($_SESSION['admin_id'])? (int)$_SESSION['admin_id']: 0;
 if($adminID > 0){?>
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
   <div class="container">
+    <a class="navbar-brand fw-semibold" href="/Buke-Tours/">
+      <img style="max-width:80px;" class="logo" src="/Buke-Tours/assets/img/logo.png" alt="Buke Tours Logo" title="Buke Tours Logo" />
+</a>
     <a class="navbar-brand fw-semibold" href="/Buke-Tours/">Buke Tours</a>
     <button
       class="navbar-toggler"
@@ -33,7 +36,7 @@ if($adminID > 0){?>
           <a class="nav-link" href="/Buke-Tours/admin/admins/">Administradores</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/Buke-Tours/admin/customers/">Reseñas</a>
+          <a class="nav-link" href="/Buke-Tours/admin/reviews/">Reseñas</a>
         </li>
        
          

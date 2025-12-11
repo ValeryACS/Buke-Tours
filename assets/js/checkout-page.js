@@ -13,9 +13,12 @@ import {
 } from "./checkout-module.js";
 
 import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
+import { getLanguageData } from "./language-module.js";
 
 (() => {
   document.addEventListener("DOMContentLoaded", async () => {
+    const language = await getLanguageData();
+    const t = (key, fallback) => language?.[key] ?? fallback;
     await updateBasket();
     await setTourDetailsForm();
     renderFlags();
@@ -176,8 +179,8 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
       if (!inputCoupon.value.length) {
         Swal.fire({
           icon: "error",
-          title: "Cupon Inválido",
-          text: "El Código del Cupon es inválido",
+          title: t("coupon_invalid_title", "Cupón inválido"),
+          text: t("coupon_invalid_text", "El código del cupón es inválido."),
           toast: true,
           position: "top-end",
           showConfirmButton: false,
@@ -196,8 +199,11 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
       if (!terms.checked) {
         Swal.fire({
           icon: "error",
-          title: "Revisa la información",
-          text: "Debes aceptar los Términos y condiciones antes de hacer el pago.",
+          title: t("terms_required_title", "Revisa la información"),
+          text: t(
+            "terms_required_text",
+            "Debes aceptar los términos y condiciones antes de hacer el pago."
+          ),
           toast: true,
           position: "top-end",
           showConfirmButton: false,
@@ -295,8 +301,8 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
             const text = await response.text();
             Swal.fire({
               icon: "error",
-              title: "Error al procesar el pago",
-              text: text || "Ocurrió un error en el servidor.",
+              title: t("payment_error_title", "Error al procesar el pago"),
+              text: text || t("payment_error_text", "Ocurrió un error en el servidor."),
               toast: true,
               position: "top-end",
               showConfirmButton: false,
@@ -312,10 +318,10 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
             const msg =
               Array.isArray(result?.errors) && result.errors.length
                 ? result.errors.join(", ")
-                : result?.message || "No se pudo procesar el pago.";
+                : result?.message || t("paypal_error_generic", "No se pudo procesar el pago.");
             Swal.fire({
               icon: "error",
-              title: "Pago rechazado",
+              title: t("payment_rejected_title", "Pago rechazado"),
               text: msg,
               toast: true,
               position: "top-end",
@@ -328,8 +334,8 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
 
           Swal.fire({
             icon: "success",
-            title: "Pago Procesado",
-            text: result?.message || "Tu pago ha sido procesado exitosamente.",
+            title: t("payment_processed_title", "Pago procesado"),
+            text: result?.message || t("payment_processed_text", "Tu pago ha sido procesado exitosamente."),
             toast: true,
             position: "top-end",
             showConfirmButton: false,
@@ -342,8 +348,11 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
         } catch (err) {
           Swal.fire({
             icon: "error",
-            title: "Error de red",
-            text: "No se pudo conectar con el servidor. Intenta nuevamente.",
+            title: t("network_error_title", "Error de red"),
+            text: t(
+              "network_error_text",
+              "No se pudo conectar con el servidor. Intenta nuevamente."
+            ),
             toast: true,
             position: "top-end",
             showConfirmButton: false,
@@ -368,8 +377,11 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
       if (!terms.checked) {
         Swal.fire({
           icon: "error",
-          title: "Revisa la información",
-          text: "Debes aceptar los Términos y condiciones antes de hacer el pago.",
+          title: t("terms_required_title", "Revisa la información"),
+          text: t(
+            "terms_required_text",
+            "Debes aceptar los términos y condiciones antes de hacer el pago."
+          ),
           toast: true,
           position: "top-end",
           showConfirmButton: false,
@@ -473,8 +485,8 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
             const text = await response.text();
             Swal.fire({
               icon: "error",
-              title: "Error al procesar el pago",
-              text: text || "Ocurrió un error en el servidor.",
+              title: t("payment_error_title", "Error al procesar el pago"),
+              text: text || t("payment_error_text", "Ocurrió un error en el servidor."),
               toast: true,
               position: "top-end",
               showConfirmButton: false,
@@ -490,10 +502,10 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
             const msg =
               Array.isArray(result?.errors) && result.errors.length
                 ? result.errors.join(", ")
-                : result?.message || "No se pudo procesar el pago.";
+                : result?.message || t("paypal_error_generic", "No se pudo procesar el pago.");
             Swal.fire({
               icon: "error",
-              title: "Pago rechazado",
+              title: t("payment_rejected_title", "Pago rechazado"),
               text: msg,
               toast: true,
               position: "top-end",
@@ -506,8 +518,8 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
 
           Swal.fire({
             icon: "success",
-            title: "Pago Procesado",
-            text: result?.message || "Tu pago ha sido procesado exitosamente.",
+            title: t("payment_processed_title", "Pago procesado"),
+            text: result?.message || t("payment_processed_text", "Tu pago ha sido procesado exitosamente."),
             toast: true,
             position: "top-end",
             showConfirmButton: false,
@@ -521,8 +533,11 @@ import { todayLocalISO, setOnChangeEvents } from "./utils.module.js";
         } catch (err) {
           Swal.fire({
             icon: "error",
-            title: "Error de red",
-            text: "No se pudo conectar con el servidor. Intenta nuevamente.",
+            title: t("network_error_title", "Error de red"),
+            text: t(
+              "network_error_text",
+              "No se pudo conectar con el servidor. Intenta nuevamente."
+            ),
             toast: true,
             position: "top-end",
             showConfirmButton: false,

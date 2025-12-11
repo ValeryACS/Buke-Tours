@@ -1,17 +1,14 @@
 import { setOnChangeEvents } from "../utils.module.js";
-import { validateProfileForm } from "../profile-module.js"; // Asegúrate de que esta función maneje la contraseña como opcional
-
+import { validateProfileForm } from "../profile-module.js"; 
 document.addEventListener("DOMContentLoaded", () => {
   const adminProfileForm = document.getElementById("admin-form");
 
   adminProfileForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    // OBTENER EL ID DEL ADMINISTRADOR (CAMBIO CLAVE)
     const adminIdInput = document.getElementById("admin_id"); 
     const adminId = adminIdInput ? adminIdInput.value : null;
 
-    // Obtención de referencias a los campos
     const nombreCompleto = document.getElementById("fullName");
     const email = document.getElementById("email");
     const telefono = document.getElementById("phone");
@@ -27,13 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const codigoPostal = document.getElementById("zip");
     const genres = Array.from(document.querySelectorAll(".genre-radio-button"));
 
-    // Aplicar eventos de cambio (si son necesarios)
     setOnChangeEvents({
       inputTextStrings: [nombreCompleto, ciudad, provincia],
       inputNumbers: [telefono, pasaporteOdocumento, codigoPostal],
     });
 
-    // --- Lógica de Validación de Contraseña (Lado del Cliente) ---
     const passwordValue = password.value.trim();
     const confirmPasswordValue = confirmPassword.value.trim();
 
@@ -64,18 +59,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         return; 
     }
-    // Si la contraseña principal está vacía, no importa si la confirmación está vacía o no
-    // La validación de que *solo* la confirmación no esté vacía la maneja el backend por seguridad, pero ya la prevenimos arriba.
 
-
-    // Ejecutar la validación del formulario (se asume que 'validateProfileForm' valida el resto de campos obligatorios)
-    // NOTA: Deberías modificar tu función 'validateProfileForm' para que no exija la contraseña.
     const isValidProfileForm = validateProfileForm(
       nombreCompleto,
       email,
       telefono,
       fechaDeNacimiento,
-      // Pasamos null o un valor vacío para que la función sepa que es opcional
       passwordValue ? password : null, 
       confirmPasswordValue ? confirmPassword : null, 
       pais,
@@ -86,11 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData();
       const generoSeleccionado = genres.find((genre) => genre.checked);
 
-      // --- CAMPO CLAVE: ID del administrador ---
       if (adminId) {
         formData.append("admin_id", adminId);
       } else {
-         // Error de seguridad, el ID debe estar presente
          Swal.fire({
             icon: "error",
             title: "Error de ID",
@@ -104,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
       
-      // --- Campos fijos (coincidentes con los nombres en PHP) ---
       formData.append("nombre", nombreCompleto.value);
       formData.append("email", email.value);
       formData.append("telefono", telefono.value);
@@ -118,14 +104,12 @@ document.addEventListener("DOMContentLoaded", () => {
       formData.append("genero", generoSeleccionado ? generoSeleccionado.value : '');
       formData.append("fechaDeNacimiento", fechaDeNacimiento.value);
 
-      // **ENVÍO CONDICIONAL DE CONTRASEÑA (CAMBIO CLAVE)**
       if (passwordValue) {
         formData.append("password", passwordValue);
         formData.append("confirmPassword", confirmPasswordValue);
       }
 
       try {
-        // Asegúrate de que esta ruta apunte al archivo PHP de actualización
         const response = await fetch("/Buke-Tours/api/admin/profile/edit_admin_profile.php", {
           method: "POST",
           body: formData,
@@ -134,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (!response.ok) {
           const text = await response.text();
-          // Intentar parsear el JSON si el error no es 404/500
           try {
              const errorJson = JSON.parse(text);
              const msg = Array.isArray(errorJson?.errors) ? errorJson.errors.join(", ") : errorJson.message;
@@ -195,7 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         
         setTimeout(() => {
-          // Redirigir a la lista de administradores
           window.location.href = '/Buke-Tours/admin/admins/index.php'; 
         }, 3000);
       } catch (err) {
@@ -212,7 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
     } else {
-        // Manejar el caso donde la validación de 'validateProfileForm' falla (otros campos obligatorios)
          Swal.fire({
             icon: "warning",
             title: "Formulario Incompleto",

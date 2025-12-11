@@ -25,7 +25,7 @@ $html_lang = $_SESSION['lang'];
     <?php 
       include '../php/styles/common-styles.php';
     ?>
-    <title>Tours Disponibles</title>
+    <title><?php echo $lang['tours_page_title']; ?></title>
   </head>
   <body>
     <?php 
@@ -33,23 +33,59 @@ $html_lang = $_SESSION['lang'];
     ?>
     <main class="container py-4 cards-wrapper">
       <div class="form-group mt-5 mb-5 container-md">
-        <form id="search-form-tours" class="d-flex justify-content-center flex-row">
-          <input
-            class="barra-busqueda m-auto form-control"
-            placeholder="<?php echo $lang['Buscar_Tour'];?>"
-            type="text"
-            id="search-input-tour"
-          />
-          <button type="button" id="btn-search-tours" class="btn btn-success">
-            <i class="bi bi-search"></i>
-          </button>
+        <form
+          id="search-form-tours"
+          class="row g-3 align-items-center justify-content-center"
+        >
+          <div class="col-12 col-md-4">
+            <input
+              class="barra-busqueda form-control"
+              placeholder="<?php echo $lang['Buscar_Tour'];?>"
+              type="text"
+              id="search-input-tour"
+            />
+          </div>
+          <div class="col-12 col-sm-6 col-md-2">
+            <input
+              type="date"
+              class="form-control"
+              id="check-in-date"
+              name="check_in_date"
+              min="<?php echo date('Y-m-d'); ?>"
+              placeholder="<?php echo $lang['check_in_label']; ?>"
+            />
+          </div>
+          <div class="col-12 col-sm-6 col-md-2">
+            <input
+              type="date"
+              class="form-control"
+              id="check-out-date"
+              name="check_out_date"
+              min="<?php echo date('Y-m-d'); ?>"
+              placeholder="<?php echo $lang['check_out_label']; ?>"
+            />
+          </div>
+          <div class="col-12 col-md-2 d-grid">
+            <button type="button" id="btn-search-tours" class="btn btn-success">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+          <div class="col-12 col-md-2 d-grid">
+            <button
+              type="button"
+              id="btn-clear-tours-search"
+              class="btn btn-danger"
+            >
+              <i class="bi bi-arrow-counterclockwise me-1"></i>
+              <?php echo $lang['btn_clear']; ?>
+            </button>
+          </div>
         </form>
       </div>
       <div
         class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 justify-content-center"
         id="search-tours-results"
       ></div>
-      <!-- Grid responsive: 1 col en xs, 2 en sm, 3 en lg -->
       <div
         class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 justify-content-center"
         id="tours"
@@ -59,16 +95,13 @@ $html_lang = $_SESSION['lang'];
       <div
         class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 justify-content-center"
       >
-        <!-- SKELETON CARD (reutiliza 9 veces) -->
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -76,16 +109,12 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
-
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"
@@ -95,13 +124,11 @@ $html_lang = $_SESSION['lang'];
 
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -109,16 +136,13 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
 
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"
@@ -128,13 +152,11 @@ $html_lang = $_SESSION['lang'];
 
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -142,16 +164,13 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
 
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"
@@ -161,13 +180,11 @@ $html_lang = $_SESSION['lang'];
 
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -175,16 +192,13 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
 
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"
@@ -194,13 +208,11 @@ $html_lang = $_SESSION['lang'];
 
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -208,16 +220,13 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
 
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"
@@ -227,13 +236,11 @@ $html_lang = $_SESSION['lang'];
 
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -241,16 +248,13 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
 
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"
@@ -260,13 +264,11 @@ $html_lang = $_SESSION['lang'];
 
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -274,16 +276,13 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
 
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"
@@ -293,13 +292,11 @@ $html_lang = $_SESSION['lang'];
 
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -307,16 +304,13 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
 
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"
@@ -326,13 +320,11 @@ $html_lang = $_SESSION['lang'];
 
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -340,16 +332,13 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
 
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"
@@ -359,13 +348,11 @@ $html_lang = $_SESSION['lang'];
 
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -373,16 +360,13 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
 
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"
@@ -392,13 +376,11 @@ $html_lang = $_SESSION['lang'];
 
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -406,16 +388,13 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
 
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"
@@ -425,13 +404,11 @@ $html_lang = $_SESSION['lang'];
 
         <div class="col d-flex">
           <div class="card w-100 h-100 d-flex flex-column">
-            <!-- Imagen (usa ratio para reservar alto) -->
             <div class="ratio ratio-16x9 bg-body-secondary placeholder">
               <i class="bi bi-card-image image-skeleton"></i>
             </div>
 
             <div class="card-body d-flex flex-column placeholder-glow">
-              <!-- tag -->
               <div class="d-flex justify-content-center mb-2">
                 <span
                   class="placeholder col-4 rounded-1"
@@ -439,16 +416,13 @@ $html_lang = $_SESSION['lang'];
                 ></span>
               </div>
 
-              <!-- title -->
               <span class="placeholder col-6 mb-2" style="height: 24px"></span>
 
-              <!-- párrafos -->
               <span class="placeholder col-12 mb-1"></span>
               <span class="placeholder col-10 mb-1"></span>
               <span class="placeholder col-8"></span>
             </div>
 
-            <!-- botón -->
             <a
               class="btn btn-primary disabled placeholder"
               aria-disabled="true"

@@ -29,7 +29,6 @@ export const validateLoginForm =({
     const inputValue = (inputElement.value ?? "").trim();
     const id = (inputElement.id || "").toLowerCase();
 
-    // Input sin valor
     if (!inputValue) {
       return pushErrorMessage(
         inputElement,
@@ -47,7 +46,6 @@ export const validateLoginForm =({
     }
     
     if (id === "email") {
-      // Valida el email
       const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue); // Valida si es un email valido
       if (!isValidEmail)
         return pushErrorMessage(
@@ -66,10 +64,9 @@ export const validateLoginForm =({
       firstInputError.focus({ preventScroll: true });
       firstInputError.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-    // Lista de errores en HTML5
     const htmlList = `<ul style="margin:0;padding-left:1.1rem;text-align:left;">
       ${errors
-        .slice(0, 9) // limitar para no saturar el toast
+        .slice(0, 9)
         .map((e) => `<li>${e.errorMessage}</li>`)
         .join("")}
       ${
@@ -92,5 +89,5 @@ export const validateLoginForm =({
 
     return false;
   }
-  return true; // Todo está ok
+  return true; // El Formulario de Login ha sido validado exitosamente
 };

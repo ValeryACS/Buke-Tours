@@ -10,6 +10,14 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es';
+}
+
+include '../language/lang_' . $_SESSION['lang'] . '.php';
+
+$html_lang = $_SESSION['lang'];
+
 $userID = isset($_SESSION['id'])? (int)$_SESSION['id']: 0;
 
 if($userID<= 0){
@@ -39,11 +47,11 @@ if ($result) {
 
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="<?php echo htmlspecialchars($html_lang, ENT_QUOTES, 'UTF-8'); ?>">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Buke-Tours - Mis compras</title>
+    <title><?php echo $lang['invoices_page_title']; ?></title>
     <?php 
       include '../php/styles/common-styles.php';
     ?>
@@ -66,8 +74,8 @@ if ($result) {
                     <nav class="card shadow-sm">
                         <div class="card-body"> 
                             <div class="list-group">
-                                <a class="list-group-item list-group-item-action active" href="#" >Mis compras</a>
-                                <a class="list-group-item list-group-item-action" href="mailto:soporte@buke-tours.cr">Soporte</a>
+                                <a class="list-group-item list-group-item-action active" href="#" ><?php echo $lang['mis_compras']; ?></a>
+                                <a class="list-group-item list-group-item-action" href="mailto:soporte@buke-tours.cr"><?php echo $lang['soporte']; ?></a>
                             </div>
                         </div>
                     </nav>
@@ -76,18 +84,18 @@ if ($result) {
                 <section class="col-12 col-lg-10">
                     <header class="d-flex align-items-center justify-content-between mb-3">
                         <div>
-                            <h1 class="h4 m-auto titulo px-5">Facturas</h1>
+                            <h1 class="h4 m-auto titulo px-5"><?php echo $lang['facturas']; ?></h1>
                         </div>
                         <div>
-                            <button title="Imprimir en PDF" id="print-invoices-to-pdf"  type="button" class="btn btn-danger"><i class="bi bi-file-earmark-pdf mx-1 display-6"></i></button>
+                            <button title="<?php echo $lang['btn_print_pdf']; ?>" id="print-invoices-to-pdf"  type="button" class="btn btn-danger" aria-label="<?php echo $lang['btn_print_pdf']; ?>"><i class="bi bi-file-earmark-pdf mx-1 display-6"></i></button>
                         </div>
                     </header>
                     <?php 
                     
     if($userID === 0){
     ?>
-        <p class="d-flex text-center w-100">Necesitas iniciar sesion para ver tus facturas.</p>
-        <a href="/Buke-Tours/auth/login/index.php" class="btn btn-success ">Ir al Formulario de Login</a>
+        <p class="d-flex text-center w-100"><?php echo $lang['login_requerido_facturas']; ?></p>
+        <a href="/Buke-Tours/auth/login/index.php" class="btn btn-success "><?php echo $lang['ir_al_login']; ?></a>
     <?php
     }
     else{
@@ -97,34 +105,34 @@ if ($result) {
             <table id="table-invoices-data" class="table-invoices-data table table-hover table-dark table-striped align-middle w-100">
                 <thead class="table-light">
                     <tr>
-                        <th>Contacto</th>
-                        <th>Detalles</th>
-                        <th>Total</th>
-                        <th>Ingresos</th>
-                        <th>Fecha</th>
+                        <th><?php echo $lang['tabla_contacto']; ?></th>
+                        <th><?php echo $lang['tabla_detalles']; ?></th>
+                        <th><?php echo $lang['tabla_total']; ?></th>
+                        <th><?php echo $lang['tabla_ingresos']; ?></th>
+                        <th><?php echo $lang['tabla_fecha']; ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     foreach ($rows as $filaDesktop):
                         $extras = [];
-                        if ($filaDesktop['breakfast']) $extras[] = 'Desayuno';
-                        if ($filaDesktop['lunch']) $extras[] = 'Almuerzo';
-                        if ($filaDesktop['dinner']) $extras[] = 'Cena';
-                        if ($filaDesktop['transport']) $extras[] = 'Transporte';
-                        if ($filaDesktop['travel_insurance']) $extras[] = 'Seguro';
-                        if ($filaDesktop['photo_package']) $extras[] = 'Fotos';
+                        if ($filaDesktop['breakfast']) $extras[] = $lang['extra_desayuno'];
+                        if ($filaDesktop['lunch']) $extras[] = $lang['extra_almuerzo'];
+                        if ($filaDesktop['dinner']) $extras[] = $lang['extra_cena'];
+                        if ($filaDesktop['transport']) $extras[] = $lang['extra_transporte'];
+                        if ($filaDesktop['travel_insurance']) $extras[] = $lang['extra_seguro'];
+                        if ($filaDesktop['photo_package']) $extras[] = $lang['extra_fotos'];
 
-                        $details = "Adultos: {$filaDesktop['adults']}";
-                        $details .= is_null($filaDesktop['children']) ? '' : " | Niños: {$filaDesktop['children']}";
+                        $details = "{$lang['label_adultos']}: {$filaDesktop['adults']}";
+                        $details .= is_null($filaDesktop['children']) ? '' : " | {$lang['label_ninos']}: {$filaDesktop['children']}";
                         if (!empty($extras)) {
-                            $details .= " | Extras: " . implode(', ', $extras);
+                            $details .= " | {$lang['label_extras']}: " . implode(', ', $extras);
                         }
                     ?>
                     <tr>
                         <td>
-                            <h4 class="subtitulo mb-2">Factura #<?php echo $filaDesktop['id']; ?></h4>
-                            <p class="fw-semibold mb-1">Tour <?= htmlspecialchars($filaDesktop['title'] ?? '') ?></p>
+                            <h4 class="subtitulo mb-2"><?php echo $lang['factura_numero']; ?><?php echo $filaDesktop['id']; ?></h4>
+                            <p class="fw-semibold mb-1"><?php echo $lang['tour_label']; ?> <?= htmlspecialchars($filaDesktop['title'] ?? '') ?></p>
                             <p class="mb-0"><?= htmlspecialchars($filaDesktop['email']) ?></p>
                             <small><?= htmlspecialchars($filaDesktop['telephone']) ?></small>
                         </td>
@@ -142,18 +150,9 @@ if ($result) {
             </table>
         </div>
         <?php else : ?>
-            <div class="alert alert-info">No hay facturas disponibles.</div>
-            <a href="/Buke-Tours/tours/" class="btn btn-success" title="Comprar Tours">Comprar Tours</a>
+            <div class="alert alert-info"><?php echo $lang['no_hay_facturas']; ?></div>
+            <a href="/Buke-Tours/tours/" class="btn btn-success" title="<?php echo $lang['cta_comprar_tours']; ?>"><?php echo $lang['cta_comprar_tours']; ?></a>
         <?php endif; ?>
-                    <style>
-                    /* Hide table on small screens, show on lg and up */
-                    @media (max-width: 1024px) {
-                        #invoices_table { display: none !important; }
-                    }
-                    @media (min-width: 1023px) {
-                        #mobile-invoices { display: none; }
-                    }
-                    </style>
 
                     <div id="mobile-invoices" class="mt-3">
                         <?php
@@ -164,22 +163,22 @@ if ($result) {
                             foreach ($rows as $filaMobile):
                                 $counter++;
                                 $extras = [];
-                                if (!empty($filaMobile['breakfast'])) $extras[] = 'Desayuno';
-                                if (!empty($filaMobile['lunch'])) $extras[] = 'Almuerzo';
-                                if (!empty($filaMobile['dinner'])) $extras[] = 'Cena';
-                                if (!empty($filaMobile['transport'])) $extras[] = 'Transporte';
-                                if (!empty($filaMobile['travel_insurance'])) $extras[] = 'Seguro';
-                                if (!empty($filaMobile['photo_package'])) $extras[] = 'Fotos';
+                                if (!empty($filaMobile['breakfast'])) $extras[] = $lang['extra_desayuno'];
+                                if (!empty($filaMobile['lunch'])) $extras[] = $lang['extra_almuerzo'];
+                                if (!empty($filaMobile['dinner'])) $extras[] = $lang['extra_cena'];
+                                if (!empty($filaMobile['transport'])) $extras[] = $lang['extra_transporte'];
+                                if (!empty($filaMobile['travel_insurance'])) $extras[] = $lang['extra_seguro'];
+                                if (!empty($filaMobile['photo_package'])) $extras[] = $lang['extra_fotos'];
 
-                                $details = "Adultos: {$filaMobile['adults']}";
-                                $details .= is_null($filaMobile['children']) ? '' : " | Niños: {$filaMobile['children']}";
+                                $details = "{$lang['label_adultos']}: {$filaMobile['adults']}";
+                                $details .= is_null($filaMobile['children']) ? '' : " | {$lang['label_ninos']}: {$filaMobile['children']}";
                                 
-                                if (!empty($extras)) $details .= " | Extras: " . implode(', ', $extras);
+                                if (!empty($extras)) $details .= " | {$lang['label_extras']}: " . implode(', ', $extras);
                         ?>
                         <div class="card shadow-sm mb-3">
-                            <h3 class="subtitulo">Factura #<?php echo $counter;?></h3>
+                            <h3 class="subtitulo"><?php echo $lang['factura_numero']; ?><?php echo $counter;?></h3>
                             <div class="card-body">
-                                <h4 class="subtitle-invoice w-100">Contacto</h4>
+                                <h4 class="subtitle-invoice w-100"><?php echo $lang['tabla_contacto']; ?></h4>
                                 <div class="d-flex justify-content-between align-items-start">
                                     <hr class="my-2">
                                     <div class="me-2">
@@ -199,7 +198,7 @@ if ($result) {
                                 <hr class="my-2">
 
                                 <div class="mb-2">
-                                    <h4 class="subtitle-invoice">Dirección</h4>
+                                    <h4 class="subtitle-invoice"><?php echo $lang['direccion_label']; ?></h4>
                                     <p><?= htmlspecialchars($filaMobile['home_address']) ?></p>
                                     <p class="text-muted">
                                         <?= htmlspecialchars($filaMobile['city']) ?>, <?= htmlspecialchars($filaMobile['province']) ?>, <?= htmlspecialchars($filaMobile['country']) ?> <?= htmlspecialchars($filaMobile['postal_code']) ?>
@@ -207,14 +206,14 @@ if ($result) {
                                 </div>
 
                                 <div>
-                                    <h4 class="subtitle-invoice">Detalles</h4>
+                                    <h4 class="subtitle-invoice"><?php echo $lang['tabla_detalles']; ?></h4>
                                     <div><?= htmlspecialchars($details) ?></div>
                                 </div>
                             </div>
                         </div>
                         <?php endforeach;?>
                         <?php if (!$hasResults) { ?>
-                            <div class="text-center text-muted py-5">No hay facturas disponibles.</div>
+                            <div class="text-center text-muted py-5"><?php echo $lang['no_hay_facturas']; ?></div>
                         <?php } ?>
                         <?php
                         endif; ?>

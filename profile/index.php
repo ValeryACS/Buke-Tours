@@ -48,11 +48,11 @@ $sessionValue = function (string $key) use ($profileSession): string {
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="<?php echo htmlspecialchars($html_lang, ENT_QUOTES, 'UTF-8'); ?>">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Editar Perfil</title>
+    <title><?php echo $lang['profile_page_title']; ?></title>
     <?php 
       include '../php/styles/common-styles.php';
     ?>
@@ -62,13 +62,11 @@ $sessionValue = function (string $key) use ($profileSession): string {
     <?php
     require_once '../config.php';
     ?>
-    <?php echo htmlspecialchars($html_lang, ENT_QUOTES, 'UTF-8'); ?>
     <main class="perfil-contenedor">
-      <section class="container bg-warning-subtle mx-auto p-4 mt-5 bg-buke-tours profile-form-section">
-        <h1 class="titulo mb-4">Editar Usuario</h1>
+      <section class="container mx-auto p-4 mt-5 bg-buke-tours profile-form-section">
+        <h1 class="titulo mb-4"><?php echo $lang['profile_heading']; ?></h1>
         <form id="profile-form" novalidate>
           <div class="row g-3">
-            <!-- Columna izquierda -->
             <div class="col-12">
               <label
                 for="fullName"
@@ -136,8 +134,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
               <label
                 for="confirm-password"
                 class="form-label d-flex text-start"
-                >Confirmar
-                <?php echo $lang['contrasena'] ?></label
+                ><?php echo $lang['confirmar_contrasena']; ?></label
               >
               <input
                 id="confirm-password"
@@ -152,7 +149,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
               <label
                 for="birthdate"
                 class="form-label d-flex text-start"
-                >Fecha de nacimiento</label
+                ><?php echo $lang['fecha_nacimiento']; ?></label
               >
               <input
                 type="date"
@@ -164,7 +161,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
             </div>
             <div class="col-12 col-md-6 form-group text-start mb-3">
               <label class="form-label d-block d-flex text-start"
-                >Género</label
+                ><?php echo $lang['genero']; ?></label
               >
               <div class="form-check form-check-inline">
                 <input
@@ -183,7 +180,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                 <label
                   class="form-check-label d-flex text-start"
                   for="masculino"
-                  >Masculino</label
+                  ><?php echo $lang['genero_masculino']; ?></label
                 >
               </div>
               <div class="form-check form-check-inline">
@@ -202,13 +199,13 @@ $sessionValue = function (string $key) use ($profileSession): string {
                 <label
                   class="form-check-label d-flex text-start"
                   for="femenino"
-                  >Femenino</label
+                  ><?php echo $lang['genero_femenino']; ?></label
                 >
               </div>
             </div>
             <div class="col-12 col-md-6 form-group text-start">
               <label for="idioma" class="form-label d-flex text-start"
-                >Idioma</label
+                ><?php echo $lang['idioma']; ?></label
               >
               <select
                 id="idioma"
@@ -216,8 +213,8 @@ $sessionValue = function (string $key) use ($profileSession): string {
                 class="form-select"
                 aria-label="Idioma Seleccionado"
               >
-                <option value="en"  <?php if($profileSession['idioma'] ==='en'){ echo 'selected'; } ?>>Ingles</option>
-                <option value="es" <?php if($profileSession['idioma'] ==='es'){ echo 'selected'; } ?>>Español</option>
+                <option value="en"  <?php if($profileSession['idioma'] ==='en'){ echo 'selected'; } ?>><?php echo $lang['lang_option_en']; ?></option>
+                <option value="es" <?php if($profileSession['idioma'] ==='es'){ echo 'selected'; } ?>><?php echo $lang['lang_option_es']; ?></option>
               </select>
             </div>
             <div class="col-12 col-md-6 form-group">
@@ -227,7 +224,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
                 aria-hidden="true"
               ></span>
               <label for="country" class="form-label"
-                >País de residencia</label
+                ><?php echo $lang['pais_residencia']; ?></label
               >
               <select
                 class="form-select"
@@ -246,14 +243,14 @@ $sessionValue = function (string $key) use ($profileSession): string {
               <label
                 for="documento"
                 class="form-label d-flex text-start"
-                >Cédula / Pasaporte</label
+                ><?php echo $lang['documento_label']; ?></label
               >
               <input
                 id="documento"
                 name="documento"
                 type="text"
                 class="form-control"
-                placeholder="Número de Cédula"
+                placeholder="<?php echo $lang['documento_placeholder']; ?>"
                 maxlength="20"
                 value="<?php echo $sessionValue('passport'); ?>"
               />
@@ -275,7 +272,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
             </div>
             <div class="col-12 col-md-6">
               <label for="ciudad" class="form-label d-flex text-start"
-                >Ciudad</label
+                ><?php echo $lang['ciudad_label']; ?></label
               >
               <input
                 id="ciudad"
@@ -290,7 +287,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
               <label
                 for="provincia"
                 class="form-label d-flex text-start"
-                >Provincia</label
+                ><?php echo $lang['provincia_label']; ?></label
               >
               <input
                 id="provincia"
@@ -303,7 +300,7 @@ $sessionValue = function (string $key) use ($profileSession): string {
             </div>
             <div class="col-6 col-md-3">
               <label for="zip" class="form-label d-flex text-start"
-                >Código Postal</label
+                ><?php echo $lang['codigo_postal_label']; ?></label
               >
               <input
                 id="zip"

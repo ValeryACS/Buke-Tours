@@ -9,7 +9,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-
+/**
+ * Usada para retornar todas las fechas de Check In y Check Out en las que un tour registro una reservacion
+ */
 function getTourReservationDates($reservationId, $tourId){
     $userID = isset($_SESSION['id'])? (int)$_SESSION['id']: 0;
     if($userID<= 0){

@@ -93,10 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
           const msg =
             Array.isArray(result?.errors) && result.errors.length
               ? result.errors.join(", ")
-              : result?.message || "No se pudo crear el usuario.";
+              : result?.message || "No se pudo crear el administrador.";
           Swal.fire({
             icon: "error",
-            title: "El Usuario no pudo ser creado",
+            title: "El Administrador no pudo ser creado",
             text: msg,
             toast: true,
             position: "top-end",
@@ -109,8 +109,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         Swal.fire({
           icon: "success",
-          title: "Usuario Creado Exitosamente",
-          text: result?.message || "El usuario ha sido creado exitosamente.",
+          title: "Administrador Creado Exitosamente",
+          text: result?.message || "El administrador ha sido creado exitosamente.",
           toast: true,
           position: "top-end",
           showConfirmButton: false,

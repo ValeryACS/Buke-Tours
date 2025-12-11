@@ -29,7 +29,6 @@ $html_lang = $_SESSION['lang'];
     <?php
     require_once '../config.php';
     ?>
-    <!-- Sección principal -->
     <main class="content bg-light-subtle bg-opacity-75 mt-5">
       <section>
         <article class="hero">

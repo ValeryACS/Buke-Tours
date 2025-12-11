@@ -1,28 +1,25 @@
 <?php
 /**
- * API endpoint para actualizar los datos de un administrador existente.
+ * endpoint para actualizar un administrador
  */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Ajusta esta ruta si es necesario
 include("../../../php/config/db.php"); 
-
+include("../../../php/helpers/is-date.php");
 $mysqli = openConnection();
 
 $errors = [];
 $success = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 1. OBTENER Y VALIDAR EL ID DEL ADMINISTRADOR
     $adminId = isset($_POST['admin_id']) ? (int)$_POST['admin_id'] : 0;
 
     if ($adminId <= 0) {
         $errors[] = 'ID del administrador es obligatorio para la edición.';
     }
 
-    // 2. OBTENER TODOS LOS CAMPOS
     $nombre = isset($_POST['nombre']) ? trim((string)$_POST['nombre']) : '';
     $telefono = isset($_POST['telefono']) ? trim((string)$_POST['telefono']) : '';
     $pais = isset($_POST['pais']) ? trim((string)$_POST['pais']) : '';
@@ -38,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fechaDeNacimiento = isset($_POST['fechaDeNacimiento']) ? trim((string)$_POST['fechaDeNacimiento']) : '';
     $pasaporteOdocumento = isset($_POST['pasaporteOdocumento']) ? trim((string)$_POST['pasaporteOdocumento']) : '';
 
-    // 3. VALIDACIONES
-    // Campos obligatorios que no han cambiado su obligatoriedad
+    // VALIDACIONES
+
     if ($nombre === '') { $errors[] = 'Nombre es obligatorio'; }
     if ($telefono === '' || !preg_match('/^[0-9+\-()\s]{7,20}$/', $telefono)) { $errors[] = 'Telefono invalido'; }
     if ($pais === '') { $errors[] = 'Pais es obligatorio'; }
@@ -49,23 +46,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($provincia === '') { $errors[] = 'Provincia es obligatoria'; }
     if ($codigoPostal === '' || !preg_match('/^[A-Za-z0-9\-]{3,10}$/', $codigoPostal)) { $errors[] = 'Codigo postal invalido'; }
     
-    // **CORRECCIÓN**: Usar 'Masculino'/'Femenino' para ENUM
     if ($genero === '' || ($genero !== 'Masculino' && $genero !== 'Femenino')) { $errors[] = 'Genero invalido'; }
     
     if ($idioma === '' || $idioma === 'no-seleccionado') { $errors[] = 'Idioma es obligatorio'; }
     if ($pasaporteOdocumento === '') { $errors[] = 'Documento es obligatorio'; }
 
-    // Validación de fecha
-    $isValidDate = function ($dateStr) {
-        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateStr)) { return false; }
-        [$y, $m, $d] = explode('-', $dateStr);
-        return checkdate((int)$m, (int)$d, (int)$y);
-    };
-    if ($fechaDeNacimiento !== '' && !$isValidDate($fechaDeNacimiento)) {
+    
+    if ($fechaDeNacimiento !== '' && !isValidDate($fechaDeNacimiento)) {
         $errors[] = 'Fecha de nacimiento invalida (formato YYYY-MM-DD)';
     }
 
-    // Validación condicional de Contraseña (Mantiene la lógica de opcionalidad)
     $updatePassword = false;
     if (!empty($password)) {
         if (strlen($password) < 6) {
@@ -74,15 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($confirmPassword !== $password) {
             $errors[] = 'Las nuevas contraseñas no coinciden';
         }
-        $updatePassword = true; // Flag para incluir la contraseña en el UPDATE
+        $updatePassword = true; 
     } elseif (!empty($confirmPassword)) {
-        // Si solo se llena la confirmación, pero no la contraseña principal
         $errors[] = 'El campo Contraseña está vacío, pero la Confirmación no.';
     }
 
-    // 4. VERIFICACIÓN DE EXISTENCIA Y DUPLICIDAD DE EMAIL/DOCUMENTO (EXCLUYENDO EL ADMINISTRADOR ACTUAL)
     if (empty($errors) && $adminId > 0) {
-        // 4.1 Verificar que el admin exista antes de intentar actualizar
         $stmtCheck = $mysqli->prepare("SELECT id FROM admins WHERE id = ? LIMIT 1");
         $stmtCheck->bind_param("i", $adminId);
         $stmtCheck->execute();
@@ -92,7 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmtCheck->close();
 
-        // 4.2 Verificar duplicidad de email/documento con OTROS administradores
         if (empty($errors)) {
             $stmtExist = $mysqli->prepare("SELECT id FROM admins WHERE (email = ? OR passport = ?) AND id != ? LIMIT 1");
             if ($stmtExist) {
@@ -110,13 +96,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 
-    // 5. EJECUTAR UPDATE
     if (empty($errors)) {
         $mysqli->begin_transaction();
 
         try {
-            // Construir la consulta UPDATE dinámicamente
-            // **CORRECCIÓN DE NOMBRES DE COLUMNA**: lang, genre
+    
             $sqlCustomer = "UPDATE `admins` SET 
                 `full_name` = ?, 
                 `email` = ?, 
@@ -131,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 `zip_code` = ?, 
                 `birth_date` = ? ";
             
-            $types = 'ssssssssssis'; // Tipos para los campos fijos
+            $types = 'ssssssssssis'; 
             $bindParams = [
                 &$nombre, 
                 &$email, 
@@ -144,10 +128,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 &$ciudad, 
                 &$provincia, 
                 &$codigoPostal, 
-                &$fechaDeNacimiento // Usamos el valor directamente
+                &$fechaDeNacimiento 
             ];
 
-            // Añadir campos de contraseña si se actualizará
             if ($updatePassword) {
                 $sqlCustomer .= ", `password_hash` = ? ";
                 $types .= 's';
@@ -155,7 +138,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $bindParams[] = &$passwordHash;
             }
 
-            // Cláusula WHERE final
             $sqlCustomer .= " WHERE `id` = ?";
             $types .= 'i';
             $bindParams[] = &$adminId;
@@ -166,7 +148,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  throw new Exception("Error al preparar UPDATE admins: " . $mysqli->error);
             }
             
-            // Reajustar el array para bind_param (requiere referenciar elementos individualmente)
             array_unshift($bindParams, $types);
             call_user_func_array([$stmt, 'bind_param'], $bindParams);
             
@@ -186,7 +167,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 
-    // 6. RESPUESTA JSON
     $data = [
         'success' => empty($errors),
         'message' => empty($errors) ? 'El Administrador ha sido Actualizado Exitosamente' : $errors[0] ?? 'Error al actualizar Administrador',
@@ -196,7 +176,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($data);
 } else {
-    // Si no es una solicitud POST
     http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Método no permitido']);
 }

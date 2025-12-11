@@ -1,0 +1,69 @@
+
+.titulo {
+  color: #ffd89c !important;
+  font-size: 22px;
+  font-weight: bold;
+  width: 100%;
+  margin: 0 auto;
+  background: #2a2238 !important;
+  max-width: 500px;
+  text-align: center;
+}
+
+body{
+    background: url("/Buke-Tours/assets/img/costa-rica.jpg") no-repeat;
+    background-size: cover;
+    width: 100%;
+    background-attachment: fixed;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    height: 100vh;
+}
+
+form, .table-responsive{
+    background: #f0f0f0;
+    padding: 10px 20px;
+}
+form label{
+    background:  #ffd89c !important;
+    color:#9b4047;
+    padding: 10px 30px;
+    max-width: none;
+    text-align: start;
+    width: 100%;
+}
+
+form{
+    background: #4e89d8;
+}
+
+/* Footer */
+.footer-redes {
+  background-color: #2a7e7e;
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  bottom: 0;
+  padding: 0px 0;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.footer-redes-li {
+  display: inline;
+  margin: 0 15px;
+}
+
+.footer-redes a {
+  text-decoration: none;
+  color: white;
+}
+
+.footer-redes a:hover {
+  color: lightblue;
+}
+
+img.logo-footer{
+  height: 60px;
+}
