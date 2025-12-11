@@ -616,3 +616,42 @@ INSERT INTO feedback (score, tour_id, customer_id, full_name, comment , status) 
 (4, 11, 1, 'Esteban Rojas', 'Corcovado es único, pero el acceso es difícil.', 'Aprobada'),
 (5, 12, 2, 'Valeria Quesada', 'Las cataratas Nauyaca son impresionantes.', 'Aprobada'),
 (5, 13, 3, 'Jorge Navarro', 'Aprendí a surfear en Tamarindo, excelente clase.', 'Aprobada');
+
+DROP VIEW IF EXISTS tour_availability;
+
+CREATE VIEW tour_availability AS
+SELECT
+  t.id AS tour_id,
+  t.sku,
+  t.title,
+  t.location,
+  t.price_usd,
+  t.adults_limit,
+  t.children_limit,
+
+  rtd.check_in_date,
+  rtd.check_out_date,
+
+  COALESCE(SUM(rtd.adults), 0)   AS adults_booked,
+  COALESCE(SUM(rtd.children), 0) AS children_booked,
+
+  GREATEST(t.adults_limit   - COALESCE(SUM(rtd.adults), 0), 0)   AS adults_available,
+  GREATEST(t.children_limit - COALESCE(SUM(rtd.children), 0), 0) AS children_available,
+
+  CASE
+    WHEN GREATEST(t.adults_limit - COALESCE(SUM(rtd.adults), 0), 0) > 0 THEN TRUE
+    ELSE FALSE
+  END AS is_available
+FROM tour t
+LEFT JOIN reservation_tour rtd
+  ON t.id = rtd.tour_id
+GROUP BY
+  t.id,
+  t.sku,
+  t.title,
+  t.location,
+  t.price_usd,
+  t.adults_limit,
+  t.children_limit,
+  rtd.check_in_date,
+  rtd.check_out_date;

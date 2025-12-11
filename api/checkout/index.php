@@ -10,6 +10,7 @@ include("../../php/config/db.php");
 include("../../php/helpers/parse-json.php");
 include("../../php/helpers/is-date.php");
 include("../../php/helpers/parse-boolean.php");
+include("../../php/helpers/is-tour-available.php");
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -244,6 +245,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($cvv === '' || !preg_match('/^\d{3,4}$/', $cvv)) {
         $errors[] = 'CVV invalido';
+    }
+
+    if (empty($errors)) {
+        foreach ($ingresos as $item) {
+            $tourId = (int)($item['tour_id'] ?? 0);
+            $checkInDate = $item['check_in_date'] ?? '';
+
+            if ($tourId <= 0 || $checkInDate === '') {
+                $errors[] = 'Información de tour inválida';
+                break;
+            }
+
+            if (!isTourAvailable($tourId, $checkInDate, $mysqli)) {
+                $errors[] = "El tour $tourId no tiene disponibilidad para la fecha $checkInDate";
+                break;
+            }
+        }
     }
 
     if (empty($errors)) {
