@@ -56,6 +56,9 @@ CREATE TABLE tour (
     DEFAULT CHARSET=utf8mb4
     COLLATE=utf8mb4_unicode_ci;
 
+ ALTER TABLE customer
+  ADD avatar_url VARCHAR(500);
+
 DROP TABLE IF EXISTS admins;
 
  CREATE TABLE admins (
@@ -81,6 +84,39 @@ DROP TABLE IF EXISTS admins;
   ) ENGINE=InnoDB
     DEFAULT CHARSET=utf8mb4
     COLLATE=utf8mb4_unicode_ci;
+    
+    ALTER TABLE admins
+    ADD avatar_url VARCHAR(500);
+
+INSERT INTO admins (
+    full_name,
+    email,
+    password_hash,
+    phone,
+    country,
+    passport,
+    lang,
+    genre,
+    home_addres,
+    city,
+    province,
+    zip_code,
+    birth_date
+) VALUES (
+    'Juan Pérez García',
+    'juan.perez@example.com',
+    'aJrgba1235a@%.', -- Replace with a strong, hashed password
+    '+34600123456',
+    'CR',
+    'ABC123456',
+    'es',
+    'Masculino',
+    'Calle Falsa 123',
+    'Alajuela',
+    'Alajuela',
+    '28001',
+    '1985-05-15'
+);
 
 DROP TABLE IF EXISTS reservation;
 
