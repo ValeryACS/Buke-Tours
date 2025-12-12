@@ -24,7 +24,7 @@ const showAlert = (msg, type = "danger") => {
   alert.style.zIndex = 2000;
   alert.role = "alert";
   alert.innerHTML = `
-    ${esc(msg)}
+    ${msg}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   `;
   document.body.appendChild(alert);
